@@ -105,9 +105,13 @@ Scope {
 						if (event.key === Qt.Key_Left) {
 							powerbutton.focus = true
 						}
-						// } else if (event.key === Qt.Key_Left) {
-						// 	themebutton.focus = true
-						// }
+					}
+					function activate() { reboot.running = true }
+
+					Process {
+						id: reboot
+						command: ["reboot"]
+						running: false
 					}
 				}
 			}

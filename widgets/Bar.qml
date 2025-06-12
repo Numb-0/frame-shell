@@ -17,8 +17,10 @@ Scope {
       property var modelData
       screen: modelData
       color: Theme.colors.background
+      // margins: 0
       property real padding: 6
-      implicitHeight: row.implicitHeight + padding * 2
+      implicitHeight: barrow.implicitHeight + padding * 2
+      
 
       ColorBehavior on color {}
 
@@ -29,10 +31,10 @@ Scope {
       }
 
       RowLayout {
-        id: row
+        id: barrow
         anchors.fill: parent
         uniformCellSizes: true
-
+        
         LeftSection {}
         CenterSection {}
         RightSection {}

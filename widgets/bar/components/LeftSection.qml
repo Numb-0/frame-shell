@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import "root:/config"
 
-RowLayout {
+ColumnLayout {
     Layout.alignment: Qt.AlignLeft
     Layout.leftMargin: 10
     spacing: 10

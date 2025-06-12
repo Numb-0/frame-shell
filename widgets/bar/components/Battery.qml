@@ -40,6 +40,7 @@ RowLayout {
     Loader {
         active: battery.iconName !== ""
         sourceComponent: Icon {
+            id:icon
             iconSource: Quickshell.iconPath(battery.iconName)
             iconColor: Theme.colors.yellow
         }

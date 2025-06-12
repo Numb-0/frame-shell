@@ -29,7 +29,7 @@ import Quickshell.Widgets
 
 Button {
     required property var iconSource
-    property var iconSize: 13
+    property var iconSize: 14
     required property var iconColor
     property var backgroundColor: "transparent"
 
@@ -38,8 +38,11 @@ Button {
         ColorBehavior on color { duration: 200 }
     }
     icon.source: iconSource
-    icon.width: iconSize
-    icon.height: iconSize
+    
     icon.color: iconColor
     ColorBehavior on icon.color {}
+    Component.onCompleted: Qt.callLater(() => {
+        icon.width = iconSize
+        icon.height = iconSize
+    })
 }

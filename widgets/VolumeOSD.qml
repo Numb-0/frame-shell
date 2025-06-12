@@ -50,7 +50,6 @@ Scope {
 
 			Rectangle {
 				anchors.fill: parent
-				// radius: height / 2
 				color: Theme.colors.background
 
 				RowLayout {
@@ -62,7 +61,6 @@ Scope {
 
 					Icon {
 						iconSource: Quickshell.iconPath("audio-volume-high-symbolic")
-						iconSize: 20
 						iconColor: Theme.colors.green
 					}
 
@@ -70,7 +68,6 @@ Scope {
 						Layout.fillWidth: true
 
 						implicitHeight: 10
-						// radius: 20
 						color: Theme.colors.backgroundHighlight
 
 						Rectangle {
@@ -87,7 +84,6 @@ Scope {
 									duration: 200
 								}
 							}
-							// radius: parent.radius4
 						}
 					}
 				}
