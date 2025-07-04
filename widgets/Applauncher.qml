@@ -77,6 +77,7 @@ Scope {
 					snapMode: ListView.SnapToItem
 					Layout.fillWidth: true
 					Layout.fillHeight: true
+					// anchors.fill: parent
 					clip: true
 					spacing: 5
 					highlightMoveDuration: 500

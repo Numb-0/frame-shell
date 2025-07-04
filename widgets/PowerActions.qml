@@ -24,7 +24,7 @@ Scope {
 
 		PanelWindow {
 			id: window
-			property int padding: 20
+			property int padding: 10//20
 			Component.onCompleted: {
 				if (this.WlrLayershell != null) {
 					this.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
@@ -46,8 +46,8 @@ Scope {
 					root.visible = false
 				}
 				Icon {
-					focus: true
 					id: themebutton
+					focus: true
 					iconSource: "root:/assets/icons/arrow-symbolic.svg"
 					iconColor: Theme.colors.yellow
 					iconSize: 40
@@ -106,6 +106,7 @@ Scope {
 							powerbutton.focus = true
 						}
 					}
+					Keys.onReturnPressed: activate()
 					function activate() { reboot.running = true }
 
 					Process {

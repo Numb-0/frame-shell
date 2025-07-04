@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
+import "root:/widgets/bar/components"
 
 RowLayout {
-    // Layout.fillWidth: true
     Layout.alignment: Qt.AlignCenter
     
     Clock {}

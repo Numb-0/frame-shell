@@ -4,7 +4,7 @@ import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
 
-import "root:/widgets/bar/components"
+import "root:/widgets/bar/sections"
 import "root:/utils"
 import "root:/config"
 
@@ -15,10 +15,9 @@ Scope {
     PanelWindow {
       id: bar
       property var modelData
+      property real padding: 4
       screen: modelData
       color: Theme.colors.background
-      // margins: 0
-      property real padding: 6
       implicitHeight: barrow.implicitHeight + padding * 2
       
 

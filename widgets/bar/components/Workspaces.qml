@@ -10,7 +10,6 @@ import "root:/utils"
 import "root:/config"
 
 RowLayout {
-    id: root
     property int workspaceCount: 6
     
     Repeater {
