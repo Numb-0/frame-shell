@@ -10,4 +10,5 @@ ShellRoot {
   VolumeOSD {}
   PowerActions {}
   Notifications {}
+  Dashboard {}
 } 

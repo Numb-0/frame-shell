@@ -4,6 +4,8 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Services.Pipewire
 import Quickshell.Widgets
+import Quickshell.Wayland
+
 
 import "root:/config"
 import "root:/utils"
@@ -11,6 +13,7 @@ import "root:/utils"
 Scope {
 	id: root
 	property PwNode audioSink: Pipewire.defaultAudioSink
+	property bool visible: false
 	PwObjectTracker {
 		objects: [ audioSink ]
 	}
@@ -21,27 +24,27 @@ Scope {
 			target: audioSink.audio
 
 			function onVolumeChanged() {
-				root.shouldShowOsd = true;
+				root.visible = true;
 				hideTimer.restart();
 			}
 		}
 	}
 
-	property bool shouldShowOsd: false
-
 	Timer {
 		id: hideTimer
 		interval: 1500
-		onTriggered: root.shouldShowOsd = false
+		onTriggered: root.visible = false
 	}
 
 	LazyLoader {
-		active: root.shouldShowOsd
+		active: root.visible
+
 
 		PanelWindow {
 			anchors.bottom: true
 			margins.bottom: screen.height / 5
 
+			WlrLayershell.exclusionMode: ExclusionMode.Ignore
 			implicitWidth: 400
 			implicitHeight: 50
 			color: "transparent"
@@ -59,7 +62,7 @@ Scope {
 						rightMargin: 15
 					}
 
-					Icon {
+					IconButton {
 						iconSource: Quickshell.iconPath("audio-volume-high-symbolic")
 						iconColor: Theme.colors.green
 					}
@@ -78,7 +81,7 @@ Scope {
 								bottom: parent.bottom
 							}
 
-							implicitWidth: parent.width * (audioSink.audio.volume ?? 0)
+							implicitWidth: parent.width * (audioSink?.audio.volume ?? 0)
 							Behavior on implicitWidth {
 								NumberAnimation {
 									duration: 200

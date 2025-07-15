@@ -38,14 +38,16 @@ Singleton {
                 notification: notification
             });
 
-            notifObj.removeRequested.connect(function(notificationId) {
+            notifObj.expireRequested.connect(function(notificationId) {
                 root.list = root.list.filter(n => n.id !== notificationId)
-                notification.expire() 
+            })
+
+            notifObj.dismissRequested.connect(function(notificationId) {
+                root.list = root.list.filter(n => n.id !== notificationId)
             })
 
             root.list.push(notifObj)
             root.listChanged();
-            console.log("✅ Notification added:", notifServer.trackedNotifications.values);
         }
     }
 }

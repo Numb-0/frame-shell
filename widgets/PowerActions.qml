@@ -19,19 +19,27 @@ Scope {
 		onPressed: root.visible = !root.visible
 	}
 
+	Process {
+		id: reboot
+		command: ["reboot"]
+	}
+
+	Process {
+		id: poweroff
+		command: ["poweroff"]
+	}
+
 	LazyLoader {
 		active: root.visible
 
 		PanelWindow {
 			id: window
-			property int padding: 10//20
-			Component.onCompleted: {
-				if (this.WlrLayershell != null) {
-					this.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
-				}
-			}
+			property int padding: 10
+			WlrLayershell.exclusionMode: ExclusionMode.Ignore
+			WlrLayershell.layer: WlrLayer.Overlay
+			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
-			implicitWidth: row.width + padding*2
+			implicitWidth: row.width + padding * 2
 			implicitHeight: row.height + padding * 2
 			anchors.bottom: true
 			margins.bottom: screen.height / 2
@@ -45,7 +53,8 @@ Scope {
 				Keys.onEscapePressed: {
 					root.visible = false
 				}
-				Icon {
+
+				IconButton {
 					id: themebutton
 					focus: true
 					iconSource: "root:/assets/icons/arrow-symbolic.svg"
@@ -69,7 +78,8 @@ Scope {
 
 					function activate() { Theme.nextTheme(); rotate.start() }
 				}
-				Icon {
+
+				IconButton {
 					id: powerbutton
 					iconSource: Quickshell.iconPath("system-shutdown-symbolic")
 					iconColor: Theme.colors.red
@@ -86,21 +96,15 @@ Scope {
 					Keys.onReturnPressed: activate()
 
 					function activate() { poweroff.running = true }
-
-					Process {
-						id: poweroff
-						command: ["poweroff"]
-						running: false
-					}
-
 				}
-				Icon {
+
+				IconButton {
 					id: rebootbutton
 					iconSource: Quickshell.iconPath("system-reboot-symbolic")
 					iconColor: Theme.colors.green
 					iconSize: 20
-					onClicked: console.log(powerbutton.height)
 					backgroundColor: focus ? Theme.colors.backgroundHighlight : "transparent"
+					onClicked: activate()
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Left) {
 							powerbutton.focus = true
@@ -108,12 +112,6 @@ Scope {
 					}
 					Keys.onReturnPressed: activate()
 					function activate() { reboot.running = true }
-
-					Process {
-						id: reboot
-						command: ["reboot"]
-						running: false
-					}
 				}
 			}
 	    }

@@ -25,23 +25,38 @@ QtObject {
     property string image: notification?.image || ""
     property string summary: notification?.summary || ""
     property double time: Date.now()
-    property string urgency: notification?.urgency?.toString() || "normal"
-    property int expireTimeout: urgency === "critical" ? 10000 : 5000
+    property string urgency: notification?.urgency
+    property int expireTimeout: urgency === NotificationUrgency.Critical ? 10000 : 5000
     
-    property Timer dismissTimer: Timer {
+    property Timer expireTimer: Timer {
         interval: root.expireTimeout
-        onTriggered: dismiss()
+        onTriggered: expire()
     }
 
-    signal removeRequested(int notificationId)
+    signal expireRequested(int notificationId)
 
-    function dismiss() {
+    signal dismissRequested(int notificationId)
+
+    function expire() {
         if (popup) {
-            removeRequested(id)
+            expireTimer.stop()
+            expireRequested(id)
+            notification.expire()
         }
     }
 
+    function dismiss() {
+        expireTimer.stop()
+        dismissRequested(id)
+        notification.dismiss()
+    }
+
     Component.onCompleted: {
-        dismissTimer.start()
+        // console.log(notification.actions)
+        // console.log(notification.summary)
+        // console.log(notification.image)
+        // console.log(notification.body)
+        // console.log(root.urgency)
+        expireTimer.start()
     }
 }

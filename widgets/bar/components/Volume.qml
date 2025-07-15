@@ -60,12 +60,15 @@ RowLayout {
             y: control.topPadding + control.availableHeight / 2 - height / 2
             color: Theme.colors.green
             ColorBehavior on color {}
+            Behavior on x {
+                NumberAnimation { duration: 200 }
+            }
         }
     }
 
     Loader {
         active: root.audioSink !== null
-        sourceComponent: Icon {
+        sourceComponent: IconButton {
             iconSource: Quickshell.iconPath(getVolumeIcon(audioSink?.audio?.volume))
             iconColor: Theme.colors.green
         }

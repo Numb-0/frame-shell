@@ -11,28 +11,52 @@ import "root:/config"
 import "root:/utils"
 
 Rectangle {
-    property int padding: 20
+    id: notif
+    property int padding: 10
     color: Theme.colors.backgroundAlt
     implicitWidth: notifbtn.implicitWidth + padding
     implicitHeight: notifbtn.implicitHeight + padding
     ColumnLayout {
         id: notifbtn
         anchors.centerIn: parent
-        CustomText {
-            text: modelData.summary
+        RowLayout {
+            CustomText {
+                Layout.maximumWidth: 200
+                text: modelData.summary
+                wrapMode: Text.Wrap
+                elide: Text.ElideRight
+                maximumLineCount: 2
+            }
+            IconButton {
+                iconColor: Theme.colors.yellow
+                iconSource: Quickshell.iconPath("window-close")
+                onClicked: modelData.dismiss()
+            }   
         }
         CustomText {
-            text: modelData.id
+            Layout.maximumWidth: 200
+            text: modelData.body
+            wrapMode: Text.Wrap
+            elide: Text.ElideRight
+            maximumLineCount: 2
+        }
+        Image {
+            source: modelData.image
+            sourceSize.width: 50
+            sourceSize.height: 50
         }
     }
 
     signal resizeList(int width)
 
-    ListView.onAdd: resizeToNotification()
+    // ListView.onAdd: resizeToNotification()
 
-    function resizeToNotification() {
-        // Resize width only if needed
-        window.implicitWidth = window.implicitWidth < implicitWidth ? implicitWidth : window.implicitWidth 
-    }
+    // function resizeToNotification() {
+    //     let maxWidth = 0
+    //     notifList.contentItem.children.forEach((nc) =>{
+    //         maxWidth = nc.implicitWidth < maxWidth ? maxWidth : nc.implicitWidth
+    //     })
+    //     window.implicitWidth = maxWidth
+    // }
 }
 

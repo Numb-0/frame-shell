@@ -23,12 +23,9 @@ Scope {
 
 		PanelWindow {
 			id: window
-			Component.onCompleted: {
-				if (this.WlrLayershell != null) {
-					this.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
-				}
-			}
-
+			WlrLayershell.exclusionMode: ExclusionMode.Ignore
+			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+			visible: root.visible
 			implicitWidth: 340
 			implicitHeight: 260
 			anchors.bottom: true
@@ -50,20 +47,22 @@ Scope {
 					font.family: "JetBrainsMono Nerd Font"
 					color: Theme.colors.foreground
 					background: Rectangle {
-						color: Theme.colors.backgroundHighlight
+						color: searchBox.focus ? Theme.colors.backgroundHighlight : Theme.colors.backgroundAlt
 						ColorBehavior on color {}
 					}
 					onTextChanged: {
 						root.searchText = text
-						appsList.currentIndex = 0
+						appsList.currentIndex = -1
 					}
+					onFocusChanged: (event) => { appsList.currentIndex = -1 }
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Down) {
 							appsList.forceActiveFocus()
+							appsList.currentIndex = 0
 						}
 					}
 					Keys.onReturnPressed: () => {
-						appsList.currentItem.activate()
+						appsList.itemAtIndex(0).activate()
 						root.visible = false
 						clear()
 					}
@@ -77,7 +76,6 @@ Scope {
 					snapMode: ListView.SnapToItem
 					Layout.fillWidth: true
 					Layout.fillHeight: true
-					// anchors.fill: parent
 					clip: true
 					spacing: 5
 					highlightMoveDuration: 500
@@ -85,6 +83,7 @@ Scope {
 						color: Theme.colors.backgroundHighlight;
 						ColorBehavior on color {}
 					}
+					currentIndex: -1
 
 					delegate: RowLayout {
 						IconImage {
@@ -99,7 +98,7 @@ Scope {
 							root.visible = false
 							searchBox.clear()
 						}
-						Keys.onPressed: {
+						Keys.onPressed: (event) => {
 							if (event.key === Qt.Key_Enter-1) {
 								activate()
 							}
@@ -121,7 +120,6 @@ Scope {
 							searchBox.forceActiveFocus()
 						}
 					}
-					Keys.onReturnPressed: () => { appsList.currentItem.execute(); root.visible = false } 
 				}
 			}
 		}

@@ -20,18 +20,15 @@ Scope {
         exclusiveZone: 0
         color: "transparent"
         margins.top: 20
+        implicitWidth: 400
 
         anchors {
             top: true
             left: true
             bottom: true
         }
-        Component.onCompleted: {
-            if (this.WlrLayershell != null) {
-                this.WlrLayershell.layer = WlrLayer.Overlay
-            }
-        }
-
+        WlrLayershell.layer: WlrLayer.Overlay
+        
         mask: Region {
             item: notifList.contentItem
         }
