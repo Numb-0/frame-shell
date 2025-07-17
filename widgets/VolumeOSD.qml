@@ -6,9 +6,8 @@ import Quickshell.Services.Pipewire
 import Quickshell.Widgets
 import Quickshell.Wayland
 
-
-import "root:/config"
-import "root:/utils"
+import qs.config 
+import qs.utils
 
 Scope {
 	id: root
@@ -38,7 +37,6 @@ Scope {
 
 	LazyLoader {
 		active: root.visible
-
 
 		PanelWindow {
 			anchors.bottom: true

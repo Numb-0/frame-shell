@@ -6,9 +6,8 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Notifications
 
-
-import "root:/config"
-import "root:/utils"
+import qs.utils
+import qs.config
 
 Rectangle {
     id: notif
@@ -21,11 +20,12 @@ Rectangle {
         anchors.centerIn: parent
         RowLayout {
             CustomText {
-                Layout.maximumWidth: 200
+                Layout.fillWidth: true
+                // Layout.maximumWidth: 200
                 text: modelData.summary
-                wrapMode: Text.Wrap
-                elide: Text.ElideRight
-                maximumLineCount: 2
+                // wrapMode: Text.Wrap
+                // elide: Text.ElideRight
+                // maximumLineCount: 2
             }
             IconButton {
                 iconColor: Theme.colors.yellow
@@ -34,7 +34,8 @@ Rectangle {
             }   
         }
         CustomText {
-            Layout.maximumWidth: 200
+            Layout.maximumWidth: window.width
+            Layout.fillWidth: true
             text: modelData.body
             wrapMode: Text.Wrap
             elide: Text.ElideRight
@@ -46,17 +47,5 @@ Rectangle {
             sourceSize.height: 50
         }
     }
-
-    signal resizeList(int width)
-
-    // ListView.onAdd: resizeToNotification()
-
-    // function resizeToNotification() {
-    //     let maxWidth = 0
-    //     notifList.contentItem.children.forEach((nc) =>{
-    //         maxWidth = nc.implicitWidth < maxWidth ? maxWidth : nc.implicitWidth
-    //     })
-    //     window.implicitWidth = maxWidth
-    // }
 }
 

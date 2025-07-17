@@ -31,8 +31,8 @@ Scope {
             color: Theme.colors.background
             visible: root.visible
             WlrLayershell.layer: WlrLayer.Overlay
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
             // WlrLayershell.exclusionMode: ExclusionMode.Ignore
+            // WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             implicitHeight: 200
             implicitWidth: 300
@@ -40,7 +40,6 @@ Scope {
             anchors {
                 top: true            
                 right: true
-                // bottom: true
             }
 
             ColumnLayout {

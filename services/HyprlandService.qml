@@ -43,6 +43,7 @@ Singleton {
         stdout: SplitParser {
             onRead: (data) => {
                 root.windowList = JSON.parse(data)
+                // console.log(data)
                 let tempWinByAddress = {}
                 for (var i = 0; i < root.windowList.length; ++i) {
                     var win = root.windowList[i]

@@ -7,6 +7,7 @@ RowLayout {
     Layout.rightMargin: 10
     spacing: 10
     
+    Wifi {}
     Battery {}
     Volume {}
 } 

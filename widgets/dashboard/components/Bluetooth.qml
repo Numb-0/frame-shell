@@ -11,12 +11,9 @@ import qs.utils
 
 Rectangle {
     id: notif
-    property int padding: 10
-    property var bt: Bluetooth.defaultAdapter
+    property var bt: Bluetooth?.defaultAdapter
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
     color: Theme.colors.background
-    // implicitWidth: 200 + padding * 2
-    // implicitHeight: 100 + padding * s2
     RowLayout {
         id: row
         IconButton {
@@ -26,7 +23,6 @@ Rectangle {
             onClicked: bt.enabled = !bt.enabled
         }
         CustomText {
-            // Layout.alignment: Qt.AlignRight
             text: connectedDevices[0]?.deviceName ?? "No connected devices"
         }
     }

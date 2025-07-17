@@ -6,8 +6,9 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Hyprland
 
-import "root:/utils"
-import "root:/config"
+import qs.utils
+import qs.config
+import qs.services
 
 RowLayout {
     property int workspaceCount: 6
@@ -17,11 +18,15 @@ RowLayout {
         Rectangle {
             property int workspaceId: index + 1
             property var workspace: Hyprland.workspaces.values.find(ws => ws.id === workspaceId)
-            
+            property var hasClient: {
+                HyprlandService.windowList.find(w => w.workspace.id === workspaceId) ? true : false
+            }
             color: {
-                if (!workspace) return Theme.colors.blue
-                if (workspace.focused) return Theme.colors.yellow;                
-                return Theme.colors.purple;
+                if (workspace) {
+                    if (workspace.focused) return Theme.colors.yellow;                
+                    if (hasClient) return Theme.colors.purple;
+                }
+                return Theme.colors.blue
             }
             
             implicitHeight: 15

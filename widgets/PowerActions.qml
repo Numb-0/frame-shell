@@ -7,8 +7,8 @@ import Quickshell.Widgets
 import Quickshell.Hyprland
 import Quickshell.Wayland
 
-import "root:/config"
-import "root:/utils"
+import qs.config
+import qs.utils
 
 Scope {
 	id: root

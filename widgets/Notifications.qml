@@ -8,9 +8,9 @@ import Quickshell.Hyprland
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
 
-import "root:/config"
-import "root:/utils"
-import "root:/widgets/notification/components"
+import qs.config
+import qs.utils
+import qs.widgets.notification.components
 
 Scope {
 	id: root

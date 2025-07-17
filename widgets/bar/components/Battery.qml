@@ -6,8 +6,8 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.UPower
 
-import "root:/config"
-import "root:/utils"
+import qs.config
+import qs.utils
 
 RowLayout {
     id: root
@@ -40,7 +40,7 @@ RowLayout {
     Loader {
         active: battery.iconName !== ""
         sourceComponent: IconButton {
-            id:icon
+            id: icon
             iconSource: Quickshell.iconPath(battery.iconName)
             iconColor: Theme.colors.yellow
         }

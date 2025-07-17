@@ -6,8 +6,8 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Pipewire
 
-import "root:/utils"
-import "root:/config"
+import qs.utils
+import qs.config
 
 RowLayout {
     id: root
