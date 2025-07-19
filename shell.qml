@@ -1,8 +1,8 @@
 //@ pragma UseQApplication
 
 import Quickshell
-import "./widgets"
-import "./config"
+import qs.widgets
+import qs.config
 
 ShellRoot {
   Bar {}

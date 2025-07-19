@@ -11,7 +11,7 @@ import qs.services
 
 RowLayout {
     id: root
-    property var wifiIcons: ({
+    property var networkIcons: ({
         none: "network-wireless-signal-none",
         weak: "network-wireless-signal-weak",
         ok: "network-wireless-signal-ok",
@@ -19,22 +19,22 @@ RowLayout {
         excellent: "network-wireless-signal-excellent",
     })
 
-    function getWifiIcon(signal) {
-        if (signal <= 10) return wifiIcons.none
-        if (signal <= 30) return wifiIcons.weak
-        if (signal <= 50) return wifiIcons.ok
-        if (signal <= 75) return wifiIcons.good
-        return wifiIcons.excellent
+    function getNetworkIcon(signal) {
+        if (signal <= 10) return networkIcons.none
+        if (signal <= 30) return networkIcons.weak
+        if (signal <= 50) return networkIcons.ok
+        if (signal <= 75) return networkIcons.good
+        return networkIcons.excellent
     }
 
-    property var adapter: WifiService?.defaultAdapter
-    property var connectedNet: WifiService?.connectedNetwork
+    property var adapter: NetworkService?.defaultAdapter
+    property var connectedNet: NetworkService?.connectedNetwork
     CustomText {
         text: connectedNet?.ssid ?? "No Network"
         color: Theme.colors.purple
     }
     IconButton {
-        iconSource: Quickshell.iconPath(getWifiIcon(connectedNet?.signal))
+        iconSource: Quickshell.iconPath(getNetworkIcon(connectedNet?.signal))
         iconColor: Theme.colors.purple
     }
 }
