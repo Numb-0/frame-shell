@@ -50,7 +50,7 @@ Singleton {
                         connection: parts[3],
                         isWifi: parts[1] === "wifi",
                         isConnected: parts[2].includes("connected"),
-                        isEthernet: parts[1] === "ethernet"
+                        isEthernet: parts[3].includes("Wired")
                     }
                     
                     var existingIndex = -1

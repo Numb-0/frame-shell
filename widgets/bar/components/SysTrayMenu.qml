@@ -1,3 +1,4 @@
+pragma Singleton
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -10,14 +11,25 @@ import Quickshell.Wayland
 import qs.config
 import qs.utils
 
-Scope {
+Singleton {
 	id: root
 	property bool visible: false
-    
-    function open(modelData) {
-        console.log(modelData.hasMenu)
-        // root.visible = true
+    property var modelData
+
+    function toggle(modelData) {
+        if(root.modelData != modelData && modelData != null) {
+            root.visible = false
+            root.modelData = modelData
+            switchTimer.start()
+        }
+        root.visible = !root.visible
     }
+
+    Timer {
+		id: switchTimer
+		interval: 200
+		onTriggered: root.visible = true
+	}
 
     LazyLoader {
 		active: root.visible
@@ -26,25 +38,51 @@ Scope {
             id: window
             screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
             exclusiveZone: 0
-            color: Theme.colors.background
+            color: "transparent"
             visible: root.visible
+            implicitWidth: 200
             WlrLayershell.layer: WlrLayer.Overlay
 
-            implicitHeight: 200
-            implicitWidth: 300
+            mask: Region {
+                item: actionList
+            }
 
             anchors {
                 top: true            
                 right: true
+                bottom: true
             }
 
-            ColumnLayout {
-                Rectangle {
-                    implicitHeight: 100
-                    implicitWidth: 100
-                    color: Theme.colors.blue
-                }
+            QsMenuOpener {
+                id: opener
+                menu: modelData?.menu
             }
+
+            // Keys.onEscapePressed: { root.visible = false }
+            ColumnLayout {
+                id: actionList
+                anchors.right: parent.right
+                Repeater {
+                    model: ScriptModel {
+                        values: opener.children.values.filter(m => m.text != "")
+                    }
+                    delegate: Button {
+                        Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                        onClicked: {
+                            root.visible = false
+                            modelData.triggered()
+                        }
+                        contentItem: CustomText {
+                            text: modelData.text
+                        }
+                        background: Rectangle {
+                            color: Theme.colors.background 
+                            ColorBehavior on color { duration: 200 }
+                        }
+                    }
+                }
+                // Component 
+            }  
         }
     }
 }

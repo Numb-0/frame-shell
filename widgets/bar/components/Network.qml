@@ -17,9 +17,11 @@ RowLayout {
         ok: "network-wireless-signal-ok",
         good: "network-wireless-signal-good",
         excellent: "network-wireless-signal-excellent",
+        ethernet: "network-wired"
     })
 
     function getNetworkIcon(signal) {
+        if (signal == undefined) return networkIcons.ethernet
         if (signal <= 10) return networkIcons.none
         if (signal <= 30) return networkIcons.weak
         if (signal <= 50) return networkIcons.ok
@@ -30,11 +32,12 @@ RowLayout {
     property var adapter: NetworkService?.defaultAdapter
     property var connectedNet: NetworkService?.connectedNetwork
     CustomText {
-        text: connectedNet?.ssid ?? "No Network"
+        text: adapter?.isEthernet ? "Ethernet" : (connectedNet?.ssid ?? "No Network")
         color: Theme.colors.purple
     }
     IconButton {
         iconSource: Quickshell.iconPath(getNetworkIcon(connectedNet?.signal))
         iconColor: Theme.colors.purple
+        // iconSize: 18
     }
 }
