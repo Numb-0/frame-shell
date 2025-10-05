@@ -34,13 +34,13 @@ Scope {
 
 		PanelWindow {
 			id: window
-			property int padding: 10
+			property int padding: 18
 			WlrLayershell.exclusionMode: ExclusionMode.Ignore
 			WlrLayershell.layer: WlrLayer.Overlay
 			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
-			implicitWidth: row.width + padding * 2
-			implicitHeight: row.height + padding * 2
+			implicitWidth: row.width + padding * 2 + 8
+			implicitHeight: row.height + padding * 2 
 			anchors.bottom: true
 			margins.bottom: screen.height / 2
 			color: Theme.colors.background
@@ -48,11 +48,9 @@ Scope {
 			
 			RowLayout {
 				id: row
+				spacing: 20
 				anchors.centerIn: parent
-				spacing: 10
-				Keys.onEscapePressed: {
-					root.visible = false
-				}
+				Keys.onEscapePressed: root.visible = false
 
 				MaterialButton {
 					id: themebutton
@@ -61,6 +59,7 @@ Scope {
 					iconColor: Theme.colors.yellow
 					iconSize: 40
 					onClicked: activate()
+					
 					RotationAnimation on rotation {
 						id: rotate
 						from: themebutton.rotation
@@ -92,14 +91,14 @@ Scope {
 						}
 					}
 					Keys.onReturnPressed: activate()
-
+					
 					function activate() { poweroff.running = true }
 				}
 
 				MaterialButton {
 					id: rebootbutton
 					iconName: "refresh"
-					iconColor: focus ? Theme.colors.green : Theme.colors.foregroundBright
+					iconColor: Theme.colors.green
 					iconSize: 40
 					onClicked: activate()
 					Keys.onPressed: (event) => {
@@ -108,6 +107,7 @@ Scope {
 						}
 					}
 					Keys.onReturnPressed: activate()
+
 					function activate() { reboot.running = true }
 				}
 			}
