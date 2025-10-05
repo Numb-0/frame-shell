@@ -42,6 +42,7 @@ Singleton {
             visible: root.visible
             implicitWidth: 200
             WlrLayershell.layer: WlrLayer.Overlay
+            // WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             mask: Region {
                 item: actionList
@@ -58,10 +59,11 @@ Singleton {
                 menu: modelData?.menu
             }
 
-            // Keys.onEscapePressed: { root.visible = false }
             ColumnLayout {
                 id: actionList
                 anchors.right: parent.right
+                // Keys.onEscapePressed: { root.visible = false }
+
                 Repeater {
                     model: ScriptModel {
                         values: opener.children.values.filter(m => m.text != "")
@@ -76,12 +78,11 @@ Singleton {
                             text: modelData.text
                         }
                         background: Rectangle {
-                            color: Theme.colors.background 
+                            color: parent.hovered ? Theme.colors.backgroundHighlight : Theme.colors.background
                             ColorBehavior on color { duration: 200 }
                         }
                     }
                 }
-                // Component 
             }  
         }
     }

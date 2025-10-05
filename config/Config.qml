@@ -18,7 +18,6 @@ Singleton {
         JsonAdapter {
             property string themeConfig: theme
             onThemeConfigChanged: {
-                // console.log(theme)
                 theme = themeConfig
             }
         }

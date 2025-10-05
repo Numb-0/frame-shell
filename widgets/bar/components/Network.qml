@@ -12,12 +12,12 @@ import qs.services
 RowLayout {
     id: root
     property var networkIcons: ({
-        none: "network-wireless-signal-none",
-        weak: "network-wireless-signal-weak",
-        ok: "network-wireless-signal-ok",
-        good: "network-wireless-signal-good",
-        excellent: "network-wireless-signal-excellent",
-        ethernet: "network-wired"
+        none: "wifi_off",
+        weak: "wifi_bar_1",
+        ok: "wifi_bar_2",
+        good: "wifi",
+        excellent: "wifi",
+        ethernet: "lan"
     })
 
     function getNetworkIcon(signal) {
@@ -31,13 +31,15 @@ RowLayout {
 
     property var adapter: NetworkService?.defaultAdapter
     property var connectedNet: NetworkService?.connectedNetwork
+    
     CustomText {
-        text: adapter?.isEthernet ? "Ethernet" : (connectedNet?.ssid ?? "No Network")
+        text: adapter?.state != "disconnected" ? adapter?.isEthernet ? "Ethernet" : (connectedNet?.ssid ?? "No Network") : "No Connection"
         color: Theme.colors.purple
     }
-    IconButton {
-        iconSource: Quickshell.iconPath(getNetworkIcon(connectedNet?.signal))
-        iconColor: Theme.colors.purple
-        // iconSize: 18
+
+    MaterialSymbol {
+        size: 25
+        icon: adapter?.state != "disconnected" ? getNetworkIcon(connectedNet?.signal) : networkIcons.none
+        color: Theme.colors.purple
     }
 }

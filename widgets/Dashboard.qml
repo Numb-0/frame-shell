@@ -6,7 +6,6 @@ import Quickshell.Io
 import Quickshell.Widgets
 import Quickshell.Hyprland
 import Quickshell.Wayland
-// import Quickshell.Services.Notifications
 
 import "root:/config"
 import "root:/utils"

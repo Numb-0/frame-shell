@@ -54,13 +54,12 @@ Scope {
 					root.visible = false
 				}
 
-				IconButton {
+				MaterialButton {
 					id: themebutton
 					focus: true
-					iconSource: "root:/assets/icons/arrow-symbolic.svg"
+					iconName: "details"
 					iconColor: Theme.colors.yellow
 					iconSize: 40
-					backgroundColor: focus ? Theme.colors.backgroundHighlight : "transparent"
 					onClicked: activate()
 					RotationAnimation on rotation {
 						id: rotate
@@ -79,12 +78,11 @@ Scope {
 					function activate() { Theme.nextTheme(); rotate.start() }
 				}
 
-				IconButton {
+				MaterialButton {
 					id: powerbutton
-					iconSource: Quickshell.iconPath("system-shutdown-symbolic")
+					iconName: "mode_off_on"
 					iconColor: Theme.colors.red
-					iconSize: 20
-					backgroundColor: focus ? Theme.colors.backgroundHighlight : "transparent"
+					iconSize: 40
 					onClicked: activate()
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
@@ -98,12 +96,11 @@ Scope {
 					function activate() { poweroff.running = true }
 				}
 
-				IconButton {
+				MaterialButton {
 					id: rebootbutton
-					iconSource: Quickshell.iconPath("system-reboot-symbolic")
-					iconColor: Theme.colors.green
-					iconSize: 20
-					backgroundColor: focus ? Theme.colors.backgroundHighlight : "transparent"
+					iconName: "refresh"
+					iconColor: focus ? Theme.colors.green : Theme.colors.foregroundBright
+					iconSize: 40
 					onClicked: activate()
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Left) {

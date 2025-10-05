@@ -15,13 +15,14 @@ RowLayout {
     property PwNode audioSink: Pipewire.defaultAudioSink
 
     property var volumeIcons: ({
-        muted: "audio-volume-muted-symbolic",
-        low: "audio-volume-low-symbolic",
-        medium: "audio-volume-medium-symbolic",
-        high: "audio-volume-high-symbolic"
+        muted: "volume_off",
+        low: "volume_mute",
+        medium: "volume_down",
+        high: "volume_up"
     })
 
-    function getVolumeIcon(volume) {
+    function getVolumeIcon() {
+        const volume = audioSink?.audio?.volume
         if (audioSink?.audio?.muted) return volumeIcons.muted
         if (volume <= 0) return volumeIcons.muted
         if (volume < 0.33) return volumeIcons.low
@@ -39,11 +40,11 @@ RowLayout {
         onValueChanged: audioSink.audio.volume = value
 
         background: Rectangle {
-            color: Theme.colors.backgroundHighlight
-            ColorBehavior on color {}
             border.width: 0
             width: control.availableWidth
             height: control.availableHeight
+            color: Theme.colors.backgroundHighlight
+            ColorBehavior on color {}
 
             Rectangle {
                 width: control.visualPosition * parent.width
@@ -60,17 +61,13 @@ RowLayout {
             y: control.topPadding + control.availableHeight / 2 - height / 2
             color: Theme.colors.green
             ColorBehavior on color {}
-            Behavior on x {
-                NumberAnimation { duration: 200 }
-            }
         }
     }
 
-    Loader {
-        active: root.audioSink !== null
-        sourceComponent: IconButton {
-            iconSource: Quickshell.iconPath(getVolumeIcon(audioSink?.audio?.volume))
-            iconColor: Theme.colors.green
-        }
+    MaterialSymbol {
+        size: 25
+        icon: getVolumeIcon()
+        color: Theme.colors.green
+        fill: 1
     }
 }

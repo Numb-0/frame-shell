@@ -15,7 +15,6 @@ IconButton {
     required property var menu
     iconSource: {
         let icon = modelData?.icon || "";
-        // console.log(icon)
         if (!icon) return "";
         if (icon.includes("?path=")) {
             const [name, path] = icon.split("?path=");
@@ -25,7 +24,7 @@ IconButton {
         return icon;
     }
     iconColor: Theme.colors.white
-    iconSize: 22
+    iconSize: 25
     onClicked: menu.toggle(modelData)
     // onClicked: traymenu.open()
     // QsMenuAnchor {

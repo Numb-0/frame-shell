@@ -6,43 +6,27 @@ import QtQuick.VectorImage
 import Quickshell
 import Quickshell.Widgets
 
-// Image {
-//     required property var iconSource
-//     property var iconSize: 13
-//     required property var iconColor
-
-//     sourceSize.width: iconSize
-//     sourceSize.height: iconSize
-//     mipmap: true
-//     source: iconSource
-//     layer.enabled: true
-//     layer.effect: MultiEffect {
-//         colorization: 1
-//         colorizationColor: iconColor
-//         // opacity: 1
-//         // brightness: -1       // Makes grays brighter
-//         // contrast: 1        // Ensures full color intensity
-//         // saturation: 0.3
-//         // shadowEnabled: false
-//     }
-// }
 
 Button {
     required property var iconSource
-    property var iconSize: 14
     required property var iconColor
+    property var iconSize: 20
     property var backgroundColor: "transparent"
+    background: Rectangle { color: backgroundColor }
 
-    background: Rectangle {
-        color: parent.backgroundColor 
-        ColorBehavior on color { duration: 200 }
+    implicitHeight: iconSize
+    implicitWidth: iconSize
+
+    IconImage {
+        id: icon
+        anchors.fill: parent
+        source: iconSource
+        smooth: true
+        asynchronous: true
+        layer.enabled: iconColor ? true : false
+        layer.effect: MultiEffect {
+            colorization: 1
+            colorizationColor: iconColor
+        }
     }
-    icon.source: iconSource
-    
-    icon.color: iconColor
-    ColorBehavior on icon.color {}
-    Component.onCompleted: Qt.callLater(() => {
-        icon.width = iconSize
-        icon.height = iconSize
-    })
 }
