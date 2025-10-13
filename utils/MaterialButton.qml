@@ -10,39 +10,36 @@ import qs.config
 
 
 Button {
+    id: btn
     required property var iconName
     required property var iconColor
+    required property var backgroundColor
+    // expose the internal symbol so parent code can reference/animate it
+    property alias materialIcon: symbol
     property var iconSize: 25
-    
-    // Pulsing ring animation for focus
-    Rectangle {
-        id: rect
-        anchors.centerIn: parent
-        width: parent.width + 28
-        height: parent.height + 20
-        // radius: width / 2
-        color: "transparent"
-        // color: parent.focus ? Theme.colors.foreground : "transparent"
-        border.color: Theme.colors.backgroundHighlight
-        border.width: 4
-        opacity: parent.focus ? 1 : 0
-        
-        SequentialAnimation on opacity {
-            running: parent.focus
-            loops: Animation.Infinite
-            NumberAnimation { from: 0.3; to: 1; duration: 800 }
-            NumberAnimation { from: 1; to: 0.3; duration: 800 }
-        }
-        Component.onCompleted: {
-            console.log(rect.width, rect.height)
-        }
-    }
+    property var contentPadding: 4
 
-    background: MaterialSymbol {
-        anchors.centerIn: parent
-        size: iconSize
-        icon: iconName
-        color: iconColor
-        fill: 1
+    background: Item {
+        implicitHeight: symbol.implicitHeight + contentPadding * 2
+        implicitWidth: symbol.implicitWidth + contentPadding * 4
+
+        Rectangle {
+            id: bgrect
+            anchors.fill: parent
+            color: backgroundColor
+            // radius: 4
+            Behavior on opacity { NumberAnimation { duration: 200 } }
+            opacity: btn.focus ? 1 : 0
+        }
+
+        MaterialSymbol {
+            id: symbol
+            anchors.centerIn: parent
+            size: iconSize
+            icon: iconName
+            color: iconColor
+            fill: 1
+            // opacity: 1
+        }
     }
 }

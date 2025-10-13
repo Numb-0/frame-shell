@@ -7,9 +7,9 @@ import Quickshell.Widgets
 import Quickshell.Hyprland
 import Quickshell.Wayland
 
-import "root:/config"
-import "root:/utils"
-import "root:/widgets/dashboard/components"
+import qs.config
+import qs.utils
+import qs.widgets.dashboard.components
 
 Scope {
 	id: root
@@ -30,8 +30,7 @@ Scope {
             color: Theme.colors.background
             visible: root.visible
             WlrLayershell.layer: WlrLayer.Overlay
-            // WlrLayershell.exclusionMode: ExclusionMode.Ignore
-            // WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             implicitHeight: 200
             implicitWidth: 300
@@ -40,12 +39,10 @@ Scope {
                 top: true            
                 right: true
             }
-
+            
             ColumnLayout {
-                Keys.onEscapePressed: {
-                    root.visible = false
-                }
                 RowLayout {
+                Keys.onEscapePressed: root.visible = false
                     Bluetooth {}
                 }
             }

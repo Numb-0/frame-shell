@@ -20,7 +20,4 @@ Text {
   renderType: Text.NativeRendering
   text: icon
   ColorBehavior on color {}
-  Component.onCompleted: {
-    // console.log("MaterialSymbol:", icon, "size:", size, "fill:", fill, "grad:", grad, width, height)
-  }
 }

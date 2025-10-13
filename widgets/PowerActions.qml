@@ -34,13 +34,13 @@ Scope {
 
 		PanelWindow {
 			id: window
-			property int padding: 18
+			property int padding: 10
 			WlrLayershell.exclusionMode: ExclusionMode.Ignore
 			WlrLayershell.layer: WlrLayer.Overlay
 			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
-			implicitWidth: row.width + padding * 2 + 8
-			implicitHeight: row.height + padding * 2 
+			implicitWidth: row.width + padding * 2
+			implicitHeight: row.height + padding * 2
 			anchors.bottom: true
 			margins.bottom: screen.height / 2
 			color: Theme.colors.background
@@ -48,25 +48,18 @@ Scope {
 			
 			RowLayout {
 				id: row
-				spacing: 20
+				spacing: 10
 				anchors.centerIn: parent
 				Keys.onEscapePressed: root.visible = false
 
 				MaterialButton {
 					id: themebutton
 					focus: true
-					iconName: "details"
+					iconName: Config.theme === "gruvbox" ? "light_mode" : "dark_mode"
 					iconColor: Theme.colors.yellow
 					iconSize: 40
+					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
-					
-					RotationAnimation on rotation {
-						id: rotate
-						from: themebutton.rotation
-						to: themebutton.rotation + 180
-						duration: 400
-						easing { type: Easing.OutBack; overshoot: 1 }
-					}
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
 							powerbutton.focus = true
@@ -75,6 +68,14 @@ Scope {
 					Keys.onReturnPressed: activate()
 
 					function activate() { Theme.nextTheme(); rotate.start() }
+
+					RotationAnimation on materialIcon.rotation {
+						id: rotate
+						from: themebutton.materialIcon.rotation
+						to: themebutton.materialIcon.rotation - 360
+						duration: 1600
+						easing { type: Easing.OutBack; overshoot: 1 }
+					}
 				}
 
 				MaterialButton {
@@ -82,6 +83,7 @@ Scope {
 					iconName: "mode_off_on"
 					iconColor: Theme.colors.red
 					iconSize: 40
+					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
@@ -100,6 +102,7 @@ Scope {
 					iconName: "refresh"
 					iconColor: Theme.colors.green
 					iconSize: 40
+					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Left) {
