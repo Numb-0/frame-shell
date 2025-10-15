@@ -28,8 +28,10 @@ Scope {
 			visible: root.visible
 			implicitWidth: 340
 			implicitHeight: 260
-			anchors.bottom: true
-			margins.bottom: screen.height / 2
+			// anchors.bottom: true
+			// margins.bottom: screen.height / 2
+			anchors.top: true
+			margins.top: 38
 			color: Theme.colors.background
 			ColorBehavior on color {}
 			ColumnLayout {

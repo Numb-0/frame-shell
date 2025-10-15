@@ -34,7 +34,7 @@ RowLayout {
             
             ColorBehavior on color {}
             Behavior on implicitWidth {
-                NumberAnimation { duration: 200 }
+                NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
             }
         }
     }

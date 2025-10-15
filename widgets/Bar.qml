@@ -18,6 +18,8 @@ Scope {
       property real padding: 4
       screen: modelData
       color: Theme.colors.background
+      // opaque: true
+      surfaceFormat: [true]
       implicitHeight: barrow.implicitHeight + padding * 2
       
 
