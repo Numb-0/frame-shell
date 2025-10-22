@@ -50,40 +50,50 @@ Scope {
 			mask: Region {}
 
 			Rectangle {
+				id: background
 				anchors.fill: parent
-				color: Theme.colors.background
+				color: Theme.colors.backgroundAlt
+				radius: Config.rounding
+				ColorBehavior on color {}
+			}
+			RowLayout {
+				anchors {
+					fill: parent
+					leftMargin: 10
+					rightMargin: 15
+				}
 
-				RowLayout {
-					anchors {
-						fill: parent
-						leftMargin: 10
-						rightMargin: 15
+				MaterialSymbol {
+					fill: 1
+					color: Theme.colors.green
+					icon: {
+						const volume = audioSink?.audio?.volume
+						if (audioSink?.audio?.muted) return "volume_off"
+						if (volume <= 0) return "volume_off"
+						if (volume < 0.33) return "volume_mute"
+						if (volume < 0.66) return "volume_down"
+						return "volume_up"
 					}
+				}
 
-					IconButton {
-						iconSource: Quickshell.iconPath("audio-volume-high-symbolic")
-						iconColor: Theme.colors.green
-					}
+				Rectangle {
+					Layout.fillWidth: true
 
+					implicitHeight: 10
+					color: Theme.colors.backgroundHighlight
+					radius: Config.rounding
 					Rectangle {
-						Layout.fillWidth: true
-
-						implicitHeight: 10
-						color: Theme.colors.backgroundHighlight
-
-						Rectangle {
-							color: Theme.colors.green
-							anchors {
-								left: parent.left
-								top: parent.top
-								bottom: parent.bottom
-							}
-
-							implicitWidth: parent.width * (audioSink?.audio.volume ?? 0)
-							Behavior on implicitWidth {
-								NumberAnimation {
-									duration: 200
-								}
+						color: Theme.colors.green
+						anchors {
+							left: parent.left
+							top: parent.top
+							bottom: parent.bottom
+						}
+						radius: Config.rounding
+						implicitWidth: parent.width * (audioSink?.audio.volume ?? 0)
+						Behavior on implicitWidth {
+							NumberAnimation {
+								duration: 200
 							}
 						}
 					}

@@ -27,7 +27,7 @@ Button {
             id: bgrect
             anchors.fill: parent
             color: backgroundColor
-            // radius: 4
+            radius: Config.rounding
             Behavior on opacity { NumberAnimation { duration: 200 } }
             opacity: btn.focus ? 1 : 0
         }

@@ -45,22 +45,23 @@ RowLayout {
             height: control.availableHeight
             color: Theme.colors.backgroundHighlight
             ColorBehavior on color {}
+            radius: Config.rounding
 
             Rectangle {
                 width: control.visualPosition * parent.width
                 height: parent.height
                 color: Theme.colors.green
                 ColorBehavior on color {}
+                radius: Config.rounding
             }
         }
 
         handle: Rectangle {
-            width: 10
-            height: parent.height
             x: control.leftPadding + control.visualPosition * (control.availableWidth - width)
             y: control.topPadding + control.availableHeight / 2 - height / 2
             color: Theme.colors.green
             ColorBehavior on color {}
+            radius: Config.rounding
         }
     }
 

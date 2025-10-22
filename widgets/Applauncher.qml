@@ -29,11 +29,19 @@ Scope {
 			implicitWidth: 340
 			implicitHeight: 260
 			// anchors.bottom: true
-			// margins.bottom: screen.height / 2
+      		// margins.bottom: screen.height / 2
 			anchors.top: true
 			margins.top: 38
-			color: Theme.colors.background
-			ColorBehavior on color {}
+
+			// color: Theme.colors.background 
+			// ColorBehavior on color {}
+			color: "transparent"
+			Rectangle {
+				anchors.fill: parent
+				color: Theme.colors.background
+				radius: 10
+				ColorBehavior on color {}
+			}
 			ColumnLayout {
 				anchors.fill: parent
 				Keys.onEscapePressed: {
@@ -49,6 +57,7 @@ Scope {
 					font.family: "JetBrainsMono Nerd Font"
 					color: Theme.colors.foreground
 					background: Rectangle {
+						radius: 10
 						color: searchBox.focus ? Theme.colors.backgroundHighlight : Theme.colors.backgroundAlt
 						ColorBehavior on color {}
 					}

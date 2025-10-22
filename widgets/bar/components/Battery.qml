@@ -60,6 +60,7 @@ RowLayout {
             color: Theme.colors.backgroundHighlight
             ColorBehavior on color {}
             border.width: 0
+            radius: Config.rounding
         }
 
         contentItem: Item {
@@ -68,6 +69,7 @@ RowLayout {
                 height: parent.height
                 color: progress.value < 0.3 ? Theme.colors.red : Theme.colors.yellow
                 ColorBehavior on color {}
+                radius: Config.rounding
             }
         }
     }

@@ -16,6 +16,7 @@ RowLayout {
     Repeater {
         model: workspaceCount
         Rectangle {
+            radius: Config.rounding
             property int workspaceId: index + 1
             property var workspace: Hyprland.workspaces.values.find(ws => ws.id === workspaceId)
             property var hasClient: {

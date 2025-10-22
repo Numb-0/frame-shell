@@ -1,3 +1,4 @@
 {
-    "themeConfig": "gruvbox"
+    "rounding": 8,
+    "theme": "gruvbox"
 }

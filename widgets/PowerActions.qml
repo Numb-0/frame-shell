@@ -43,8 +43,14 @@ Scope {
 			implicitHeight: row.height + padding * 2
 			anchors.bottom: true
 			margins.bottom: screen.height / 2
-			color: Theme.colors.background
-			ColorBehavior on color {}
+			color: "transparent"
+			Rectangle {
+				id: background
+				anchors.fill: parent
+				color: Theme.colors.background
+				radius: Config.rounding
+				ColorBehavior on color {}
+			}
 			
 			RowLayout {
 				id: row
