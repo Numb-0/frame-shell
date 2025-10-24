@@ -15,6 +15,8 @@ Rectangle {
     color: Theme.colors.backgroundAlt
     implicitWidth: notifbtn.implicitWidth + padding
     implicitHeight: notifbtn.implicitHeight + padding
+    topRightRadius: Config.rounding
+    bottomRightRadius: Config.rounding
     ColumnLayout {
         id: notifbtn
         anchors.centerIn: parent
@@ -27,11 +29,13 @@ Rectangle {
                 // elide: Text.ElideRight
                 // maximumLineCount: 2
             }
-            IconButton {
-                iconColor: Theme.colors.yellow
-                iconSource: Quickshell.iconPath("window-close")
+            MaterialButton {
+                contentPadding: 2
+                // backgroundColor: Theme.colors.yellow
+                iconName: "close"
+                iconColor: Theme.colors.red
                 onClicked: modelData.dismiss()
-            }   
+            }
         }
         CustomText {
             Layout.maximumWidth: window.width

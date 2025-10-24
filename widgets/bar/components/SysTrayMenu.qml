@@ -41,7 +41,7 @@ Singleton {
             color: "transparent"
             visible: root.visible
             implicitWidth: 200
-            WlrLayershell.layer: WlrLayer.Overlay
+            // WlrLayershell.layer: WlrLayer.Overlay
             // WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             mask: Region {

@@ -41,8 +41,8 @@ Scope {
 		PanelWindow {
 			anchors.bottom: true
 			margins.bottom: screen.height / 5
-
-			WlrLayershell.exclusionMode: ExclusionMode.Ignore
+			exclusiveZone: 0
+			
 			implicitWidth: 400
 			implicitHeight: 50
 			color: "transparent"

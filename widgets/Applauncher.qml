@@ -3,8 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Widgets
-import Quickshell.Hyprland
 import Quickshell.Wayland
+import Quickshell.Hyprland
 import "root:/config"
 import "root:/utils"
 
@@ -23,18 +23,20 @@ Scope {
 
 		PanelWindow {
 			id: window
-			WlrLayershell.exclusionMode: ExclusionMode.Ignore
-			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-			visible: root.visible
+			exclusiveZone: 0
+			// visible: root.visible
 			implicitWidth: 340
 			implicitHeight: 260
-			// anchors.bottom: true
-      		// margins.bottom: screen.height / 2
 			anchors.top: true
-			margins.top: 38
+			focusable: true
+			// Wayland
+			Component.onCompleted: {
+				if (WlrLayershell != null) {
+					WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
+				}
 
-			// color: Theme.colors.background 
-			// ColorBehavior on color {}
+			}
+
 			color: "transparent"
 			Rectangle {
 				anchors.fill: parent
@@ -44,17 +46,13 @@ Scope {
 			}
 			ColumnLayout {
 				anchors.fill: parent
-				Keys.onEscapePressed: {
-					root.visible = false
-				}
+				Keys.onEscapePressed: root.visible = false
 				TextField {
 					id: searchBox
 					Layout.fillWidth: true
 					Layout.preferredHeight: 40
-					// placeholderText: "Search applications..."
-					focus: true
 					font.bold: true
-					font.family: "JetBrainsMono Nerd Font"
+					font.family: "JetBrains Mono"
 					color: Theme.colors.foreground
 					background: Rectangle {
 						radius: 10
@@ -65,7 +63,6 @@ Scope {
 						root.searchText = text
 						appsList.currentIndex = -1
 					}
-					onFocusChanged: (event) => { appsList.currentIndex = -1 }
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Down) {
 							appsList.forceActiveFocus()
@@ -77,6 +74,8 @@ Scope {
 						root.visible = false
 						clear()
 					}
+
+					Component.onCompleted: forceActiveFocus()
 				}
 
 				ListView {
@@ -93,6 +92,7 @@ Scope {
 					highlight: Rectangle { 
 						color: Theme.colors.backgroundHighlight;
 						ColorBehavior on color {}
+						radius: Config.rounding
 					}
 					currentIndex: -1
 

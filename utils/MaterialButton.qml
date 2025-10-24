@@ -13,9 +13,10 @@ Button {
     id: btn
     required property var iconName
     required property var iconColor
-    required property var backgroundColor
+    property var backgroundColor: "transparent" 
     // expose the internal symbol so parent code can reference/animate it
     property alias materialIcon: symbol
+    property alias buttonBackground: bgrect
     property var iconSize: 25
     property var contentPadding: 4
 
@@ -29,7 +30,6 @@ Button {
             color: backgroundColor
             radius: Config.rounding
             Behavior on opacity { NumberAnimation { duration: 200 } }
-            opacity: btn.focus ? 1 : 0
         }
 
         MaterialSymbol {
@@ -39,7 +39,6 @@ Button {
             icon: iconName
             color: iconColor
             fill: 1
-            // opacity: 1
         }
     }
 }

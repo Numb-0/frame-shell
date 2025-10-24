@@ -35,9 +35,14 @@ Scope {
 		PanelWindow {
 			id: window
 			property int padding: 10
-			WlrLayershell.exclusionMode: ExclusionMode.Ignore
-			WlrLayershell.layer: WlrLayer.Overlay
-			WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+			focusable: true
+			exclusiveZone: 0
+			// Wayland
+			Component.onCompleted: {
+				if (WlrLayershell != null) {
+					WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
+				}
+			}
 
 			implicitWidth: row.width + padding * 2
 			implicitHeight: row.height + padding * 2
@@ -60,12 +65,12 @@ Scope {
 
 				MaterialButton {
 					id: themebutton
-					focus: true
 					iconName: Config.theme === "gruvbox" ? "light_mode" : "dark_mode"
 					iconColor: Theme.colors.yellow
 					iconSize: 40
 					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
+					onFocusChanged: (focus) => focus ? buttonBackground.opacity = 1 : buttonBackground.opacity = 0.0
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
 							powerbutton.focus = true
@@ -82,6 +87,10 @@ Scope {
 						duration: 1600
 						easing { type: Easing.OutBack; overshoot: 1 }
 					}
+
+					Component.onCompleted: {
+						focus = true
+					}
 				}
 
 				MaterialButton {
@@ -91,6 +100,7 @@ Scope {
 					iconSize: 40
 					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
+					onFocusChanged: (focus) => focus ? buttonBackground.opacity = 1 : buttonBackground.opacity = 0.0 
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
 							rebootbutton.focus = true
@@ -101,6 +111,10 @@ Scope {
 					Keys.onReturnPressed: activate()
 					
 					function activate() { poweroff.running = true }
+
+					Component.onCompleted: {
+						buttonBackground.opacity = 0.0
+					}
 				}
 
 				MaterialButton {
@@ -110,6 +124,7 @@ Scope {
 					iconSize: 40
 					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
+					onFocusChanged: (focus) => focus ? buttonBackground.opacity = 1 : buttonBackground.opacity = 0.0 
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Left) {
 							powerbutton.focus = true
@@ -118,6 +133,9 @@ Scope {
 					Keys.onReturnPressed: activate()
 
 					function activate() { reboot.running = true }
+					Component.onCompleted: {
+						buttonBackground.opacity = 0.0
+					}
 				}
 			}
 	    }

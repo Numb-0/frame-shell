@@ -29,8 +29,6 @@ Scope {
             exclusiveZone: 0
             color: Theme.colors.background
             visible: root.visible
-            WlrLayershell.layer: WlrLayer.Overlay
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             implicitHeight: 200
             implicitWidth: 300
@@ -41,8 +39,9 @@ Scope {
             }
             
             ColumnLayout {
-                RowLayout {
+                focus: true
                 Keys.onEscapePressed: root.visible = false
+                RowLayout {
                     Bluetooth {}
                 }
             }

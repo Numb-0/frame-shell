@@ -4,8 +4,9 @@ import qs.config
 Text {
     color: Theme.colors.foregroundBright
     font.family: "JetBrains Mono"
-    font.weight: Font.Bold
-    font.hintingPreference: Font.PreferFullHinting
+    // font.semibold: true
+    // font.hintingPreference: Font.PreferFullHinting
+    font.hintingPreference: Font.PreferDefaultHinting
     renderType: Text.NativeRendering
     ColorBehavior on color {}
 } 
