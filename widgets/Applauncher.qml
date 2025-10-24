@@ -26,7 +26,7 @@ Scope {
 			exclusiveZone: 0
 			// visible: root.visible
 			implicitWidth: 340
-			implicitHeight: 40 + 20 + appsList.contentItem.height / appsList.count * 5 + 5
+			implicitHeight: 289 //40 + 20 + appsList.contentItem.height / appsList.count * 5 + 5
 			anchors.top: true
 			focusable: true
 			// Wayland
@@ -34,8 +34,6 @@ Scope {
 				if (WlrLayershell != null) {
 					WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
 				}
-				console.log(appsList.contentItem.height, appsList.count, appsList.contentItem.height / appsList.count * 5)
-
 			}
 
 			color: "transparent"
