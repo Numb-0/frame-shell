@@ -4,9 +4,9 @@ import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
 
-import "root:/widgets/bar/sections"
-import "root:/utils"
-import "root:/config"
+import qs.widgets.bar.sections
+import qs.utils
+import qs.config
 
 Scope {
   Variants {
@@ -29,7 +29,7 @@ Scope {
         left: true
         right: true
       }
-
+      
       RowLayout {
         id: barrow
         anchors.fill: parent

@@ -1,12 +1,13 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Shapes
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Wayland
 import Quickshell.Hyprland
-import "root:/config"
-import "root:/utils"
+import qs.config
+import qs.utils
 
 Scope {
 	id: root
@@ -24,10 +25,10 @@ Scope {
 		PanelWindow {
 			id: window
 			exclusiveZone: 0
-			// visible: root.visible
+			visible: root.visible
 			implicitWidth: 340
-			implicitHeight: 289 //40 + 20 + appsList.contentItem.height / appsList.count * 5 + 5
-			anchors.top: true
+			implicitHeight: 310
+			anchors.bottom: true
 			focusable: true
 			// Wayland
 			Component.onCompleted: {
@@ -37,20 +38,48 @@ Scope {
 			}
 
 			color: "transparent"
-			Rectangle {
-				anchors.fill: parent
-				color: Theme.colors.background
-				radius: 10
-				ColorBehavior on color {}
+			property real rounding: Config.rounding
+			property real margin: 10
+			Shape {
+				id: shp
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				anchors.margins: margin
+				height: root.visible ? parent.height - margin * 2 : 0
+
+				Behavior on height {
+					NumberAnimation {
+						duration: 300
+						easing.type: Easing.OutCubic
+					}
+				}
+				
+				ShapePath {
+					fillColor: Theme.colors.backgroundAlt
+					strokeWidth: 0
+					startX: rounding; startY: 0
+
+					PathQuad { x: 0; y: rounding; controlX: 0; controlY: 0 }
+					PathLine { x: 0; y: shp.height - rounding }
+					PathQuad { x: -rounding; y: shp.height + margin; controlX: 0; controlY: shp.height + margin }
+					PathLine { x: shp.width + rounding; y: shp.height + margin }
+					PathQuad { x: shp.width; y: shp.height - rounding; controlX: shp.width; controlY: shp.height + margin }
+					PathLine { x: shp.width; y: rounding }
+					PathQuad { x: shp.width - rounding; y: 0; controlX: shp.width; controlY: 0 }
+					PathLine { x: rounding; y: 0 }
+				}
 			}
+
 			ColumnLayout {
-				anchors.fill: parent
+				anchors.fill: shp
 				anchors.margins: 10
 				Keys.onEscapePressed: root.visible = false
 				TextField {
 					id: searchBox
+					focus: true
 					Layout.fillWidth: true
-					Layout.bottomMargin: 2.5
+					Layout.bottomMargin: 3
 					implicitHeight: 40
 					font.bold: true
 					font.family: "JetBrains Mono"
@@ -87,7 +116,6 @@ Scope {
 					snapMode: ListView.SnapToItem
 					Layout.fillWidth: true
 					Layout.fillHeight: true
-					implicitHeight: 100
 					clip: true
 					spacing: 5
 					highlightMoveDuration: 500

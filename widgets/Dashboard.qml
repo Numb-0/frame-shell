@@ -39,7 +39,6 @@ Scope {
             }
             
             ColumnLayout {
-                focus: true
                 Keys.onEscapePressed: root.visible = false
                 RowLayout {
                     Bluetooth {}
