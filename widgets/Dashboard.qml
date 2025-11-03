@@ -25,10 +25,11 @@ Scope {
 
         PanelWindow {
             id: window
-            screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
             exclusiveZone: 0
             color: Theme.colors.background
             visible: root.visible
+            // Wayland/Hyprland
+            screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
 
             implicitHeight: 200
             implicitWidth: 300

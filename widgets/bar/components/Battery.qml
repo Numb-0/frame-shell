@@ -49,9 +49,9 @@ RowLayout {
     }
     
     ProgressBar {
+        id: progress
         Layout.preferredWidth: 80
         Layout.preferredHeight: 15
-        id: progress
         value: battery.percentage
         from: 0
         to: 1
@@ -77,7 +77,7 @@ RowLayout {
     MaterialSymbol {
         size: 25
         icon: getBatteryIcon()
-        color: Theme.colors.yellow
+        color: progress.value < 0.3 ? Theme.colors.red : Theme.colors.yellow
         fill: 1
     }
 }
