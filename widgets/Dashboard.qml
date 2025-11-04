@@ -23,11 +23,12 @@ Scope {
 
     PanelWindow {
         id: window
-        exclusiveZone: 0
+        exclusiveZone: -1
         color: "transparent"
         // Wayland/Hyprland
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         mask: Region { item: shp }
+        focusable: true
         implicitHeight: 200
         implicitWidth: 300
 
@@ -35,6 +36,7 @@ Scope {
             top: true            
             right: true
         }
+        margins.top: 40
 
         Shape {
             id: shp
@@ -53,7 +55,7 @@ Scope {
                 State {
                     name: "visible"
                     when: root.visible
-                    PropertyChanges { target: shp; margin: 16; width: parent.width - margin * 2 }
+                    PropertyChanges { target: shp; margin: 15; width: parent.width - margin * 2 }
                 }
             ]
 
@@ -77,7 +79,7 @@ Scope {
                 fillColor: Theme.colors.backgroundAlt
                 strokeWidth: 0
                 startX: -shp.margin; startY: -shp.margin
-                PathLine { x: shp.width + shp.margin ; y: -shp.margin }
+                PathLine { x: shp.width + shp.margin ; y: -shp.margin}
                 PathLine { x: shp.width + shp.margin; y: shp.height + shp.margin }
                 PathQuad { x: shp.width; y: shp.height; controlX: shp.width + shp.margin; controlY: shp.height }
                 PathLine { x: shp.rounding; y: shp.height }
@@ -89,10 +91,16 @@ Scope {
 
         ColumnLayout {
             anchors.fill: shp
+            focus: true
             RowLayout {
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 Layout.leftMargin: shp.margin
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 Bluetooth {}
+            }
+            RowLayout {
+                Layout.leftMargin: shp.margin
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                PowerProfiles {}
             }
         }
     }

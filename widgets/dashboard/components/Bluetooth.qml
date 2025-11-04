@@ -9,11 +9,10 @@ import Quickshell.Bluetooth
 import qs.config
 import qs.utils
 
-Rectangle {
+Item {
     id: notif
     property var bt: Bluetooth?.defaultAdapter
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
-    color: Theme.colors.background
     RowLayout {
         MaterialButton {
             onClicked: bt.enabled = !bt?.enabled
@@ -22,7 +21,7 @@ Rectangle {
             backgroundColor: Theme.colors.backgroundHighlight
         }
         CustomText {
-            text: bt?.enabled ? connectedDevices[0]?.deviceName ?? "No connected devices" : "Bluetooth Disabled"
+            text: bt?.enabled ? connectedDevices?.[0]?.deviceName ?? "No connected devices" : "Bluetooth Disabled"
         }
     }
 }

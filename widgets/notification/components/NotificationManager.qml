@@ -50,4 +50,12 @@ Singleton {
             root.listChanged();
         }
     }
+
+    Process {
+        id: sendNotification
+    }
+
+    function showNotification(title, body) {
+        sendNotification.exec(["notify-send", title, body]);
+    }
 }
