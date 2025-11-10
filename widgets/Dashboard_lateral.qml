@@ -31,7 +31,10 @@ Scope {
         implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2
         implicitHeight: col.implicitHeight + col.anchors.margins * 2 + shp.margin * 2
 
-        anchors.top: true
+        anchors {
+            top: true            
+            right: true
+        }
         exclusiveZone: -1
         // Distance from the bar since we using exclusiveZone = -1
         margins.top: 40
@@ -43,18 +46,18 @@ Scope {
             property real rounding: 0
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.rightMargin: margin
-            width: parent.width - roundingMax * 2
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: margin
             states: [
                 State {
                     name: "hidden"
                     when: !root.visible
-                    PropertyChanges { target: shp; rounding: 0; height: 0 }
+                    PropertyChanges { target: shp; rounding: 0; width: 0 }
                 },
                 State {
                     name: "visible"
                     when: root.visible
-                    PropertyChanges { target: shp; rounding: roundingMax; height: parent.height - roundingMax * 2; }
+                    PropertyChanges { target: shp; rounding: roundingMax; width: parent.width - roundingMax * 2; }
                 }
             ]
 
@@ -63,7 +66,7 @@ Scope {
                     from: "hidden"; to: "visible"
                     ParallelAnimation {
                         NumberAnimation {
-                            properties: "height"
+                            properties: "width"
                             duration: 500
                             easing.type: Easing.OutCubic
                         }
@@ -80,7 +83,7 @@ Scope {
                     ParallelAnimation {
                         ParallelAnimation {
                             NumberAnimation {
-                                properties: "height"
+                                properties: "width"
                                 duration: 500
                                 easing.type: Easing.InBack
                             }
@@ -98,10 +101,8 @@ Scope {
                 fillColor: Theme.colors.backgroundAlt
                 strokeWidth: 0
                 startX: -shp.rounding; startY: 0
-                PathLine { x: shp.width + shp.rounding; y: 0}
-                // Top-right corner
-                PathQuad { x: shp.width; y: shp.rounding; controlX: shp.width; controlY: 0 }
-                PathLine { x: shp.width; y: shp.height - shp.rounding }
+                PathLine { x: shp.width; y: 0}
+                PathLine { x: shp.width; y: shp.height + shp.rounding }
                 // Bottom-right corner
                 PathQuad { x: shp.width - shp.rounding; y: shp.height; controlX: shp.width; controlY: shp.height }
                 PathLine { x: shp.rounding; y: shp.height }
@@ -115,13 +116,10 @@ Scope {
 
         ColumnLayout {
             id: col
-            // anchors.centerIn: shp
-            anchors.bottom: shp.bottom
-            anchors.right: shp.right
-            anchors.left: shp.left
-            anchors.margins: 10
+            anchors.fill: shp
+            anchors.margins: 20
             spacing: 15
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
             Bluetooth {}
             PowerProfiles {}
         }

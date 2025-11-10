@@ -23,15 +23,15 @@ Scope {
 	PanelWindow {
 		id: window
 		exclusiveZone: 0
-		implicitWidth: 340
-		implicitHeight: 330
+		implicitWidth: 380
+		implicitHeight: 360
 		anchors.bottom: true
+		margins.top: 80
 		focusable: true
-		// Click only when opened
 		mask: Region { item: col }
 		color: "transparent"
-		// Wayland/Hyprland
 		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
+
 		HyprlandFocusGrab {
 			id: grab
 			windows: [ window ]
@@ -40,39 +40,66 @@ Scope {
 
 		Shape {
 			id: shp
-			property real margin: 0
-			property real rounding: Config.rounding
+			property real rounding: 0
+			property real roundingMax: 10
 			anchors.left: parent.left
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
-			anchors.margins: margin
-			height: root.visible ? parent.height - margin * 2 : 0
 
-			Behavior on height {
-				NumberAnimation {
-					duration: 500
-					easing.type: Easing.OutBack
+			states: [
+				State {
+					name: "hidden"
+					when: !root.visible
+					PropertyChanges { target: shp; height: 0; rounding: 0}
+				},
+				State {
+					name: "visible"
+					when: root.visible
+					PropertyChanges { target: shp; height: parent.height; rounding: shp.roundingMax }
 				}
-			}
-			
+			]
+
+			transitions: [
+				Transition {
+					from: "hidden"; to: "visible"
+					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.OutBack }
+					NumberAnimation {
+                            properties: "rounding"
+                            duration: 400
+                            easing.type: Easing.OutCubic
+                        }
+				},
+				Transition {
+					from: "visible"; to: "hidden"
+					NumberAnimation { properties: "height"; duration: 400; easing.type: Easing.InBack }
+					NumberAnimation {
+                            properties: "rounding"
+                            duration: 400
+                            easing.type: Easing.InBack
+                        }
+				}
+			]
+
 			ShapePath {
 				fillColor: Theme.colors.backgroundAlt
 				strokeWidth: 0
-				startX: shp.rounding; startY: 0
-
-				PathQuad { x: 0; y: shp.rounding; controlX: 0; controlY: 0 }
-				PathLine { x: 0; y: shp.height }
-				PathLine { x: shp.width + shp.rounding; y: shp.height + shp.margin }
-				PathLine { x: shp.width; y: shp.rounding }
-				PathQuad { x: shp.width - shp.rounding; y: 0; controlX: shp.width; controlY: 0 }
-				PathLine { x: shp.rounding; y: 0 }
+				startX: 0; startY: shp.height
+				PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: shp.rounding; controlY: shp.height }
+				PathLine { x: shp.rounding; y: shp.rounding }
+				PathQuad { x: shp.rounding * 2; y: 0; controlX: shp.rounding; controlY: 0 }
+				PathLine { x: shp.width - shp.rounding * 2; y: 0 }
+				PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width - shp.rounding; controlY: 0 }
+				PathLine { x: shp.width - shp.rounding; y: shp.height - shp.rounding }
+				PathQuad { x: shp.width; y: shp.height; controlX: shp.width - shp.rounding; controlY: shp.height }
 			}
 		}
 
 		ColumnLayout {
 			id: col
 			anchors.fill: shp
-			anchors.margins: 10
+			anchors.leftMargin: shp.rounding * 2
+			anchors.rightMargin: shp.rounding * 2
+			anchors.topMargin: shp.rounding
 			Keys.onEscapePressed: root.visible = false
 			TextField {
 				id: searchBox
@@ -111,7 +138,7 @@ Scope {
 				}
 				snapMode: ListView.SnapToItem
 				Layout.fillWidth: true
-				Layout.fillHeight: true
+				implicitHeight: 270
 				clip: true
 				spacing: 5
 				highlightMoveDuration: 500
@@ -127,9 +154,7 @@ Scope {
 						implicitSize: 40
 						source: Quickshell.iconPath(modelData.icon)
 					}
-					CustomText {
-						text: modelData.name
-					}
+					CustomText { text: modelData.name }
 					function activate() {
 						modelData.execute()
 						root.visible = false
@@ -138,15 +163,15 @@ Scope {
 					Keys.onReturnPressed: activate()
 				}
 				remove: Transition {
-					NumberAnimation { properties: "x"; duration: 500; from: 0; to: 300; easing.type: Easing.InOutQuad }
+					NumberAnimation { properties: "x"; duration: 600; from: 0; to: 300; easing.type: Easing.InOutQuad }
 					NumberAnimation { properties: "opacity"; duration: 400; from: 1; to: 0; easing.type: Easing.OutExpo }
 				}
 				add: Transition {
-					NumberAnimation { properties: "x"; duration: 500; from: 260; to: 0; easing.type: Easing.OutExpo }
+					NumberAnimation { properties: "x"; duration: 600; from: 260; to: 0; easing.type: Easing.OutExpo }
 					NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
 				}
 				displaced: Transition {
-					NumberAnimation { properties: "y"; duration: 200; easing.type: Easing.OutExpo }
+					NumberAnimation { properties: "y"; duration: 300; easing.type: Easing.OutExpo }
 				}
 				Keys.onPressed: (event) => {
 					if (event.key === Qt.Key_Up && currentIndex === 0) {
