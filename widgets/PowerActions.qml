@@ -70,7 +70,7 @@ Scope {
 					iconSize: 40
 					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
-					onFocusChanged: (focus) => focus ? buttonBackground.opacity = 1 : buttonBackground.opacity = 0.0
+					onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
 							powerbutton.focus = true
@@ -100,7 +100,7 @@ Scope {
 					iconSize: 40
 					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
-					onFocusChanged: (focus) => focus ? buttonBackground.opacity = 1 : buttonBackground.opacity = 0.0 
+					onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Right) {
 							rebootbutton.focus = true
@@ -124,7 +124,7 @@ Scope {
 					iconSize: 40
 					backgroundColor: Theme.colors.backgroundHighlight
 					onClicked: activate()
-					onFocusChanged: (focus) => focus ? buttonBackground.opacity = 1 : buttonBackground.opacity = 0.0 
+					onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Left) {
 							powerbutton.focus = true

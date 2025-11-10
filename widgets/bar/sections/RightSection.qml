@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import "root:/widgets/bar/components"
+import qs.widgets.bar.components
 
 RowLayout {
     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter

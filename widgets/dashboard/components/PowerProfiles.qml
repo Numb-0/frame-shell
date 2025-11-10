@@ -10,19 +10,17 @@ import qs.services
 import qs.config
 import qs.utils
 
-Item {
+RowLayout {
     property var profile: PowerProfileService?.profile
     property var powerprofiles: ["performance", "balanced", "power-saver"]
-    RowLayout {
-        MaterialButton {
-            onClicked: PowerProfileService.setPowerProfile(powerprofiles[(powerprofiles.indexOf(profile) + 1) % powerprofiles.length])
-            iconName: profile === "performance" ? "bolt" : profile === "balanced" ? "power" : "energy_savings_leaf"
-            iconColor: Theme.colors.green
-            // backgroundColor: Theme.colors.backgroundHighlight
-        }
-        CustomText {
-            // color: Theme
-            text: profile
-        }
+    MaterialButton {
+        onClicked: PowerProfileService.setPowerProfile(powerprofiles[(powerprofiles.indexOf(profile) + 1) % powerprofiles.length])
+        iconName: profile === "performance" ? "bolt" : profile === "balanced" ? "power" : "energy_savings_leaf"
+        iconColor: Theme.colors.green
+        // backgroundColor: Theme.colors.backgroundHighlight
+    }
+    CustomText {
+        // color: Theme
+        text: profile
     }
 }

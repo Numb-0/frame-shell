@@ -9,19 +9,19 @@ import Quickshell.Bluetooth
 import qs.config
 import qs.utils
 
-Item {
+RowLayout {
     id: notif
     property var bt: Bluetooth?.defaultAdapter
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
-    RowLayout {
-        MaterialButton {
-            onClicked: bt.enabled = !bt?.enabled
-            iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
-            iconColor: Theme.colors.blue
-            backgroundColor: Theme.colors.backgroundHighlight
-        }
-        CustomText {
-            text: bt?.enabled ? connectedDevices?.[0]?.deviceName ?? "No connected devices" : "Bluetooth Disabled"
-        }
+
+    MaterialButton {
+        onClicked: bt.enabled = !bt?.enabled
+        iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
+        iconColor: Theme.colors.blue
+        backgroundColor: Theme.colors.backgroundHighlight
+        onHoveredChanged: (hover) => buttonBackground.opacity = hover ? 1 : 0
+    }
+    CustomText {
+        text: bt?.enabled ? connectedDevices?.[0]?.deviceName ?? "No connected devices" : "Bluetooth Disabled"
     }
 }

@@ -17,7 +17,7 @@ Scope {
       property var modelData
       property real padding: 5
       screen: modelData
-      color: Theme.colors.background
+      color: Theme.colors.backgroundAlt
       implicitHeight: barrow.implicitHeight + padding * 2
       
 

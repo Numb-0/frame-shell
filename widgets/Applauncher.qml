@@ -23,7 +23,6 @@ Scope {
 	PanelWindow {
 		id: window
 		exclusiveZone: 0
-		// visible: root.visible
 		implicitWidth: 340
 		implicitHeight: 330
 		anchors.bottom: true
@@ -103,13 +102,6 @@ Scope {
 					root.visible = false
 					clear()
 				}
-
-				Connections {
-					target: window
-					function onVisibleChanged() {
-						searchBox.clear()
-					}
-				}
 			}
 
 			ListView {
@@ -141,13 +133,9 @@ Scope {
 					function activate() {
 						modelData.execute()
 						root.visible = false
-						searchBox.clear()
+						searchBox.focus = true
 					}
-					Keys.onPressed: (event) => {
-						if (event.key === Qt.Key_Enter-1) {
-							activate()
-						}
-					}
+					Keys.onReturnPressed: activate()
 				}
 				remove: Transition {
 					NumberAnimation { properties: "x"; duration: 500; from: 0; to: 300; easing.type: Easing.InOutQuad }

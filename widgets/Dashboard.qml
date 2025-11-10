@@ -23,39 +23,41 @@ Scope {
 
     PanelWindow {
         id: window
-        exclusiveZone: -1
         color: "transparent"
         // Wayland/Hyprland
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         mask: Region { item: shp }
         focusable: true
-        implicitHeight: 200
-        implicitWidth: 300
+        implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2
+        implicitHeight: col.implicitHeight + col.anchors.margins * 2 + shp.margin * 2
 
         anchors {
             top: true            
             right: true
         }
+        exclusiveZone: -1
+        // Distance from the bar since we using exclusiveZone = -1
         margins.top: 40
 
         Shape {
             id: shp
-            property real margin: 0
-            property real rounding: Config.rounding
+            property real margin: 20
+            property real roundingMax: 20
+            property real rounding: 0
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.margins: margin
+            anchors.bottomMargin: margin
             states: [
                 State {
                     name: "hidden"
                     when: !root.visible
-                    PropertyChanges { target: shp; margin: 0; width: 0 }
+                    PropertyChanges { target: shp; rounding: 0; width: 0 }
                 },
                 State {
                     name: "visible"
                     when: root.visible
-                    PropertyChanges { target: shp; margin: 15; width: parent.width - margin * 2 }
+                    PropertyChanges { target: shp; rounding: roundingMax; width: parent.width - roundingMax * 2; }
                 }
             ]
 
@@ -63,45 +65,63 @@ Scope {
                 Transition {
                     from: "hidden"; to: "visible"
                     ParallelAnimation {
-                        NumberAnimation { properties: "margin"; duration: 400; easing.type: Easing.InCirc }
-                        NumberAnimation { properties: "width"; duration: 400; easing.type: Easing.InCubic }
+                        NumberAnimation {
+                            properties: "width"
+                            duration: 500
+                            easing.type: Easing.OutCubic
+                        }
+                        NumberAnimation {
+                            properties: "rounding"
+                            duration: 600
+                            easing.type: Easing.OutCubic
+                        }
                     }
                 },
+
                 Transition {
                     from: "visible"; to: "hidden"
                     ParallelAnimation {
-                        NumberAnimation { properties: "margin"; duration: 400; easing.type: Easing.InCubic }
-                        NumberAnimation { properties: "width"; duration: 300; easing.type: Easing.InCubic }
+                        ParallelAnimation {
+                            NumberAnimation {
+                                properties: "width"
+                                duration: 500
+                                easing.type: Easing.InBack
+                            }
+                            NumberAnimation {
+                                properties: "rounding"
+                                duration: 600
+                                easing.type: Easing.InCubic
+                            }
+                        }
                     }
                 }
             ]
+            
             ShapePath {
                 fillColor: Theme.colors.backgroundAlt
                 strokeWidth: 0
-                startX: -shp.margin; startY: -shp.margin
-                PathLine { x: shp.width + shp.margin ; y: -shp.margin}
-                PathLine { x: shp.width + shp.margin; y: shp.height + shp.margin }
-                PathQuad { x: shp.width; y: shp.height; controlX: shp.width + shp.margin; controlY: shp.height }
+                startX: -shp.rounding; startY: 0
+                PathLine { x: shp.width; y: 0}
+                PathLine { x: shp.width; y: shp.height + shp.rounding }
+                // Bottom-right corner
+                PathQuad { x: shp.width - shp.rounding; y: shp.height; controlX: shp.width; controlY: shp.height }
                 PathLine { x: shp.rounding; y: shp.height }
+                // Bottom-left corner
                 PathQuad { x: 0; y: shp.height - shp.rounding; controlX: 0; controlY: shp.height }
                 PathLine { x: 0; y: shp.rounding }
-                PathQuad { x: -shp.margin; y: -shp.margin; controlX: 0; controlY: -shp.margin }
+                // Top-left corner
+                PathQuad { x: -shp.rounding; y: 0; controlX: 0; controlY: 0 }
             }
         }
 
         ColumnLayout {
+            id: col
             anchors.fill: shp
-            focus: true
-            RowLayout {
-                Layout.leftMargin: shp.margin
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                Bluetooth {}
-            }
-            RowLayout {
-                Layout.leftMargin: shp.margin
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                PowerProfiles {}
-            }
+            anchors.margins: 20
+            spacing: 15
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            Bluetooth {}
+            PowerProfiles {}
         }
     }
 }
