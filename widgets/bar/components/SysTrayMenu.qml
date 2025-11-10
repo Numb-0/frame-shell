@@ -16,23 +16,26 @@ Singleton {
 	id: root
 	property bool visible: false
     property var modelData
+    property var newModelData
 
     function toggle(modelData) {
-        console.log("SysTrayMenu toggle", modelData)
         if (root.visible && root.modelData === modelData) {
             root.visible = false
             return
         }
 
         root.visible = false
-        root.modelData = modelData
+        root.newModelData = modelData
         switchTimer.restart()
     }
 
     Timer {
 		id: switchTimer
-		interval: 200
-		onTriggered: root.visible = true
+		interval: 500
+		onTriggered: {
+            root.modelData = root.newModelData
+            root.visible = true
+        }
 	}
 
     PanelWindow {
@@ -40,7 +43,6 @@ Singleton {
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? Quickshell.primaryScreen
         exclusiveZone: -1
         margins.top: 40
-        visible: root.visible
         color: "transparent"
         implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2
         implicitHeight: col.implicitHeight + col.anchors.margins * 2 + shp.margin * 2
@@ -66,6 +68,10 @@ Singleton {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.bottomMargin: margin
+
+            Behavior on height {
+                NumberAnimation { duration: 100; easing.type: Easing.OutCubic }
+            }
 
             states: [
                 State {
