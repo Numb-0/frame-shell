@@ -107,7 +107,7 @@ Scope {
 				implicitHeight: 40
 				font.bold: true
 				font.family: "JetBrains Mono"
-				focus: true
+				focus: root.visible
 				color: Theme.colors.foreground
 				background: Rectangle {
 					radius: Config.rounding

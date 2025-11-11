@@ -52,7 +52,7 @@ Scope {
 			Rectangle {
 				id: background
 				anchors.fill: parent
-				color: Theme.colors.background
+				color: Theme.colors.backgroundAlt
 				radius: Config.rounding
 				ColorBehavior on color {}
 			}

@@ -18,8 +18,6 @@ RowLayout {
         onClicked: bt.enabled = !bt?.enabled
         iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
         iconColor: Theme.colors.blue
-        backgroundColor: Theme.colors.backgroundHighlight
-        onHoveredChanged: (hover) => buttonBackground.opacity = hover ? 1 : 0
     }
     CustomText {
         text: bt?.enabled ? connectedDevices?.[0]?.deviceName ?? "No connected devices" : "Bluetooth Disabled"

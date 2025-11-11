@@ -24,19 +24,28 @@ Singleton {
             return
         }
 
-        root.visible = false
+        if (root.visible && root.modelData !== modelData) {
+            root.visible = false
+        }
+
         root.newModelData = modelData
-        switchTimer.restart()
+        switchTimer.start()
     }
 
     Timer {
 		id: switchTimer
-		interval: 500
+		interval: 400
 		onTriggered: {
             root.modelData = root.newModelData
-            root.visible = true
+            visibleTimer.start()
         }
 	}
+
+    Timer {
+        id: visibleTimer
+        interval: 150
+        onTriggered: root.visible = true
+    }
 
     PanelWindow {
         id: window
@@ -47,6 +56,7 @@ Singleton {
         implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2
         implicitHeight: col.implicitHeight + col.anchors.margins * 2 + shp.margin * 2
         mask: Region { item: shp }
+        visible: root.visible
 
         anchors {
             top: true
