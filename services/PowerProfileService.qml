@@ -25,9 +25,6 @@ Singleton {
         updatePowerProfile()
     }
 
-    Connections {
-    }
-
     Process {
         id: getProfile
         command: ["bash", "-c", "powerprofilesctl get"]

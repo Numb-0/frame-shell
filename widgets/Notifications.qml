@@ -27,7 +27,6 @@ Scope {
             left: true
             bottom: true
         }
-        // WlrLayershell.layer: WlrLayer.Overlay
         
         mask: Region {
             item: notifList.contentItem

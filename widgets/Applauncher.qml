@@ -22,11 +22,10 @@ Scope {
 
 	PanelWindow {
 		id: window
+		anchors.bottom: true
 		exclusiveZone: 0
 		implicitWidth: 380
 		implicitHeight: 360
-		anchors.bottom: true
-		margins.top: 80
 		focusable: true
 		mask: Region { item: col }
 		color: "transparent"
@@ -55,7 +54,7 @@ Scope {
 				State {
 					name: "visible"
 					when: root.visible
-					PropertyChanges { target: shp; height: parent.height; rounding: shp.roundingMax }
+					PropertyChanges { target: shp; height: parent.height - roundingMax * 5; rounding: shp.roundingMax }
 				}
 			]
 
@@ -66,7 +65,7 @@ Scope {
 					NumberAnimation {
                             properties: "rounding"
                             duration: 400
-                            easing.type: Easing.OutCubic
+                            easing.type: Easing.OutBack
                         }
 				},
 				Transition {
@@ -101,6 +100,7 @@ Scope {
 			anchors.rightMargin: shp.rounding * 2
 			anchors.topMargin: shp.rounding
 			Keys.onEscapePressed: root.visible = false
+			spacing: 0
 			TextField {
 				id: searchBox
 				Layout.fillWidth: true
@@ -138,7 +138,7 @@ Scope {
 				}
 				snapMode: ListView.SnapToItem
 				Layout.fillWidth: true
-				implicitHeight: 270
+				implicitHeight: 220
 				clip: true
 				spacing: 5
 				highlightMoveDuration: 500
@@ -159,6 +159,7 @@ Scope {
 						modelData.execute()
 						root.visible = false
 						searchBox.focus = true
+						searchBox.clear()
 					}
 					Keys.onReturnPressed: activate()
 				}

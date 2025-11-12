@@ -12,7 +12,7 @@ import qs.config
 
 IconButton {
     required property var modelData
-    required property var menu
+    property var menu: SysTrayMenu {}
     iconSource: {
         let icon = modelData?.icon || "";
         if (!icon) return "";
@@ -26,16 +26,10 @@ IconButton {
     iconColor: Theme.colors.white
     iconSize: 25
     onClicked: menu.toggle(modelData)
-    // onClicked: traymenu.open()
-    // QsMenuAnchor {
-    //     id: traymenu
-    //     anchor.edges: Edges.Bottom | Edges.Right
-    //     anchor.window: bar
-    //     anchor.rect.width: bar.width
-    //     anchor.margins.top: bar.height
-        
-    //     menu: modelData.menu
-    // }
+
+    Component.onCompleted: {
+        menu.modelData = modelData;
+    }
 }
 
 

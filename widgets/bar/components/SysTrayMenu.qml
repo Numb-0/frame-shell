@@ -1,4 +1,3 @@
-pragma Singleton
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -12,40 +11,39 @@ import Quickshell.Wayland
 import qs.config
 import qs.utils
 
-Singleton {
+Scope {
 	id: root
 	property bool visible: false
     property var modelData
-    property var newModelData
 
-    function toggle(modelData) {
-        if (root.visible && root.modelData === modelData) {
-            root.visible = false
-            return
+    function toggle() {
+        SysTrayMenuManager.setActiveMenu(modelData)
+    }
+    
+    Connections {
+        target: SysTrayMenuManager
+
+        function onActiveMenuChanged() {
+            if (SysTrayMenuManager.activeMenu === modelData) {
+                // Delay opening if another panel was visible
+                if (!root.visible) {
+                    openDelay.start()
+                } else {
+                    root.visible = false
+                }
+            } else {
+                // Closing because another one became active
+                root.visible = false
+            }
         }
-
-        if (root.visible && root.modelData !== modelData) {
-            root.visible = false
-        }
-
-        root.newModelData = modelData
-        switchTimer.start()
     }
 
     Timer {
-		id: switchTimer
-		interval: 400
-		onTriggered: {
-            root.modelData = root.newModelData
-            visibleTimer.start()
-        }
-	}
-
-    Timer {
-        id: visibleTimer
-        interval: 150
+        id: openDelay
+        interval: 600 
         onTriggered: root.visible = true
     }
+
 
     PanelWindow {
         id: window
@@ -56,7 +54,6 @@ Singleton {
         implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2
         implicitHeight: col.implicitHeight + col.anchors.margins * 2 + shp.margin * 2
         mask: Region { item: shp }
-        visible: root.visible
 
         anchors {
             top: true
@@ -68,7 +65,6 @@ Singleton {
             menu: modelData ? modelData.menu : null
         }
 
-        // --- Animated shape background ---
         Shape {
             id: shp
             property real margin: 20
@@ -107,8 +103,8 @@ Singleton {
                 Transition {
                     from: "visible"; to: "hidden"
                     ParallelAnimation {
-                        NumberAnimation { properties: "width"; duration: 400; easing.type: Easing.InBack }
-                        NumberAnimation { properties: "rounding"; duration: 500; easing.type: Easing.InCubic }
+                        NumberAnimation { properties: "width"; duration: 500; easing.type: Easing.InBack }
+                        NumberAnimation { properties: "rounding"; duration: 600; easing.type: Easing.InCubic }
                     }
                 }
             ]
