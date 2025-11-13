@@ -133,7 +133,7 @@ Scope {
             anchors.margins: 10
             spacing: 10
             ListView {
-                implicitWidth: 200
+                implicitWidth: 220
                 implicitHeight: contentHeight
                 model: ScriptModel {
                     values: opener.children.values.filter(m => m.text != "")

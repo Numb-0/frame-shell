@@ -29,6 +29,11 @@ Scope {
 		command: ["poweroff"]
 	}
 
+	Process {
+		id: lock
+		command: ["hyprlock"]
+	}
+
 	LazyLoader {
 		active: root.visible
 
@@ -128,11 +133,35 @@ Scope {
 					Keys.onPressed: (event) => {
 						if (event.key === Qt.Key_Left) {
 							powerbutton.focus = true
+						} else if (event.key === Qt.Key_Right) {
+							lockbutton.focus = true
 						}
+
 					}
 					Keys.onReturnPressed: activate()
 
 					function activate() { reboot.running = true }
+					Component.onCompleted: {
+						buttonBackground.opacity = 0.0
+					}
+				}
+
+				MaterialButton {
+					id: lockbutton
+					iconName: "lock"
+					iconColor: Theme.colors.purple
+					iconSize: 40
+					backgroundColor: Theme.colors.backgroundHighlight
+					onClicked: activate()
+					onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
+					Keys.onPressed: (event) => {
+						if (event.key === Qt.Key_Left) {
+							rebootbutton.focus = true
+						}
+					}
+					Keys.onReturnPressed: activate()
+
+					function activate() { lock.running = true }
 					Component.onCompleted: {
 						buttonBackground.opacity = 0.0
 					}

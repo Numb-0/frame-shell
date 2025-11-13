@@ -115,7 +115,6 @@ Scope {
 
         ColumnLayout {
             id: col
-            // anchors.centerIn: shp
             anchors.bottom: shp.bottom
             anchors.right: shp.right
             anchors.left: shp.left

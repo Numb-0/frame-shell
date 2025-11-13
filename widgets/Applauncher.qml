@@ -158,6 +158,8 @@ Scope {
 					function activate() {
 						modelData.execute()
 						root.visible = false
+						appsList.currentIndex = -1
+						appsList.positionViewAtBeginning()
 						searchBox.focus = true
 						searchBox.clear()
 					}
