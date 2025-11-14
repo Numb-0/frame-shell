@@ -40,9 +40,9 @@ Singleton {
       command: ["bash", "-c", "powerprofilesctl set " + root.profile]
       onExited: (exitCode) => {
         if (exitCode === 0)
-          NotificationManager.showNotification("Power Profile Changed", "Power profile set to " + root.profile)
+          NotificationManager.sendNotification("Power Profile Changed", "Power profile set to " + root.profile)
         else
-          NotificationManager.showNotification("Power Profile Change Failed", "Failed to set power profile to " + root.profile)
+          NotificationManager.sendNotification("Power Profile Change Failed", "Failed to set power profile to " + root.profile)
         getProfile.running = true
       }
     }

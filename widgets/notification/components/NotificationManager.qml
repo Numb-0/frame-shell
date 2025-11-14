@@ -55,7 +55,7 @@ Singleton {
         id: sendNotification
     }
 
-    function showNotification(title, body) {
+    function sendNotification(title, body) {
         sendNotification.exec(["notify-send", title, body]);
     }
 }

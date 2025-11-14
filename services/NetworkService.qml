@@ -100,6 +100,7 @@ Singleton {
                 
                 if (parts.length < 9) {
                     console.log("Invalid line format:", line);
+                    NotificationManager.sendNotification("Network Service", "Received invalid network data: " + line);
                     return;
                 }
                 

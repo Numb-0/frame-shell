@@ -34,39 +34,67 @@ Scope {
 		command: ["hyprlock"]
 	}
 
-	LazyLoader {
-		active: root.visible
+  	PanelWindow {
+		id: window
+		focusable: true
+		exclusiveZone: 0
+		mask: Region {
+			item: rect
+		}
+		anchors.bottom: true
+		anchors.top: true
+		property var padding: 10
+		implicitWidth: row.implicitWidth + padding * 2
+		color: "transparent"
 
-		PanelWindow {
-			id: window
-			property int padding: 10
-			focusable: true
-			exclusiveZone: 0
-			// Wayland
-			Component.onCompleted: {
-				if (WlrLayershell != null) {
-					WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive
+		HyprlandFocusGrab {
+			id: grab
+			windows: [ window ]
+			active: root.visible
+		}
+
+		Rectangle {
+			id: rect
+			color: Theme.colors.backgroundAlt
+			radius: Config.rounding
+			anchors.centerIn: parent
+			ColorBehavior on color {}
+			implicitWidth: row.implicitWidth + window.padding * 2
+        	implicitHeight: row.implicitHeight 
+
+			states: [
+				State {
+					name: "hidden"
+					when: !root.visible
+					PropertyChanges { target: rect; height: 0}
+					PropertyChanges { target: row; opacity: 0 }
+				},
+				State {
+					name: "visible"
+					when: root.visible
+					PropertyChanges { target: rect; height: implicitHeight + window.padding * 2 }
+					PropertyChanges { target: row; opacity: 1 }
 				}
-			}
+			]
 
-			implicitWidth: row.width + padding * 2
-			implicitHeight: row.height + padding * 2
-			anchors.bottom: true
-			margins.bottom: screen.height / 2
-			color: "transparent"
-			Rectangle {
-				id: background
-				anchors.fill: parent
-				color: Theme.colors.backgroundAlt
-				radius: Config.rounding
-				ColorBehavior on color {}
-			}
-			
+			transitions: [
+				Transition {
+					from: "hidden"; to: "visible"
+					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.OutBack }
+					NumberAnimation { properties: "opacity"; duration: 500; easing.type: Easing.OutBack }
+				},
+				Transition {
+					from: "visible"; to: "hidden"
+					NumberAnimation { properties: "height"; duration: 400; easing.type: Easing.InBack }
+					NumberAnimation { properties: "opacity"; duration: 400; easing.type: Easing.InBack }
+				}
+			]
+		
 			RowLayout {
 				id: row
 				spacing: 10
-				anchors.centerIn: parent
 				Keys.onEscapePressed: root.visible = false
+				anchors.centerIn: parent
 
 				MaterialButton {
 					id: themebutton
@@ -93,8 +121,15 @@ Scope {
 						easing { type: Easing.OutBack; overshoot: 1 }
 					}
 
-					Component.onCompleted: {
-						focus = true
+					Connections {
+						target: root
+						function onVisibleChanged() {
+							if (root.visible) {
+								themebutton.focus = true
+							} else {
+								themebutton.focus = false
+							}
+						}
 					}
 				}
 
@@ -167,6 +202,6 @@ Scope {
 					}
 				}
 			}
-	    }
-    }
+		}
+	}
 }
