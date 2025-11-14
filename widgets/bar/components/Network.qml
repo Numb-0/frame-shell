@@ -13,8 +13,8 @@ RowLayout {
     id: root
     property var networkIcons: ({
         none: "wifi_off",
-        weak: "wifi_bar_1",
-        ok: "wifi_bar_2",
+        weak: "wifi_1_bar",
+        ok: "wifi_2_bar",
         good: "wifi",
         excellent: "wifi",
         ethernet: "lan"
