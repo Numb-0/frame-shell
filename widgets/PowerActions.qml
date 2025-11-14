@@ -81,11 +81,11 @@ Scope {
 				Transition {
 					from: "hidden"; to: "visible"
 					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.OutBack }
-					NumberAnimation { properties: "opacity"; duration: 500; easing.type: Easing.OutBack }
+					NumberAnimation { properties: "opacity"; duration: 400; easing.type: Easing.OutBack }
 				},
 				Transition {
 					from: "visible"; to: "hidden"
-					NumberAnimation { properties: "height"; duration: 400; easing.type: Easing.InBack }
+					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.InBack }
 					NumberAnimation { properties: "opacity"; duration: 400; easing.type: Easing.InBack }
 				}
 			]
@@ -97,6 +97,7 @@ Scope {
 				anchors.centerIn: parent
 
 				MaterialButton {
+					focus: root.visible
 					id: themebutton
 					iconName: Config.theme === "gruvbox" ? "light_mode" : "dark_mode"
 					iconColor: Theme.colors.yellow
@@ -119,17 +120,6 @@ Scope {
 						to: themebutton.materialIcon.rotation - 360
 						duration: 1600
 						easing { type: Easing.OutBack; overshoot: 1 }
-					}
-
-					Connections {
-						target: root
-						function onVisibleChanged() {
-							if (root.visible) {
-								themebutton.focus = true
-							} else {
-								themebutton.focus = false
-							}
-						}
 					}
 				}
 
