@@ -65,12 +65,12 @@ Scope {
                         NumberAnimation {
                             properties: "height"
                             duration: 500
-                            easing.type: Easing.OutCubic
+                            easing.type: Easing.OutBack
                         }
                         NumberAnimation {
                             properties: "rounding"
-                            duration: 600
-                            easing.type: Easing.OutCubic
+                            duration: 500
+                            easing.type: Easing.OutCirc
                         }
                     }
                 },
@@ -86,8 +86,8 @@ Scope {
                             }
                             NumberAnimation {
                                 properties: "rounding"
-                                duration: 600
-                                easing.type: Easing.InCubic
+                                duration: 500
+                                easing.type: Easing.InCirc
                             }
                         }
                     }

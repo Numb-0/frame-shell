@@ -35,7 +35,7 @@ Singleton {
     Process {
         id: adaptersProcess
         command: ["bash", "-c", "nmcli -terse device status"]
-        onExited: () => root.defaultAdapter = root.adapters.find(a => a.isWifi) ?? null
+        onExited: () => root.defaultAdapter = root.adapters.find(a => a.state === "connected")
         stdout: SplitParser {
             onRead: (line) => {
                 line = line.trim()
@@ -51,7 +51,6 @@ Singleton {
                         isWifi: parts[1] === "wifi",
                         isEthernet: parts[3].includes("Wired")
                     }
-                    // console.log(adapter.name, adapter.state)
                     
                     var existingIndex = -1
                     for (var i = 0; i < root.adapters.length; i++) {

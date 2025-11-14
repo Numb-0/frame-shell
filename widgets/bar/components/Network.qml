@@ -39,7 +39,7 @@ RowLayout {
 
     MaterialSymbol {
         size: 25
-        icon: adapter?.state != "disconnected" ? getNetworkIcon(connectedNet?.signal) : networkIcons.none
+        icon: adapter?.state != "disconnected" ? getNetworkIcon(adapter?.isEthernet ? undefined : connectedNet?.signal) : networkIcons.none
         color: Theme.colors.purple
     }
 }
