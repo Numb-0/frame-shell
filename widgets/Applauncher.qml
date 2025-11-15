@@ -28,7 +28,7 @@ Scope {
 		focusable: true
 		mask: Region { item: col }
 		color: "transparent"
-		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
+		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
 
 		HyprlandFocusGrab {
 			id: grab

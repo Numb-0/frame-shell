@@ -47,7 +47,7 @@ Scope {
 
     PanelWindow {
         id: window
-        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? Quickshell.primaryScreen
+        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         exclusiveZone: -1
         margins.top: 40
         color: "transparent"
