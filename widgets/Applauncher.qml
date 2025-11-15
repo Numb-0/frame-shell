@@ -18,7 +18,6 @@ Scope {
 		name: "applauncher"
 		onPressed: root.visible = !root.visible
 	}
-	
 
 	PanelWindow {
 		id: window
@@ -29,7 +28,7 @@ Scope {
 		focusable: true
 		mask: Region { item: col }
 		color: "transparent"
-		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
+		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
 
 		HyprlandFocusGrab {
 			id: grab
@@ -134,7 +133,9 @@ Scope {
 			ListView {
 				id: appsList
 				model: ScriptModel {
-					values: DesktopEntries.applications.values.filter(entry => entry.name.toLowerCase().includes(root.searchText.toLowerCase()))
+					values: DesktopEntries.applications.values
+					.filter(entry => entry.name.toLowerCase()
+					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
 				Layout.fillWidth: true
@@ -181,6 +182,9 @@ Scope {
 						searchBox.forceActiveFocus()
 						appsList.currentIndex = -1
 					}
+				}
+				Component.onDestruction: {
+					appsList.model = null
 				}
 			}
 		}
