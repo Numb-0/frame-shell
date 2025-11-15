@@ -11,8 +11,9 @@ import qs.config
 
 
 IconButton {
+    id: iconButton
     required property var modelData
-    property var menu: SysTrayMenu {}
+    property var menu: SysTrayMenu { modelData: iconButton.modelData }
     iconSource: {
         let icon = modelData?.icon || "";
         if (!icon) return "";
@@ -25,11 +26,7 @@ IconButton {
     }
     iconColor: Theme.colors.white
     iconSize: 25
-    onClicked: menu.toggle(modelData)
-
-    Component.onCompleted: {
-        menu.modelData = modelData;
-    }
+    onClicked: menu.toggle()
 }
 
 

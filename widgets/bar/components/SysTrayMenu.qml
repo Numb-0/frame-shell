@@ -14,7 +14,7 @@ import qs.utils
 Scope {
 	id: root
 	property bool visible: false
-    property var modelData
+    required property var modelData
 
     function toggle() {
         SysTrayMenuManager.setActiveMenu(modelData)
@@ -62,7 +62,7 @@ Scope {
 
         QsMenuOpener {
             id: opener
-            menu: modelData ? modelData.menu : null
+            menu: modelData.menu
         }
 
         Shape {
