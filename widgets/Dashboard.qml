@@ -118,7 +118,7 @@ Scope {
             anchors.bottom: shp.bottom
             anchors.right: shp.right
             anchors.left: shp.left
-            anchors.margins: 10
+            anchors.margins: 30
             spacing: 15
             Layout.alignment: Qt.AlignTop
             Bluetooth {}
