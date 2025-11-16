@@ -50,11 +50,13 @@ Scope {
                     name: "hidden"
                     when: !root.visible
                     PropertyChanges { target: shp; rounding: 0; height: 0 }
+                    PropertyChanges { target: col; opacity: 0 }
                 },
                 State {
                     name: "visible"
                     when: root.visible
                     PropertyChanges { target: shp; rounding: roundingMax; height: parent.height - roundingMax * 2; }
+                    PropertyChanges { target: col; opacity: 1 }
                 }
             ]
 
@@ -72,6 +74,11 @@ Scope {
                             duration: 500
                             easing.type: Easing.OutCirc
                         }
+                        NumberAnimation {
+                            property: "opacity"
+                            duration: 300
+                            easing.type: Easing.InOutQuad
+                        }
                     }
                 },
 
@@ -88,6 +95,11 @@ Scope {
                                 properties: "rounding"
                                 duration: 500
                                 easing.type: Easing.InCirc
+                            }
+                             NumberAnimation {
+                                property: "opacity"
+                                duration: 300
+                                easing.type: Easing.InOutQuad
                             }
                         }
                     }
@@ -118,9 +130,9 @@ Scope {
             anchors.bottom: shp.bottom
             anchors.right: shp.right
             anchors.left: shp.left
-            anchors.margins: 30
+            anchors.margins: 10
+            // Layout.alignment: Qt.AlignTop
             spacing: 15
-            Layout.alignment: Qt.AlignTop
             Bluetooth {}
             PowerProfiles {}
         }

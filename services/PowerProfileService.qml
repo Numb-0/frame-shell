@@ -11,6 +11,8 @@ import qs.widgets.notification.components
 Singleton {
     id: root
     property var profile: null
+    property var profiles: ["performance", "balanced", "power-saver"]
+    property bool canChange: true
 
     function updatePowerProfile() {
       getProfile.running = true
@@ -19,6 +21,25 @@ Singleton {
     function setPowerProfile(newProfile) {
       root.profile = newProfile
       setProfile.running = true
+    }
+    
+    function cycleProfile() {
+      if (!canChange) return
+      
+      canChange = false
+      cooldownTimer.restart()
+      
+      var currentProfile = profile ?? "balanced"
+      var currentIndex = profiles.indexOf(currentProfile)
+      var nextIndex = (currentIndex + 1) % profiles.length
+      setPowerProfile(profiles[nextIndex])
+    }
+    
+    Timer {
+      id: cooldownTimer
+      interval: 300
+      repeat: false
+      onTriggered: canChange = true
     }
 
     Component.onCompleted: {

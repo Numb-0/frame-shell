@@ -11,16 +11,30 @@ import qs.config
 import qs.utils
 
 RowLayout {
-    property var profile: PowerProfileService?.profile
-    property var powerprofiles: ["performance", "balanced", "power-saver"]
+    property string profile: PowerProfileService?.profile ?? "balanced"
+
     MaterialButton {
-        onClicked: PowerProfileService.setPowerProfile(powerprofiles[(powerprofiles.indexOf(profile) + 1) % powerprofiles.length])
+        id: profileButton
+        materialIcon.size: pressed ? 32 : 25
+        enabled: PowerProfileService.canChange
+        implicitHeight: 33
+        implicitWidth: 37
+        
+        Behavior on materialIcon.size {
+            NumberAnimation {
+                duration: 200
+                easing.type: Easing.OutBack
+                easing.overshoot: 1.2
+            }
+        }
+        
+        onClicked: PowerProfileService.cycleProfile()
+        
         iconName: profile === "performance" ? "bolt" : profile === "balanced" ? "power" : "energy_savings_leaf"
         iconColor: Theme.colors.green
-        // backgroundColor: Theme.colors.backgroundHighlight
     }
+    
     CustomText {
-        // color: Theme
-        text: profile
+        text: profile.charAt(0).toUpperCase() + profile.slice(1)
     }
 }
