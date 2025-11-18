@@ -9,7 +9,7 @@ import Quickshell.Widgets
 
 Button {
     required property var iconSource
-    required property var iconColor
+    property var iconColor
     property var iconSize: 20
     property var backgroundColor: "transparent"
     background: Rectangle { color: backgroundColor }

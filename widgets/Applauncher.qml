@@ -143,7 +143,8 @@ Scope {
 				clip: true
 				spacing: 5
 				highlightMoveDuration: 500
-				highlight: Rectangle { 
+				highlight: Rectangle {
+					width: appsList.width
 					color: Theme.colors.backgroundHighlight;
 					ColorBehavior on color {}
 					radius: Config.rounding
@@ -151,11 +152,14 @@ Scope {
 				currentIndex: -1
 
 				delegate: RowLayout {
+					width: appsList.width
+					spacing: 10
 					IconImage {
 						implicitSize: 40
 						source: Quickshell.iconPath(modelData.icon)
 					}
 					CustomText { text: modelData.name }
+					Item { Layout.fillWidth: true }
 					function activate() {
 						modelData.execute()
 						root.visible = false

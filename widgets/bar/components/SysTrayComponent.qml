@@ -14,18 +14,8 @@ IconButton {
     id: iconButton
     required property var modelData
     property var menu: SysTrayMenu { modelData: iconButton.modelData }
-    iconSource: {
-        let icon = modelData?.icon || "";
-        if (!icon) return "";
-        if (icon.includes("?path=")) {
-            const [name, path] = icon.split("?path=");
-            const fileName = name.substring(name.lastIndexOf("/") + 1);
-            return `file://${path}/${fileName}`;
-        }
-        return icon;
-    }
-    iconColor: Theme.colors.white
-    iconSize: 25
+    iconSource: modelData?.icon || "";
+    iconSize: 24
     onClicked: menu.toggle()
 }
 
