@@ -21,8 +21,8 @@ RowLayout {
     })
 
     function getNetworkIcon(signal) {
-        if (signal == undefined) return networkIcons.ethernet
-        if (signal <= 10) return networkIcons.none
+        if (signal == -1) return networkIcons.ethernet
+        if (signal == undefined) return networkIcons.none
         if (signal <= 30) return networkIcons.weak
         if (signal <= 50) return networkIcons.ok
         if (signal <= 75) return networkIcons.good
@@ -33,13 +33,13 @@ RowLayout {
     property var connectedNet: NetworkService?.connectedNetwork
     
     CustomText {
-        text: adapter?.state != "disconnected" ? adapter?.isEthernet ? "Ethernet" : (connectedNet?.ssid ?? "No Network") : "No Connection"
+        text: NetworkService.wifiState ? (connectedNet?.ssid ?? "No Network") : "Wifi Off"
         color: Theme.colors.purple
     }
 
     MaterialSymbol {
         size: 25
-        icon: adapter?.state != "disconnected" ? getNetworkIcon(adapter?.isEthernet ? undefined : connectedNet?.signal) : networkIcons.none
+        icon: getNetworkIcon(adapter?.isEthernet ? -1 : connectedNet?.signal)
         color: Theme.colors.purple
     }
 }

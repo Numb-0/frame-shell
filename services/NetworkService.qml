@@ -13,53 +13,71 @@ Singleton {
     property var connections: []
     property var defaultAdapter
     property var connectedNetwork
+    property bool wifiState: false
 
     function updateNetworkStatus() {
+        // console.log("Updating network status...")
         adaptersProcess.running = true
         connectionsProcess.running = true
+        wifiStateProcess.running = true
     }
 
     Component.onCompleted: {
         updateNetworkStatus()
     }
 
+    Timer {
+        id: debounceTimer
+        interval: 300
+        onTriggered: {
+            updateNetworkStatus();
+        }
+    }
+
     Process {
-        id: eventProcess
+        id: wifiStateProcess
+        command: ["bash", "-c", "nmcli r wifi"]
+        stdout: SplitParser {
+            onRead: (line) => {
+                line = line.trim()
+                if (line === "enabled") {
+                    root.wifiState = true
+                } else if (line === "disabled") {
+                    root.wifiState = false
+                }
+            }
+        }
+    }
+
+    Process {
         running: true
         command: ["bash", "-c", "nmcli m"]
         stdout: SplitParser {
-            onRead: () => updateNetworkStatus()
+            onRead: () => {
+                debounceTimer.restart();
+            }
         }
     }
 
     Process {
         id: adaptersProcess
-        command: ["bash", "-c", "nmcli -terse device status"]
-        onExited: () => root.defaultAdapter = root.adapters.find(a => a.state === "connected")
+        command: ["bash", "-c", "nmcli -t device status"]
+        onExited: root.defaultAdapter = root.adapters.find(a => a.state === "connected" && a.type === "ethernet") || root.adapters.find(a => a.state === "connected" && a.type === "wifi")
         stdout: SplitParser {
             onRead: (line) => {
                 line = line.trim()
                 if (line === "") return
-                
+
                 var parts = line.split(':')
                 if (parts.length >= 4) {
                     var adapter = {
                         name: parts[0],
                         type: parts[1],
                         state: parts[2],
-                        connection: parts[3],
-                        isWifi: parts[1] === "wifi",
-                        isEthernet: parts[3].includes("Wired")
+                        connection: parts[3]
                     }
-                    
-                    var existingIndex = -1
-                    for (var i = 0; i < root.adapters.length; i++) {
-                        if (root.adapters[i].name === adapter.name) {
-                            existingIndex = i
-                            break
-                        }
-                    }
-                    
+                    // Update existing or add new
+                    var existingIndex = root.adapters.findIndex(a => a.name === adapter.name)
                     if (existingIndex >= 0) {
                         root.adapters[existingIndex] = adapter
                     } else {
@@ -70,10 +88,11 @@ Singleton {
         }
     }
 
+
     Process {
         id: connectionsProcess
         command: ["bash", "-c", "nmcli -terse device wifi"]
-        onExited: () => root.connectedNetwork = root.connections.find(c => c.isActive)
+        onExited: root.connectedNetwork = root.connections.find(c => c.isActive)
         stdout: SplitParser {
             onRead: (line) => {
                 if (line.trim() === "") return;
@@ -100,7 +119,6 @@ Singleton {
                 
                 if (parts.length < 9) {
                     console.log("Invalid line format:", line);
-                    NotificationManager.sendNotification("Network Service", "Received invalid network data: " + line);
                     return;
                 }
                 
