@@ -33,13 +33,13 @@ RowLayout {
     property var connectedNet: NetworkService?.connectedNetwork
     
     CustomText {
-        text: NetworkService.wifiState ? (connectedNet?.ssid ?? "No Network") : "Wifi Off"
+        text: adapter?.type === "ethernet" ? (adapter?.state === "connected" ? "Ethernet" : "No Connection") : (connectedNet ? connectedNet.ssid : "No Wi-Fi")
         color: Theme.colors.purple
     }
 
     MaterialSymbol {
         size: 25
-        icon: getNetworkIcon(adapter?.isEthernet ? -1 : connectedNet?.signal)
+        icon: getNetworkIcon(adapter?.type === "ethernet" ? -1 : connectedNet?.signal)
         color: Theme.colors.purple
     }
 }

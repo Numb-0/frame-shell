@@ -139,7 +139,7 @@ Scope {
                     values: opener.children.values.filter(m => m.text != "")
                 }
                 delegate: Button {
-                    implicitWidth: parent.width
+                    implicitWidth: parent?.width
                     onClicked: {
                         root.visible = false
                         modelData.triggered()

@@ -11,80 +11,112 @@ import qs.utils
 
 
 ColumnLayout {
-    id: notif
     property var bt: Bluetooth?.defaultAdapter
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
-    // spacing: 10
 
-    RowLayout {
-        // spacing: 10
-        MaterialButton {
-            onClicked: bt.enabled = !bt?.enabled
-            iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
-            iconColor: Theme.colors.blue
-            implicitHeight: 33
-            implicitWidth: 37
-            // contentPadding: 0
-            materialIcon.size: pressed ? 32 : 25
-            Behavior on materialIcon.size {
-                NumberAnimation {
-                    duration: 200
-                    easing.type: Easing.OutBack
+    Item {
+        Layout.fillWidth: true
+        Layout.preferredHeight: 48
+        
+        RowLayout {
+            anchors.fill: parent
+            MaterialButton {
+                onClicked: bt.enabled = !bt?.enabled
+                iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
+                iconColor: Theme.colors.blue
+                contentPadding: 0
+            }
+            Item { Layout.fillWidth: true }
+            MaterialButton {
+                onClicked: console.log("Open Bluetooth Settings")
+                iconName: "chevron_right"
+                iconColor: Theme.colors.foreground
+                contentPadding: 0
+            }
+            MaterialButton {
+                id: refreshButton
+                onClicked: {
+                    bt?.startDiscovery()
+                    rotationAnimation.loops = RotationAnimation.Infinite
+                    rotationAnimation.start()
+                    discoveryTimer.start()
+                }
+                iconName: "refresh"
+                iconColor: Theme.colors.green
+                contentPadding: 0
+                
+                RotationAnimation {
+                    id: rotationAnimation
+                    target: refreshButton
+                    from: 0
+                    to: 360
+                    duration: 1000
+                    easing.type: Easing.InOutBack
                     easing.overshoot: 1.2
+                    loops: 1
+                }
+                
+                Timer {
+                    id: discoveryTimer
+                    interval: 10000
+                    repeat: false
+                    onTriggered: {
+                        bt?.stopDiscovery()
+                        rotationAnimation.loops = 1
+                        rotationAnimation.stop()
+                        refreshButton.rotation = 0
+                    }
                 }
             }
         }
         
         CustomText {
-            text: bt?.enabled ? connectedDevices?.[0]?.deviceName ?? "Nothing Connected" : "Bluetooth Disabled"
-            horizontalAlignment: Text.AlignLeft
+            anchors.centerIn: parent
+            text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.deviceName).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
+            horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
         }
-
-        MaterialButton {
-            // visible: bt?.enabled
-            // disabled: !bt?.enabled
-            onClicked: bt?.startDiscovery()
-            iconName: "refresh"
-            iconColor: Theme.colors.green
-            implicitHeight: 33
-            implicitWidth: 37
-            // contentPadding: 0
-            materialIcon.size: pressed ? 32 : 25
-            Behavior on materialIcon.size {
-                NumberAnimation {
-                    duration: 200
-                    easing.type: Easing.OutBack
-                    easing.overshoot: 1.2
-                }
-            }
-        }
     }
-
+    
+    
     ListView {
         id: deviceListView
-        Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
+        Layout.fillWidth: true
+        clip: true        
         model: ScriptModel {
             values: Bluetooth?.devices.values
         }
-        // clip: true        
         property var deviceTypes: {
             "audio-headset": "headphones",
             "input-keyboard": "keyboard",
+            "default": "bluetooth"
         }
         delegate: RowLayout {
-            MaterialSymbol {
-                icon: deviceListView.deviceTypes[modelData.icon] ?? "bluetooth"
-                color: Theme.colors.blue
-                size: 20
+            anchors.left: parent.left
+            anchors.right: parent.right
+            MaterialButton {
+                contentPadding: 0
+                iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
+                iconColor: Theme.colors.blue
             }
+            Item { Layout.fillWidth: true }
             CustomText {
-                // anchors.centerIn: parent
-                // anchors.fill: parent
-                anchors.leftMargin: 10
                 text: modelData.deviceName
             }
+            Item { Layout.fillWidth: true }
+            MaterialButton {
+                contentPadding: 0
+                iconName: modelData.connected ? "link_off" : "link"
+                iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
+                onClicked: {
+                    if (modelData.connected) {
+                        modelData.disconnect()
+                    } else {
+                        modelData.connect()
+                    }
+                }
+            }   
         }
     }
 }

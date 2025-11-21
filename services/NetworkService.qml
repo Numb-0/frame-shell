@@ -16,7 +16,6 @@ Singleton {
     property bool wifiState: false
 
     function updateNetworkStatus() {
-        // console.log("Updating network status...")
         adaptersProcess.running = true
         connectionsProcess.running = true
         wifiStateProcess.running = true
@@ -28,7 +27,7 @@ Singleton {
 
     Timer {
         id: debounceTimer
-        interval: 300
+        interval: 500
         onTriggered: {
             updateNetworkStatus();
         }
@@ -62,6 +61,7 @@ Singleton {
     Process {
         id: adaptersProcess
         command: ["bash", "-c", "nmcli -t device status"]
+        onStarted: root.adapters = []
         onExited: root.defaultAdapter = root.adapters.find(a => a.state === "connected" && a.type === "ethernet") || root.adapters.find(a => a.state === "connected" && a.type === "wifi")
         stdout: SplitParser {
             onRead: (line) => {
@@ -76,13 +76,7 @@ Singleton {
                         state: parts[2],
                         connection: parts[3]
                     }
-                    // Update existing or add new
-                    var existingIndex = root.adapters.findIndex(a => a.name === adapter.name)
-                    if (existingIndex >= 0) {
-                        root.adapters[existingIndex] = adapter
-                    } else {
-                        root.adapters.push(adapter)
-                    }
+                    root.adapters.push(adapter)
                 }
             }
         }

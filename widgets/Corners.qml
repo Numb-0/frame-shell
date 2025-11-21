@@ -34,7 +34,7 @@ Scope {
       
       Shape {
         id: corners
-        property int rounding: 15
+        property int rounding: 16
         ShapePath {
             strokeWidth: 0
             fillColor: Theme.colors.backgroundAlt

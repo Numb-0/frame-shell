@@ -127,14 +127,13 @@ Scope {
 
         ColumnLayout {
             id: col
+            property int colWidth: 300
             anchors.bottom: shp.bottom
             anchors.right: shp.right
             anchors.left: shp.left
             anchors.margins: 10
-            // Layout.alignment: Qt.AlignTop
-            spacing: 15
-            Bluetooth {}
-            PowerProfiles {}
+            Bluetooth { Layout.minimumWidth: col.colWidth  }
+            PowerProfiles { Layout.minimumWidth: col.colWidth}
         }
     }
 }
