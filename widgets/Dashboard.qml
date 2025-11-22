@@ -28,7 +28,7 @@ Scope {
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         mask: Region { item: shp }
         focusable: true
-        implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2 
+        implicitWidth: shp.implicitWidth
         // implicitHeight: col.Layout.preferredHeight + col.anchors.margins * 2 + shp.margin * 2
 
         anchors.top: true
@@ -42,10 +42,8 @@ Scope {
             property real margin: 20
             property real roundingMax: 20
             property real rounding: 0
-            // anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.rightMargin: margin
-            width: parent.width - roundingMax * 2
+            anchors.top: window.top
+            width: col.implicitWidth + margin * 2
             states: [
                 State {
                     name: "hidden"
@@ -110,30 +108,28 @@ Scope {
             ShapePath {
                 fillColor: Theme.colors.backgroundAlt
                 strokeWidth: 0
-                startX: -shp.rounding; startY: 0
-                PathLine { x: shp.width + shp.rounding; y: 0}
+                startX: 0; startY: 0
+                PathLine { x: shp.width; y: 0}
                 // Top-right corner
-                PathQuad { x: shp.width; y: shp.rounding; controlX: shp.width; controlY: 0 }
-                PathLine { x: shp.width; y: shp.height - shp.rounding }
+                PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width - shp.rounding; controlY: 0 }
+                PathLine { x: shp.width - shp.rounding; y: shp.height - shp.rounding }
                 // Bottom-right corner
-                PathQuad { x: shp.width - shp.rounding; y: shp.height; controlX: shp.width; controlY: shp.height }
-                PathLine { x: shp.rounding; y: shp.height }
+                PathQuad { x: shp.width - shp.rounding * 2; y: shp.height; controlX: shp.width - shp.rounding; controlY: shp.height }
+                PathLine { x: shp.rounding * 2; y: shp.height }
                 // Bottom-left corner
-                PathQuad { x: 0; y: shp.height - shp.rounding; controlX: 0; controlY: shp.height }
-                PathLine { x: 0; y: shp.rounding }
+                PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: shp.rounding; controlY: shp.height }
+                PathLine { x: shp.rounding; y: shp.rounding }
                 // Top-left corner
-                PathQuad { x: -shp.rounding; y: 0; controlX: 0; controlY: 0 }
+                PathQuad { x: 0; y: 0; controlX: shp.rounding; controlY: 0 }
             }
         }
 
         ColumnLayout {
             id: col
-            Layout.preferredWidth: 500            
-            anchors.right: shp.right
-            anchors.left: shp.left
+            anchors.centerIn: shp
             spacing: 0
-            Bluetooth { Layout.minimumWidth: col.Layout.preferredWidth  }
-            PowerProfiles { Layout.minimumWidth: col.Layout.preferredWidth }
+            Bluetooth { }
+            PowerProfiles { }
         }
     }
 }
