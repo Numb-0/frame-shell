@@ -89,7 +89,8 @@ ColumnLayout {
         id: deviceListView
         implicitHeight: contentHeight
         Layout.fillWidth: true
-        clip: true        
+        clip: true
+        // reuseItems: true
         model: ScriptModel {
             values: Bluetooth?.devices.values
         }
@@ -129,8 +130,8 @@ ColumnLayout {
             "default": "bluetooth"
         }
         delegate: RowLayout {
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.left: parent?.left
+            anchors.right: parent?.right
             MaterialButton {
                 iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
                 iconColor: Theme.colors.blue
@@ -151,7 +152,10 @@ ColumnLayout {
                         modelData.connect()
                     }
                 }
-            }   
+            }
+        }
+        Component.onDestruction: {
+            deviceListView.model = null
         }
     }
 }
