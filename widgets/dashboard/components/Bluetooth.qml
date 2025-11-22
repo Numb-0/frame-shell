@@ -16,16 +16,14 @@ ColumnLayout {
     property bool listVisible: false
         
     RowLayout {
-        // anchors.top: parent.top
         MaterialButton {
             onClicked: bt.enabled = !bt?.enabled
             iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
             iconColor: Theme.colors.blue
-            contentPadding: 0
+            
         }
         Item { Layout.fillWidth: true }
         CustomText {
-            // Layout.alignment: Qt.AlignCenter
             text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.deviceName).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
@@ -35,7 +33,7 @@ ColumnLayout {
             onClicked: listVisible = !listVisible
             iconName: "chevron_right"
             iconColor: Theme.colors.foreground
-            contentPadding: 0
+            
         }
         MaterialButton {
             id: refreshButton
@@ -47,7 +45,7 @@ ColumnLayout {
             }
             iconName: "refresh"
             iconColor: Theme.colors.green
-            contentPadding: 0
+            
             
             RotationAnimation {
                 id: rotationAnimation
@@ -83,7 +81,36 @@ ColumnLayout {
         model: ScriptModel {
             values: Bluetooth?.devices.values
         }
-        
+        states: [
+            State {
+                name: "hidden"
+                when: !listVisible
+                PropertyChanges { target: deviceListView; implicitHeight: 0 }
+            },
+            State {
+                name: "visible"
+                when: listVisible
+                PropertyChanges { target: deviceListView; implicitHeight: contentHeight }
+            }
+        ]
+        transitions: [
+            Transition {
+                from: "hidden"; to: "visible"
+                NumberAnimation {
+                    properties: "implicitHeight"
+                    duration: 300
+                    easing.type: Easing.OutExpo
+                }
+            },  
+            Transition {
+                from: "visible"; to: "hidden"
+                NumberAnimation {
+                    properties: "implicitHeight"
+                    duration: 300
+                    easing.type: Easing.OutExpo
+                }
+            }
+        ]
         property var deviceTypes: {
             "audio-headset": "headphones",
             "input-keyboard": "keyboard",
@@ -93,7 +120,7 @@ ColumnLayout {
             anchors.left: parent.left
             anchors.right: parent.right
             MaterialButton {
-                contentPadding: 0
+                
                 iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
                 iconColor: Theme.colors.blue
             }
@@ -103,7 +130,7 @@ ColumnLayout {
             }
             Item { Layout.fillWidth: true }
             MaterialButton {
-                contentPadding: 0
+                
                 iconName: modelData.connected ? "link_off" : "link"
                 iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
                 onClicked: {

@@ -17,7 +17,6 @@ RowLayout {
     MaterialButton {
         id: profileButton
         enabled: PowerProfileService.canChange
-        contentPadding: 0
         
         onClicked: PowerProfileService.cycleProfile()
         

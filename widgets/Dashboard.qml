@@ -28,10 +28,11 @@ Scope {
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         mask: Region { item: shp }
         focusable: true
-        implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2
-        implicitHeight: col.implicitHeight + col.anchors.margins * 2 + shp.margin * 2
+        implicitWidth: col.implicitWidth + col.anchors.margins * 2 + shp.margin * 2 
+        // implicitHeight: col.Layout.preferredHeight + col.anchors.margins * 2 + shp.margin * 2
 
         anchors.top: true
+        anchors.bottom: true
         exclusiveZone: -1
         // Distance from the bar since we using exclusiveZone = -1
         margins.top: 40
@@ -41,7 +42,7 @@ Scope {
             property real margin: 20
             property real roundingMax: 20
             property real rounding: 0
-            anchors.top: parent.top
+            // anchors.top: parent.top
             anchors.right: parent.right
             anchors.rightMargin: margin
             width: parent.width - roundingMax * 2
@@ -55,7 +56,7 @@ Scope {
                 State {
                     name: "visible"
                     when: root.visible
-                    PropertyChanges { target: shp; rounding: roundingMax; height: parent.height - roundingMax * 2; }
+                    PropertyChanges { target: shp; rounding: roundingMax; height: col.implicitHeight  }
                     PropertyChanges { target: col; opacity: 1 }
                 }
             ]
@@ -127,13 +128,11 @@ Scope {
 
         ColumnLayout {
             id: col
-            property int colWidth: 300
-            anchors.bottom: shp.bottom
+            Layout.preferredWidth: 500            
             anchors.right: shp.right
             anchors.left: shp.left
-            anchors.margins: 10
-            Bluetooth { Layout.minimumWidth: col.colWidth  }
-            PowerProfiles { Layout.minimumWidth: col.colWidth}
+            Bluetooth { Layout.minimumWidth: col.Layout.preferredWidth  }
+            PowerProfiles { Layout.minimumWidth: col.Layout.preferredWidth }
         }
     }
 }
