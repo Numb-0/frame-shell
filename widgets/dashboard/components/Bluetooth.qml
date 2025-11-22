@@ -14,7 +14,7 @@ ColumnLayout {
     property var bt: Bluetooth?.defaultAdapter
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
     property bool listVisible: false
-        
+    spacing: 0
     RowLayout {
         MaterialButton {
             onClicked: bt.enabled = !bt?.enabled

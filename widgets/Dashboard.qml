@@ -131,6 +131,7 @@ Scope {
             Layout.preferredWidth: 500            
             anchors.right: shp.right
             anchors.left: shp.left
+            spacing: 0
             Bluetooth { Layout.minimumWidth: col.Layout.preferredWidth  }
             PowerProfiles { Layout.minimumWidth: col.Layout.preferredWidth }
         }
