@@ -29,8 +29,6 @@ Scope {
         mask: Region { item: shp }
         focusable: true
         implicitWidth: shp.implicitWidth
-        // implicitHeight: col.Layout.preferredHeight + col.anchors.margins * 2 + shp.margin * 2
-
         anchors.top: true
         anchors.bottom: true
         exclusiveZone: -1
@@ -127,9 +125,10 @@ Scope {
         ColumnLayout {
             id: col
             anchors.centerIn: shp
+            property int minimumWidth: 300
             spacing: 0
-            Bluetooth { }
-            PowerProfiles { }
+            Bluetooth { Layout.minimumWidth: col.minimumWidth }
+            PowerProfiles { Layout.minimumWidth: col.minimumWidth }
         }
     }
 }

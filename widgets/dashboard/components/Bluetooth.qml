@@ -15,7 +15,9 @@ ColumnLayout {
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
     property bool listVisible: false
     spacing: 0
+    
     RowLayout {
+        spacing: 0
         MaterialButton {
             onClicked: bt.enabled = !bt?.enabled
             iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
@@ -30,10 +32,22 @@ ColumnLayout {
         }
         Item { Layout.fillWidth: true }
         MaterialButton {
-            onClicked: listVisible = !listVisible
+            id: toggleListButton
+            onClicked: {
+                listVisible = !listVisible
+                rotateArrow.start()
+            }
             iconName: "chevron_right"
             iconColor: Theme.colors.foreground
             
+            RotationAnimation {
+                id: rotateArrow
+                target: toggleListButton
+                from: listVisible ? 0 : 90
+                to: listVisible ? 90 : 0
+                duration: 300
+                easing.type: Easing.OutExpo
+            }
         }
         MaterialButton {
             id: refreshButton
@@ -45,7 +59,6 @@ ColumnLayout {
             }
             iconName: "refresh"
             iconColor: Theme.colors.green
-            
             
             RotationAnimation {
                 id: rotationAnimation
@@ -71,7 +84,6 @@ ColumnLayout {
             }
         }
     }
-    
     
     ListView {
         id: deviceListView
@@ -120,7 +132,6 @@ ColumnLayout {
             anchors.left: parent.left
             anchors.right: parent.right
             MaterialButton {
-                
                 iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
                 iconColor: Theme.colors.blue
             }
