@@ -18,15 +18,24 @@ ColumnLayout {
     
     RowLayout {
         spacing: 0
+
         MaterialButton {
-            onClicked: bt.enabled = !bt?.enabled
+            id: btToggleButton
+            onClicked: { 
+                bt.enabled = !bt?.enabled
+                wiggleAnimation.start()
+            }
             iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
-            iconColor: Theme.colors.blue
-            
+            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
+            iconSize: 30
+
+            Animations.WiggleAnimation {
+                id: wiggleAnimation
+                target: btToggleButton
+            }
         }
-        Item { Layout.fillWidth: true }
         CustomText {
-            text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.deviceName).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
+            text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.name).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
         }
@@ -37,8 +46,9 @@ ColumnLayout {
                 listVisible = !listVisible
                 rotateArrow.start()
             }
-            iconName: "chevron_right"
+            iconName: "keyboard_arrow_right"
             iconColor: Theme.colors.foreground
+            iconSize: 30
             
             RotationAnimation {
                 id: rotateArrow
@@ -90,7 +100,6 @@ ColumnLayout {
         implicitHeight: contentHeight
         Layout.fillWidth: true
         clip: true
-        // reuseItems: true
         model: ScriptModel {
             values: Bluetooth?.devices.values
         }
@@ -130,19 +139,17 @@ ColumnLayout {
             "default": "bluetooth"
         }
         delegate: RowLayout {
-            anchors.left: parent?.left
-            anchors.right: parent?.right
+            anchors.left: parent.left
+            anchors.right: parent.right
             MaterialButton {
                 iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
                 iconColor: Theme.colors.blue
             }
-            Item { Layout.fillWidth: true }
             CustomText {
                 text: modelData.deviceName
             }
             Item { Layout.fillWidth: true }
             MaterialButton {
-                
                 iconName: modelData.connected ? "link_off" : "link"
                 iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
                 onClicked: {

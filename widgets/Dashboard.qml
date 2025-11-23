@@ -125,7 +125,7 @@ Scope {
         ColumnLayout {
             id: col
             anchors.centerIn: shp
-            property int minimumWidth: 300
+            property int minimumWidth: 350
             spacing: 0
             Bluetooth { Layout.minimumWidth: col.minimumWidth }
             PowerProfiles { Layout.minimumWidth: col.minimumWidth }
