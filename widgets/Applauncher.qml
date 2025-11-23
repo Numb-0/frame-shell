@@ -147,7 +147,7 @@ Scope {
 					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
-				implicitHeight: contentHeight / DesktopEntries.applications.values.length * 5
+				implicitHeight: 40 * 5 // display 5 items height
 				Layout.fillWidth: true
 				clip: true
 				highlightMoveDuration: 500
@@ -160,7 +160,8 @@ Scope {
 				currentIndex: -1
 
 				delegate: RowLayout {
-					width: appsList.width
+					id: row
+					implicitWidth: appsList.width
 					spacing: 10
 					IconImage {
 						implicitSize: 40
