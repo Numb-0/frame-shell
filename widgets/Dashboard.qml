@@ -29,31 +29,30 @@ Scope {
         mask: Region { item: shp }
         focusable: true
         implicitWidth: shp.implicitWidth
-        anchors.top: true
-        anchors.bottom: true
+        anchors {
+            top: true
+            bottom: true
+        }
         exclusiveZone: -1
         // Distance from the bar since we using exclusiveZone = -1
         margins.top: 40
 
         Shape {
             id: shp
-            property real margin: 20
-            property real roundingMax: 20
+            property real padding: Config.rounding * 2
             property real rounding: 0
             anchors.top: window.top
-            width: col.implicitWidth + margin * 2
+            width: col.implicitWidth + Config.rounding * 4
             states: [
                 State {
                     name: "hidden"
                     when: !root.visible
                     PropertyChanges { target: shp; rounding: 0; height: 0 }
-                    PropertyChanges { target: col; opacity: 0 }
                 },
                 State {
                     name: "visible"
                     when: root.visible
-                    PropertyChanges { target: shp; rounding: roundingMax; height: col.implicitHeight  }
-                    PropertyChanges { target: col; opacity: 1 }
+                    PropertyChanges { target: shp; rounding: Config.rounding * 2; height: col.implicitHeight  }
                 }
             ]
 
@@ -71,11 +70,6 @@ Scope {
                             duration: 500
                             easing.type: Easing.OutCirc
                         }
-                        NumberAnimation {
-                            property: "opacity"
-                            duration: 300
-                            easing.type: Easing.InOutQuad
-                        }
                     }
                 },
 
@@ -92,11 +86,6 @@ Scope {
                                 properties: "rounding"
                                 duration: 500
                                 easing.type: Easing.InCirc
-                            }
-                             NumberAnimation {
-                                property: "opacity"
-                                duration: 300
-                                easing.type: Easing.InOutQuad
                             }
                         }
                     }
@@ -124,8 +113,12 @@ Scope {
 
         ColumnLayout {
             id: col
-            anchors.centerIn: shp
             property int minimumWidth: 350
+            anchors.bottom: shp.bottom
+            anchors.left: shp.left
+            anchors.right: shp.right
+            anchors.leftMargin: shp.padding
+            anchors.rightMargin: shp.padding
             spacing: 0
             Bluetooth { Layout.minimumWidth: col.minimumWidth }
             PowerProfiles { Layout.minimumWidth: col.minimumWidth }

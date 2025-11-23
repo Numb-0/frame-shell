@@ -68,7 +68,7 @@ Scope {
         Shape {
             id: shp
             property real margin: 20
-            property real roundingMax: 20
+            property real roundingMax: Config.rounding * 2
             property real rounding: 0
             anchors.top: parent.top
             anchors.right: parent.right

@@ -21,12 +21,14 @@ Scope {
 
 	PanelWindow {
 		id: window
-		anchors.bottom: true
 		exclusiveZone: 0
-		implicitWidth: 380
-		implicitHeight: 360
+		anchors {
+			bottom: true
+			top: true
+		}
+		implicitWidth: shp.implicitWidth
 		focusable: true
-		mask: Region { item: col }
+		mask: Region { item: shp }
 		color: "transparent"
 		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
 
@@ -39,10 +41,9 @@ Scope {
 		Shape {
 			id: shp
 			property real rounding: 0
-			property real roundingMax: 10
-			anchors.left: parent.left
-			anchors.right: parent.right
+			property real padding: Config.rounding * 3
 			anchors.bottom: parent.bottom
+			width: col.implicitWidth + Config.rounding * 6
 
 			states: [
 				State {
@@ -53,7 +54,7 @@ Scope {
 				State {
 					name: "visible"
 					when: root.visible
-					PropertyChanges { target: shp; height: parent.height - roundingMax * 5; rounding: shp.roundingMax }
+					PropertyChanges { target: shp; height: col.implicitHeight + Config.rounding * 2; rounding: Config.rounding * 2 }
 				}
 			]
 
@@ -82,28 +83,36 @@ Scope {
 				fillColor: Theme.colors.backgroundAlt
 				strokeWidth: 0
 				startX: 0; startY: shp.height
-				PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: shp.rounding; controlY: shp.height }
-				PathLine { x: shp.rounding; y: shp.rounding }
-				PathQuad { x: shp.rounding * 2; y: 0; controlX: shp.rounding; controlY: 0 }
-				PathLine { x: shp.width - shp.rounding * 2; y: 0 }
-				PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width - shp.rounding; controlY: 0 }
-				PathLine { x: shp.width - shp.rounding; y: shp.height - shp.rounding }
-				PathQuad { x: shp.width; y: shp.height; controlX: shp.width - shp.rounding; controlY: shp.height }
+				PathLine { x: shp.width; y: shp.height }
+				// Bottom-right corner
+				PathQuad { x: shp.width - shp.rounding; y: shp.height - shp.rounding; controlX: shp.width - shp.rounding; controlY: shp.height }
+				PathLine { x: shp.width - shp.rounding; y: shp.rounding }
+				// Top-right corner
+				PathQuad { x: shp.width - shp.rounding * 2; y: 0; controlX: shp.width - shp.rounding; controlY: 0 }
+				PathLine { x: shp.rounding * 2; y: 0 }
+				// Top-left corner
+				PathQuad { x: shp.rounding; y: shp.rounding; controlX: shp.rounding; controlY: 0 }
+				PathLine { x: shp.rounding; y: shp.height - shp.rounding }
+				// Bottom-left corner
+				PathQuad { x: 0; y: shp.height; controlX: shp.rounding; controlY: shp.height }
 			}
 		}
 
 		ColumnLayout {
 			id: col
-			anchors.fill: shp
-			anchors.leftMargin: shp.rounding * 2
-			anchors.rightMargin: shp.rounding * 2
-			anchors.topMargin: shp.rounding
+			property int minimumWidth: 350
+			anchors.top: shp.top
+            anchors.left: shp.left
+            anchors.right: shp.right
+            anchors.leftMargin: shp.padding
+            anchors.rightMargin: shp.padding
+			anchors.topMargin: shp.padding / 2
 			Keys.onEscapePressed: root.visible = false
-			spacing: 0
+
 			TextField {
 				id: searchBox
-				Layout.fillWidth: true
 				implicitHeight: 40
+				implicitWidth: col.minimumWidth
 				font.bold: true
 				font.family: "JetBrains Mono"
 				focus: root.visible
@@ -138,10 +147,9 @@ Scope {
 					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
+				implicitHeight: contentHeight / DesktopEntries.applications.values.length * 5
 				Layout.fillWidth: true
-				implicitHeight: 220
 				clip: true
-				spacing: 5
 				highlightMoveDuration: 500
 				highlight: Rectangle {
 					width: appsList.width
