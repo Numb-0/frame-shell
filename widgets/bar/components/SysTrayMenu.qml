@@ -58,6 +58,7 @@ Scope {
         anchors {
             top: true
             right: true
+            left: true
         }
 
         QsMenuOpener {
@@ -68,7 +69,7 @@ Scope {
         Shape {
             id: shp
             property real margin: 20
-            property real roundingMax: Config.rounding * 2
+            // property real roundingMax: Config.rounding * 2
             property real rounding: 0
             anchors.top: parent.top
             anchors.right: parent.right
@@ -88,7 +89,7 @@ Scope {
                 State {
                     name: "visible"
                     when: root.visible
-                    PropertyChanges { target: shp; rounding: roundingMax; width: parent.width - roundingMax * 2 }
+                    PropertyChanges { target: shp; rounding: Config.rounding * 2; width: menuListView.implicitWidth }
                 }
             ]
 
@@ -133,13 +134,15 @@ Scope {
             anchors.margins: 10
             spacing: 10
             ListView {
-                implicitWidth: 220
+                id: menuListView
+                implicitWidth: 280
+                Layout.fillWidth: true
                 implicitHeight: contentHeight
                 model: ScriptModel {
                     values: opener.children.values.filter(m => m.text != "")
                 }
                 delegate: Button {
-                    implicitWidth: parent?.width
+                    implicitWidth: menuListView.implicitWidth - Config.rounding * 2
                     onClicked: {
                         root.visible = false
                         modelData.triggered()
