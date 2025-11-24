@@ -14,9 +14,12 @@ IconButton {
     id: iconButton
     required property var modelData
     property var menu: SysTrayMenu { modelData: iconButton.modelData }
-    iconSource: modelData?.icon || "";
-    iconSize: 24
+    iconSource: Quickshell.iconPath(iconDict[modelData?.title || modelData?.tooltipTitle] || modelData?.title.toLowerCase())
+    iconSize: 30
     onClicked: menu.toggle()
+    property var iconDict: {
+        "DiscordCanary": "discord-canary",
+    }
 }
 
 

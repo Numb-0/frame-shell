@@ -122,6 +122,7 @@ Scope {
             spacing: 0
             Bluetooth { Layout.minimumWidth: col.minimumWidth }
             PowerProfiles { Layout.minimumWidth: col.minimumWidth }
+            // Player { Layout.minimumWidth: col.minimumWidth }
         }
     }
 }

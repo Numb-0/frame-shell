@@ -69,6 +69,7 @@ ColumnLayout {
             }
             iconName: "refresh"
             iconColor: Theme.colors.green
+            iconSize: 30
             
             RotationAnimation {
                 id: rotationAnimation
@@ -152,6 +153,7 @@ ColumnLayout {
             MaterialButton {
                 iconName: modelData.connected ? "link_off" : "link"
                 iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
+                iconSize: 30
                 onClicked: {
                     if (modelData.connected) {
                         modelData.disconnect()
