@@ -180,12 +180,16 @@ Scope {
 					Keys.onReturnPressed: activate()
 				}
 				remove: Transition {
-					NumberAnimation { properties: "x"; duration: 600; from: 0; to: 300; easing.type: Easing.InOutQuad }
-					NumberAnimation { properties: "opacity"; duration: 400; from: 1; to: 0; easing.type: Easing.OutExpo }
+					ParallelAnimation {
+						NumberAnimation { properties: "x"; duration: 600; from: 0; to: 300; easing.type: Easing.InOutQuad }
+						NumberAnimation { properties: "opacity"; duration: 400; from: 1; to: 0; easing.type: Easing.OutExpo }
+					}
 				}
 				add: Transition {
-					NumberAnimation { properties: "x"; duration: 600; from: 260; to: 0; easing.type: Easing.OutExpo }
-					NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
+					ParallelAnimation {
+						NumberAnimation { properties: "x"; duration: 600; from: 260; to: 0; easing.type: Easing.OutExpo }
+						NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
+					}
 				}
 				displaced: Transition {
 					NumberAnimation { properties: "y"; duration: 300; easing.type: Easing.OutExpo }

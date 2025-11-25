@@ -61,6 +61,7 @@ ColumnLayout {
         }
         MaterialButton {
             id: refreshButton
+            // enabled: bt?.enabled && !bt?.discovering
             onClicked: {
                 bt.discovering = true;
                 rotationAnimation.loops = RotationAnimation.Infinite
@@ -68,7 +69,7 @@ ColumnLayout {
                 discoveryTimer.start()
             }
             iconName: "refresh"
-            iconColor: Theme.colors.green
+            iconColor: bt?.enabled ? Theme.colors.green : Theme.colors.gray
             iconSize: 30
             
             RotationAnimation {
@@ -104,9 +105,10 @@ ColumnLayout {
             id: deviceListView
             anchors.fill: parent
             snapMode: ListView.SnapToItem
+            property int showCount: count < 3 ? count : 3
             clip: true
             model: ScriptModel {
-                values: Bluetooth?.devices.values
+                values: Bluetooth?.devices.values.filter((dev) => dev.deviceName !== "")
             }
             states: [
                 State {
@@ -117,7 +119,7 @@ ColumnLayout {
                 State {
                     name: "visible"
                     when: listVisible
-                    PropertyChanges { target: deviceListView; implicitHeight: contentHeight * 3 / count }
+                    PropertyChanges { target: deviceListView; implicitHeight: contentHeight * showCount / count }
                 }
             ]
             transitions: [
@@ -152,6 +154,8 @@ ColumnLayout {
                 }
                 CustomText {
                     text: modelData.deviceName
+                    elide: Text.ElideRight
+                    Layout.fillWidth: true
                 }
                 Item { Layout.fillWidth: true }
                 MaterialButton {
@@ -168,6 +172,7 @@ ColumnLayout {
                     iconName: modelData.connected ? "link_off" : "link"
                     iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
                     iconSize: 30
+                    iconPadding: 0
                     onClicked: {
                         if (modelData.connected) {
                             modelData.disconnect()
@@ -177,6 +182,7 @@ ColumnLayout {
                     }
                 }
                 MaterialButton {
+                    visible: modelData.paired
                     iconName: "delete"
                     iconColor: Theme.colors.red
                     iconSize: 30
@@ -185,19 +191,23 @@ ColumnLayout {
                     }
                 }
             }
-            Component.onDestruction: {
-                deviceListView.model = null
-            }
             remove: Transition {
-                NumberAnimation { properties: "x"; duration: 600; from: 0; to: 300; easing.type: Easing.InOutQuad }
-                NumberAnimation { properties: "opacity"; duration: 400; from: 1; to: 0; easing.type: Easing.OutExpo }
+                ParallelAnimation {
+                    NumberAnimation { properties: "x"; duration: 600; from: 0; to: 300; easing.type: Easing.InOutQuad }
+                    NumberAnimation { properties: "opacity"; duration: 400; from: 1; to: 0; easing.type: Easing.OutExpo }
+                }
             }
             add: Transition {
-                NumberAnimation { properties: "x"; duration: 600; from: 260; to: 0; easing.type: Easing.OutExpo }
-                NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
+                ParallelAnimation {
+                    NumberAnimation { properties: "x"; duration: 600; from: 260; to: 0; easing.type: Easing.OutExpo }
+                    NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
+                }
             }
             displaced: Transition {
                 NumberAnimation { properties: "y"; duration: 300; easing.type: Easing.OutExpo }
+            }
+            Component.onDestruction: {
+                deviceListView.model = null
             }
         }
         
@@ -205,7 +215,7 @@ ColumnLayout {
         MaterialSymbol {
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 4
+            anchors.topMargin: 2
             icon: "keyboard_arrow_up"
             color: Theme.colors.yellow
             size: 16
@@ -217,7 +227,7 @@ ColumnLayout {
         MaterialSymbol {
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 4
+            anchors.bottomMargin: 2
             icon: "keyboard_arrow_down"
             color: Theme.colors.yellow
             size: 16
