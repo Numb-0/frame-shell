@@ -13,13 +13,14 @@ Button {
     property var iconSize: 20
     property var backgroundColor: "transparent"
     background: Rectangle { color: backgroundColor }
-
-    implicitHeight: iconSize
-    implicitWidth: iconSize
+    property int iconPadding: 0
+    implicitHeight: iconSize + iconPadding * 2
+    implicitWidth: iconSize + iconPadding * 2
 
     IconImage {
         id: icon
         anchors.fill: parent
+        anchors.margins: iconPadding
         source: iconSource
         smooth: true
         asynchronous: true

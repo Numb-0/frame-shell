@@ -30,7 +30,7 @@ Rectangle {
                 // maximumLineCount: 2
             }
             MaterialButton {
-                contentPadding: 2
+                iconPadding: 2
                 // backgroundColor: Theme.colors.yellow
                 iconName: "close"
                 iconColor: Theme.colors.red

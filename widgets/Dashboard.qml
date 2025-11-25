@@ -113,16 +113,16 @@ Scope {
 
         ColumnLayout {
             id: col
-            property int minimumWidth: 350
+            property int preferredWidth: 350
             anchors.bottom: shp.bottom
             anchors.left: shp.left
             anchors.right: shp.right
             anchors.leftMargin: shp.padding
             anchors.rightMargin: shp.padding
             spacing: 0
-            Bluetooth { Layout.minimumWidth: col.minimumWidth }
-            PowerProfiles { Layout.minimumWidth: col.minimumWidth }
-            Players { Layout.minimumWidth: col.minimumWidth }
+            Bluetooth { Layout.preferredWidth: col.preferredWidth }
+            PowerProfiles { Layout.preferredWidth: col.preferredWidth }
+            Players { Layout.preferredWidth: col.preferredWidth }
         }
     }
 }

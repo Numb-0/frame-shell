@@ -18,12 +18,11 @@ Button {
     property alias materialIcon: symbol
     property alias buttonBackground: bgrect
     property var iconSize: 25
-    property var contentPadding: 4
+    property var iconPadding: 5
 
     background: Item {
-        implicitHeight: symbol.implicitHeight + contentPadding * 2
-        implicitWidth: symbol.implicitWidth + contentPadding * 4
-
+        implicitHeight: symbol.implicitHeight + iconPadding * 2
+        implicitWidth: symbol.implicitWidth + iconPadding * 4
         Rectangle {
             id: bgrect
             anchors.fill: parent

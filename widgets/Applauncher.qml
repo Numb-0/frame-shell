@@ -147,20 +147,20 @@ Scope {
 					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
-				implicitHeight: 40 * 5 // display 5 items height
+				implicitHeight: contentHeight * 5 / count // Show up to 5 items without scrolling
 				Layout.fillWidth: true
 				clip: true
 				highlightMoveDuration: 500
 				highlight: Rectangle {
 					width: appsList.width
-					color: Theme.colors.backgroundHighlight;
+					color: Theme.colors.backgroundHighlight
 					ColorBehavior on color {}
 					radius: Config.rounding
 				}
 				currentIndex: -1
 
 				delegate: RowLayout {
-					id: row
+					implicitHeight: 40
 					implicitWidth: appsList.width
 					spacing: 10
 					IconImage {
