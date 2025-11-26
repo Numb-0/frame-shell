@@ -11,6 +11,7 @@ import qs.utils
 
 
 ColumnLayout {
+    id: root
     property var bt: Bluetooth?.defaultAdapter
     property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
     property bool listVisible: false
@@ -23,6 +24,9 @@ ColumnLayout {
             id: btToggleButton
             onClicked: { 
                 bt.enabled = !bt?.enabled
+                if (!bt?.enabled) {
+                    listVisible = false
+                }
                 wiggleAnimation.start()
             }
             iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
@@ -42,16 +46,24 @@ ColumnLayout {
         Item { Layout.fillWidth: true }
         MaterialButton {
             id: toggleListButton
+            property bool rotated: false
+            enabled: bt?.enabled
             onClicked: {
                 listVisible = !listVisible
-                rotateArrow.start()
             }
             iconName: "keyboard_arrow_right"
             iconColor: Theme.colors.foreground
             iconSize: 30
+
+            Connections {
+                target: root
+                onListVisibleChanged: {
+                    rotateArrowDown.start()
+                }
+            }
             
             RotationAnimation {
-                id: rotateArrow
+                id: rotateArrowDown
                 target: toggleListButton
                 from: listVisible ? 0 : 90
                 to: listVisible ? 90 : 0
@@ -61,7 +73,7 @@ ColumnLayout {
         }
         MaterialButton {
             id: refreshButton
-            // enabled: bt?.enabled && !bt?.discovering
+            enabled: bt?.enabled && !bt?.discovering
             onClicked: {
                 bt.discovering = true;
                 rotationAnimation.loops = RotationAnimation.Infinite
@@ -69,7 +81,7 @@ ColumnLayout {
                 discoveryTimer.start()
             }
             iconName: "refresh"
-            iconColor: bt?.enabled ? Theme.colors.green : Theme.colors.gray
+            iconColor: bt?.enabled ? Theme.colors.green : Theme.colors.red
             iconSize: 30
             
             RotationAnimation {
