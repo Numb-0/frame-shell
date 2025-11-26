@@ -57,7 +57,7 @@ ColumnLayout {
 
             Connections {
                 target: root
-                onListVisibleChanged: {
+                function onListVisibleChanged() {
                     rotateArrowDown.start()
                 }
             }
