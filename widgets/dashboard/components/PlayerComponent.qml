@@ -25,17 +25,36 @@ RowLayout {
         Layout.fillWidth: true
         spacing: 0
         CustomText {
+            id: trackTitle
             text: modelData.trackTitle
             font.pixelSize: 15
             elide: Text.ElideRight
             Layout.preferredWidth: 300
+            onTextChanged: {
+                fadeAnimationTrack.start()
+            }
+            Animations.Fade {
+                id: fadeAnimationTrack
+                target: trackTitle
+                duration: 400
+            }
         }
         CustomText {
+            id: artistAlbumText
             text: modelData.trackAlbum + " - " + modelData.trackArtist
             font.pixelSize: 13
             color: Theme.colors.foreground
             elide: Text.ElideRight
             Layout.preferredWidth: 300
+            transform: Translate { id: slideTransform }
+            onTextChanged: {
+                fadeAnimationTrackAlbum.start()
+            }
+            Animations.Fade {
+                id: fadeAnimationTrackAlbum
+                target: artistAlbumText
+                duration: 400
+            }
         }
         
         Item {
@@ -44,16 +63,12 @@ RowLayout {
             Layout.preferredHeight: 30
             Layout.topMargin: 5
             
-            property real progress: 0
+            property real progress: modelData.position / modelData.length
             property bool seeking: false
             property real seekProgress: 0
             property point pressPosition: Qt.point(0, 0)
             property bool animating: false
             property real targetProgress: 0
-            
-            Component.onCompleted: {
-                progress = modelData.position / modelData.length
-            }
             
             Connections {
                 target: modelData
