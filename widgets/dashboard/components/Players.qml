@@ -10,13 +10,14 @@ import qs.utils
 
 
 
-ListView {
-    id: deviceListView
-    implicitHeight: contentHeight
+ColumnLayout {
     Layout.fillWidth: true
-    clip: true
-    model: ScriptModel {
-        values: Mpris.players.values
+    spacing: 10
+    
+    Repeater {
+        model: ScriptModel {
+            values: Mpris.players.values
+        }
+        delegate: PlayerComponent {}
     }
-    delegate: PlayerComponent {}
 }

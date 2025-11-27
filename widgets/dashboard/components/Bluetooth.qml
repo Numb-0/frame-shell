@@ -47,7 +47,7 @@ ColumnLayout {
         MaterialButton {
             id: toggleListButton
             property bool rotated: false
-            enabled: bt?.enabled
+            enabled: bt?.enabled ?? false
             onClicked: {
                 listVisible = !listVisible
             }
@@ -73,7 +73,7 @@ ColumnLayout {
         }
         MaterialButton {
             id: refreshButton
-            enabled: bt?.enabled && !bt?.discovering
+            enabled: (bt?.enabled && !bt?.discovering) ?? false
             onClicked: {
                 bt.discovering = true;
                 rotationAnimation.loops = RotationAnimation.Infinite
@@ -221,30 +221,6 @@ ColumnLayout {
             Component.onDestruction: {
                 deviceListView.model = null
             }
-        }
-        
-        // Top arrow indicator
-        MaterialSymbol {
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: 2
-            icon: "keyboard_arrow_up"
-            color: Theme.colors.yellow
-            size: 16
-            visible: listVisible && deviceListView.contentY > 0
-            // opacity: 1
-        }
-        
-        // Bottom arrow indicator
-        MaterialSymbol {
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottomMargin: 2
-            icon: "keyboard_arrow_down"
-            color: Theme.colors.yellow
-            size: 16
-            visible: listVisible && deviceListView.contentY < deviceListView.contentHeight - deviceListView.height
-            // opacity: 0.6
         }
     }
 }

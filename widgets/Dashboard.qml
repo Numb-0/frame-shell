@@ -25,7 +25,7 @@ Scope {
         id: window
         color: "transparent"
         // Wayland/Hyprland
-        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
+        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name && !root.visible) ?? window.screen
         mask: Region { item: shp }
         focusable: true
         implicitWidth: shp.implicitWidth
@@ -36,6 +36,10 @@ Scope {
         exclusiveZone: -1
         // Distance from the bar since we using exclusiveZone = -1
         margins.top: 40
+
+        onScreenChanged: {
+            root.visible = false
+        }
 
         Shape {
             id: shp

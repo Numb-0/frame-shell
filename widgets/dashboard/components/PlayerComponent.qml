@@ -10,6 +10,9 @@ import qs.utils
 
 RowLayout {
     required property var modelData
+    Layout.leftMargin: Config.rounding * 2
+    Layout.rightMargin: Config.rounding * 2
+    Layout.bottomMargin: Config.rounding * 2
     FrameAnimation {
         // only emit the signal when the position is actually changing.
         running: modelData.playbackState == MprisPlaybackState.Playing
@@ -17,19 +20,6 @@ RowLayout {
         onTriggered: modelData.positionChanged()
     }
     spacing: 0
-    IconButton {
-        visible: modelData.desktopEntry !== ""
-        iconSource: Quickshell.iconPath(modelData.desktopEntry)
-        iconSize: 25
-        iconPadding: 10
-        // Component.onCompleted: console.log("Icon source:", modelData.desktopEntry)
-    }
-    MaterialButton {
-        // Fallback icon when no desktop entry is available
-        visible: modelData.desktopEntry == ""
-        iconName: "music_note"
-        iconColor: Theme.colors.green
-    }
     ColumnLayout {
         Layout.alignment: Qt.AlignVCenter
         Layout.fillWidth: true
@@ -58,6 +48,8 @@ RowLayout {
             property bool seeking: false
             property real seekProgress: 0
             property point pressPosition: Qt.point(0, 0)
+            property bool animating: false
+            property real targetProgress: 0
             
             Component.onCompleted: {
                 progress = modelData.position / modelData.length
@@ -66,9 +58,21 @@ RowLayout {
             Connections {
                 target: modelData
                 function onPositionChanged() {
-                    if (!progressBarContainer.seeking) {
+                    if (!progressBarContainer.seeking && !progressBarContainer.animating) {
                         progressBarContainer.progress = modelData.position / modelData.length
                     }
+                }
+            }
+            
+            NumberAnimation {
+                id: progressAnimation
+                target: progressBarContainer
+                property: "progress"
+                duration: 300
+                easing.type: Easing.OutCubic
+                onFinished: {
+                    progressBarContainer.animating = false
+                    modelData.position = progressBarContainer.targetProgress * modelData.length
                 }
             }
             
@@ -80,18 +84,20 @@ RowLayout {
                     var ctx = getContext("2d")
                     ctx.reset()
                     
-                    var w = width
+                    var handleRadius = 6
+                    var padding = handleRadius
+                    var w = width - (padding * 2)
                     var h = height
                     var centerY = h / 2
                     var amplitude = 8
                     var frequency = 0.15
-                    var progressX = w * (parent.seeking ? parent.seekProgress : parent.progress)
+                    var progressX = padding + (w * (parent.seeking ? parent.seekProgress : parent.progress))
                     
                     // Draw background wave
                     ctx.beginPath()
-                    ctx.moveTo(0, centerY)
-                    for (var x = 0; x <= w; x += 2) {
-                        var y = centerY + Math.sin(x * frequency) * amplitude
+                    ctx.moveTo(padding, centerY)
+                    for (var x = padding; x <= w + padding; x += 2) {
+                        var y = centerY + Math.sin((x - padding) * frequency) * amplitude
                         ctx.lineTo(x, y)
                     }
                     ctx.strokeStyle = Theme.colors.foreground
@@ -101,9 +107,9 @@ RowLayout {
                     
                     // Draw progress wave
                     ctx.beginPath()
-                    ctx.moveTo(0, centerY)
-                    for (var x = 0; x <= progressX; x += 2) {
-                        var y = centerY + Math.sin(x * frequency) * amplitude
+                    ctx.moveTo(padding, centerY)
+                    for (var x = padding; x <= progressX; x += 2) {
+                        var y = centerY + Math.sin((x - padding) * frequency) * amplitude
                         ctx.lineTo(x, y)
                     }
                     ctx.strokeStyle = Theme.colors.green
@@ -113,8 +119,8 @@ RowLayout {
                     
                     // Draw handle
                     ctx.beginPath()
-                    var handleY = centerY + Math.sin(progressX * frequency) * amplitude
-                    ctx.arc(progressX, handleY, 6, 0, 2 * Math.PI)
+                    var handleY = centerY + Math.sin((progressX - padding) * frequency) * amplitude
+                    ctx.arc(progressX, handleY, handleRadius, 0, 2 * Math.PI)
                     ctx.fillStyle = Theme.colors.green
                     ctx.fill()
                 }
@@ -145,34 +151,19 @@ RowLayout {
                 }
                 onReleased: function(mouse) {
                     var newProgress = Math.max(0, Math.min(1, mouse.x / width))
-                    modelData.position = newProgress * modelData.length
-                    parent.seeking = false
+                    
+                    if (parent.seeking) {
+                        // If dragging, update immediately
+                        modelData.position = newProgress * modelData.length
+                        parent.seeking = false
+                    } else {
+                        // If clicking, animate to position
+                        parent.animating = true
+                        parent.targetProgress = newProgress
+                        progressAnimation.to = newProgress
+                        progressAnimation.start()
+                    }
                 }
-            }
-        }
-        
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 5
-            
-            function formatTime(seconds) {
-                var minutes = Math.floor(seconds / 60)
-                var secs = Math.floor(seconds % 60)
-                return minutes + ":" + (secs < 10 ? "0" : "") + secs
-            }
-            
-            CustomText {
-                text: parent.formatTime(modelData.position)
-                font.pixelSize: 11
-                color: Theme.colors.foreground
-            }
-            
-            Item { Layout.fillWidth: true }
-            
-            CustomText {
-                text: parent.formatTime(modelData.length)
-                font.pixelSize: 11
-                color: Theme.colors.foreground
             }
         }
         
