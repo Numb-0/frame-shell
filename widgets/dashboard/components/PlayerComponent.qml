@@ -186,25 +186,49 @@ RowLayout {
             spacing: 0
             Layout.alignment: Qt.AlignHCenter
             MaterialButton {
+                id: previousButton
                 iconName: "skip_previous"
                 iconColor: Theme.colors.green
                 iconPadding: 0
                 enabled: modelData.canGoPrevious
-                onClicked: modelData.previous()
+                onClicked: {
+                    modelData.previous()
+                    wiggleAnimationPrevious.start()
+                }
+                Animations.WiggleAnimation {
+                    id: wiggleAnimationPrevious
+                    target: previousButton
+                }
             }
             MaterialButton {
                 id: playPauseButton
                 iconName: modelData.isPlaying ? "pause" : "play_arrow"
                 iconColor: Theme.colors.green
                 iconPadding: 0
-                onClicked: modelData.togglePlaying() 
+                onClicked: {
+                    modelData.togglePlaying()
+                    wiggleAnimationPlayPause.start()
+                }
+                Animations.WiggleAnimation {
+                    id: wiggleAnimationPlayPause
+                    target: playPauseButton
+                }
             }
             MaterialButton {
+                id: nextButton
                 iconName: "skip_next"
                 iconColor: Theme.colors.green
                 iconPadding: 0
                 enabled: modelData.canGoNext
-                onClicked: modelData.next()
+                onClicked: {
+                    modelData.next()
+                    wiggleAnimationNext.start()
+                }
+
+                Animations.WiggleAnimation {
+                    id: wiggleAnimationNext
+                    target: nextButton
+                }
             }
         }
     }

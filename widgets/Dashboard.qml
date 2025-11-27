@@ -126,6 +126,7 @@ Scope {
             spacing: 0
             Bluetooth { Layout.preferredWidth: col.preferredWidth }
             PowerProfiles { Layout.preferredWidth: col.preferredWidth }
+            Brightness { Layout.preferredWidth: col.preferredWidth }
             Players { Layout.preferredWidth: col.preferredWidth }
         }
     }

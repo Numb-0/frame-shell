@@ -19,7 +19,6 @@ ColumnLayout {
     
     RowLayout {
         spacing: 0
-
         MaterialButton {
             id: btToggleButton
             onClicked: { 
@@ -40,7 +39,6 @@ ColumnLayout {
         }
         CustomText {
             text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.name).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
-            horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
         }
         Item { Layout.fillWidth: true }

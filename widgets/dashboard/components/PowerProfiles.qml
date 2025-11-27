@@ -11,6 +11,7 @@ import qs.config
 import qs.utils
 
 RowLayout {
+    spacing: 0
     property string profile: PowerProfileService?.profile ?? "balanced"
 
     MaterialButton {
