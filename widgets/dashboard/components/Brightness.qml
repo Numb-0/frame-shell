@@ -12,7 +12,7 @@ import qs.services
 
 RowLayout {
     Layout.fillWidth: true
-    spacing: 10
+    spacing: 0
     
     property var brightnessIcons: ({
         low: "brightness_3",
@@ -47,9 +47,6 @@ RowLayout {
         }
 
         background: Rectangle {
-            border.width: 0
-            // width: brightnessSlider.availableWidth
-            // height: brightnessSlider.availableHeight
             color: Theme.colors.backgroundHighlight
             ColorBehavior on color {}
             radius: Config.rounding
@@ -74,6 +71,7 @@ RowLayout {
     CustomText {
         text: BrightnessService.brightnessPercent + "%"
         Layout.rightMargin: 15
+        Layout.leftMargin: 5
         color: Theme.colors.orange
     }
 }
