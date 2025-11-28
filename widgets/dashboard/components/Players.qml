@@ -8,16 +8,63 @@ import Quickshell.Services.Mpris
 import qs.config
 import qs.utils
 
-
-
-ColumnLayout {
+ListView {
     Layout.fillWidth: true
-    spacing: 10
+    implicitHeight: contentHeight
+    interactive: false
+    Layout.leftMargin: Config.rounding * 2
+    Layout.rightMargin: Config.rounding * 2
+    Layout.bottomMargin: Config.rounding * 2
     
-    Repeater {
-        model: ScriptModel {
-            values: Mpris.players.values
+    model: ScriptModel {
+        values: Mpris.players.values.filter(p => p.canPlay)
+    }
+    delegate: PlayerComponent {}
+    
+    Behavior on implicitHeight {
+        NumberAnimation {
+            duration: 600
+            easing.type: Easing.OutCubic
         }
-        delegate: PlayerComponent {}
+    }
+    
+    add: Transition {
+        ParallelAnimation {
+            NumberAnimation {
+                properties: "opacity"
+                from: 0
+                to: 1
+                duration: 600
+                easing.type: Easing.OutCubic
+            }
+            NumberAnimation {
+                properties: "y"
+                duration: 600
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+    
+    displaced: Transition {
+        NumberAnimation {
+            properties: "x,y"
+            duration: 600
+            easing.type: Easing.OutCubic
+        }
+    }
+    
+    remove: Transition {
+        NumberAnimation {
+            properties: "opacity"
+            from: 1
+            to: 0
+            duration: 600
+            easing.type: Easing.OutCubic
+        }
+        NumberAnimation {
+            properties: "y"
+            duration: 600
+            easing.type: Easing.InCubic
+        }
     }
 }

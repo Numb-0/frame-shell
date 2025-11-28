@@ -18,14 +18,16 @@ Scope {
 
     GlobalShortcut {
 		name: "dashboard"
-		onPressed: root.visible = !root.visible
+		onPressed: {
+            root.visible = !root.visible
+        }
 	}
 
     PanelWindow {
         id: window
         color: "transparent"
         // Wayland/Hyprland
-        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name && !root.visible) ?? window.screen
+        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
         mask: Region { item: shp }
         focusable: true
         implicitWidth: shp.implicitWidth

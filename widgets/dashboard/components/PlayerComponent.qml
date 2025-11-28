@@ -9,16 +9,17 @@ import qs.config
 import qs.utils
 
 RowLayout {
+    id: root
     required property var modelData
-    Layout.leftMargin: Config.rounding * 2
-    Layout.rightMargin: Config.rounding * 2
-    Layout.bottomMargin: Config.rounding * 2
+    width: ListView.view ? ListView.view.width : parent.width
+
     FrameAnimation {
         // only emit the signal when the position is actually changing.
         running: modelData.playbackState == MprisPlaybackState.Playing
         // emit the positionChanged signal every frame.
         onTriggered: modelData.positionChanged()
     }
+
     spacing: 0
     ColumnLayout {
         Layout.alignment: Qt.AlignVCenter
