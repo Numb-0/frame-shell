@@ -8,20 +8,32 @@ import Quickshell.Services.Mpris
 import qs.config
 import qs.utils
 
-RowLayout {
+Item {
     id: root
     required property var modelData
     width: ListView.view ? ListView.view.width : parent.width
+    height: contentLayout.implicitHeight + 10
 
     FrameAnimation {
         // only emit the signal when the position is actually changing.
         running: modelData.playbackState == MprisPlaybackState.Playing
         // emit the positionChanged signal every frame.
-        onTriggered: modelData.positionChanged()
+        onTriggered: modelData?.positionChanged()
     }
 
-    spacing: 0
-    ColumnLayout {
+    Rectangle { 
+        color: Theme.colors.backgroundHighlight
+        radius: Config.rounding
+        anchors.fill: parent
+        anchors.margins: -5
+    }
+
+    RowLayout {
+        id: contentLayout
+        anchors.fill: parent
+        spacing: 0
+        
+        ColumnLayout {
         Layout.alignment: Qt.AlignVCenter
         Layout.fillWidth: true
         spacing: 0
@@ -42,7 +54,7 @@ RowLayout {
         }
         CustomText {
             id: artistAlbumText
-            text: modelData.trackAlbum + " - " + modelData.trackArtist
+            text: modelData.trackArtist
             font.pixelSize: 13
             color: Theme.colors.foreground
             elide: Text.ElideRight
@@ -231,6 +243,7 @@ RowLayout {
                     target: nextButton
                 }
             }
+        }
         }
     }
 }

@@ -12,10 +12,8 @@ ListView {
     Layout.fillWidth: true
     implicitHeight: contentHeight
     interactive: false
-    Layout.leftMargin: Config.rounding * 2
-    Layout.rightMargin: Config.rounding * 2
-    Layout.bottomMargin: Config.rounding * 2
-    
+    Layout.margins: Config.rounding * 2
+    spacing: 20
     model: ScriptModel {
         values: Mpris.players.values.filter(p => p.canPlay)
     }

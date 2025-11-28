@@ -27,7 +27,7 @@ Scope {
         id: window
         color: "transparent"
         // Wayland/Hyprland
-        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
+        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         mask: Region { item: shp }
         focusable: true
         implicitWidth: shp.implicitWidth

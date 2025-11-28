@@ -22,8 +22,8 @@ ColumnLayout {
         MaterialButton {
             id: btToggleButton
             onClicked: { 
-                bt.enabled = !bt?.enabled
-                if (!bt?.enabled) {
+                bt.enabled = !bt.enabled
+                if (!bt.enabled) {
                     listVisible = false
                 }
                 wiggleAnimation.start()
@@ -45,8 +45,10 @@ ColumnLayout {
         MaterialButton {
             id: toggleListButton
             property bool rotated: false
-            enabled: bt?.enabled ?? false
             onClicked: {
+                if (!bt.enabled) {
+                    bt.enabled = true
+                }
                 listVisible = !listVisible
             }
             iconName: "keyboard_arrow_right"
