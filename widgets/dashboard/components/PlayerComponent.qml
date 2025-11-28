@@ -202,6 +202,7 @@ Item {
                 id: previousButton
                 iconName: "skip_previous"
                 iconColor: Theme.colors.green
+                iconSize: 30
                 iconPadding: 0
                 enabled: modelData.canGoPrevious
                 onClicked: {
@@ -217,6 +218,7 @@ Item {
                 id: playPauseButton
                 iconName: modelData.isPlaying ? "pause" : "play_arrow"
                 iconColor: Theme.colors.green
+                iconSize: 30
                 iconPadding: 0
                 onClicked: {
                     modelData.togglePlaying()
@@ -231,6 +233,7 @@ Item {
                 id: nextButton
                 iconName: "skip_next"
                 iconColor: Theme.colors.green
+                iconSize: 30
                 iconPadding: 0
                 enabled: modelData.canGoNext
                 onClicked: {
