@@ -9,17 +9,21 @@ import Quickshell.Hyprland
 
 Singleton {
     id: root
-    property int brightness: 0
-    property int brightnessPercent: 0
+    property int brightness
+    property int brightnessPercent
+    property string device: ""
     property int maxBrightness: 255
     property int minBrightness: 1
+    property bool updating: false
 
     FileView {
         id: backlightView
-        path: "/sys/class/backlight/"
+        path: device !== "" ? `/sys/class/backlight/${device}/brightness` : ""
         watchChanges: true
         onFileChanged: {
-            updateBrightness()
+            if (!root.updating) {
+                updateBrightness()
+            }
         }
     }
 
@@ -27,24 +31,32 @@ Singleton {
         getBrightnessProcess.running = true
     }
 
+    function setBrightness(percent) {
+        root.updating = true
+        root.brightnessPercent = percent
+        setBrightnessProcess.exec(["brightnessctl", "set", percent + "%"])
+    }
+
     Process {
         id: getBrightnessProcess
-        command: ["bash", "-c", "brightnessctl -m"]
+        command: ["brightnessctl", "-m"]
         stdout: SplitParser {
             onRead: (line) => {
                 line = line.trim()
                 var parts = line.split(",")
                 if (parts.length >= 5) {
+                    root.device = parts[0]
                     root.brightness = parseInt(parts[2])
                     root.brightnessPercent = parseInt(parts[3].replace("%", ""))
                 }
+                root.updating = false
             }
         }
     }
 
     Process {
         id: setBrightnessProcess
-        command: ["bash", "-c", "brightnessctl set " + root.brightnessPercent + "%"]
+        onExited: root.updating = false
     }
 
     Component.onCompleted: {

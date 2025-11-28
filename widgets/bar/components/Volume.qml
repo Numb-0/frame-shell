@@ -31,7 +31,7 @@ RowLayout {
     }
 
     Slider {
-        id: control
+        id: volumeSlider
         Layout.preferredWidth: 80
         Layout.preferredHeight: 15
         value: audioSink?.audio?.volume ?? 0
@@ -40,15 +40,12 @@ RowLayout {
         onValueChanged: audioSink.audio.volume = value
 
         background: Rectangle {
-            border.width: 0
-            width: control.availableWidth
-            height: control.availableHeight
             color: Theme.colors.backgroundHighlight
             ColorBehavior on color {}
             radius: Config.rounding
 
             Rectangle {
-                width: control.visualPosition * parent.width
+                width: volumeSlider.visualPosition * parent.width
                 height: parent.height
                 color: Theme.colors.green
                 ColorBehavior on color {}
@@ -57,8 +54,8 @@ RowLayout {
         }
 
         handle: Rectangle {
-            x: control.leftPadding + control.visualPosition * (control.availableWidth - width)
-            y: control.topPadding + control.availableHeight / 2 - height / 2
+            x: volumeSlider.visualPosition * (volumeSlider.implicitWidth - width)
+            y: volumeSlider.implicitHeight / 2 - height / 2
             color: Theme.colors.green
             ColorBehavior on color {}
             radius: Config.rounding
