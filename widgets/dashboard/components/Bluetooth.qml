@@ -23,9 +23,7 @@ ColumnLayout {
             id: btToggleButton
             onClicked: { 
                 bt.enabled = !bt.enabled
-                if (!bt.enabled) {
-                    listVisible = false
-                }
+                listVisible = bt.enabled ? listVisible : false
                 wiggleAnimation.start()
             }
             iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"

@@ -18,7 +18,7 @@ RowLayout {
         id: profileButton
         enabled: PowerProfileService.canChange
         iconName: profile === "performance" ? "bolt" : profile === "balanced" ? "power" : "energy_savings_leaf"
-        iconColor: Theme.colors.green
+        iconColor: Theme.colors.yellow
         iconSize: 30
         onClicked: {
             PowerProfileService.cycleProfile()

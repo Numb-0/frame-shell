@@ -129,6 +129,7 @@ Scope {
             Bluetooth { Layout.preferredWidth: col.preferredWidth }
             PowerProfiles { Layout.preferredWidth: col.preferredWidth }
             Brightness { Layout.preferredWidth: col.preferredWidth }
+            Volume { Layout.preferredWidth: col.preferredWidth }
             Players { Layout.preferredWidth: col.preferredWidth }
         }
     }

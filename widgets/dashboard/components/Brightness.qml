@@ -71,7 +71,7 @@ RowLayout {
     CustomText {
         text: BrightnessService.brightnessPercent + "%"
         Layout.rightMargin: 15
-        Layout.leftMargin: 5
+        Layout.leftMargin: 10
         color: Theme.colors.orange
     }
 }
