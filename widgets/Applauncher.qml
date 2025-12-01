@@ -147,7 +147,7 @@ Scope {
 					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
-				implicitHeight: contentHeight * 5 / count // Show up to 5 items without scrolling
+				implicitHeight: contentHeight * 5 / count ?? 1 // Show up to 5 items without scrolling
 				Layout.fillWidth: true
 				clip: true
 				highlightMoveDuration: 500

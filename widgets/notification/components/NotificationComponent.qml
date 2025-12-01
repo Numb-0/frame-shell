@@ -29,6 +29,7 @@ Rectangle {
                 elide: Text.ElideRight
                 // maximumLineCount: 2
             }
+            Item { Layout.fillWidth: true } // Spacer
             MaterialButton {
                 iconPadding: 2
                 // backgroundColor: Theme.colors.yellow
@@ -47,8 +48,8 @@ Rectangle {
         }
         Image {
             source: modelData.image
-            sourceSize.width: 50
-            sourceSize.height: 50
+            sourceSize.width: 40
+            sourceSize.height: 40
         }
     }
 }
