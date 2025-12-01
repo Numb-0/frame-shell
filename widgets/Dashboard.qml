@@ -119,7 +119,7 @@ Scope {
 
         ColumnLayout {
             id: col
-            property int preferredWidth: 400
+            property int preferredWidth: 500
             anchors.bottom: shp.bottom
             anchors.left: shp.left
             anchors.right: shp.right

@@ -26,43 +26,29 @@ ListView {
         }
     }
     
-    add: Transition {
+    remove: Transition {
         ParallelAnimation {
             NumberAnimation {
                 properties: "opacity"
-                from: 0
-                to: 1
+                from: 1
+                to: 0
                 duration: 600
                 easing.type: Easing.OutCubic
             }
             NumberAnimation {
-                properties: "y"
+                properties: "scale"
+                from: 1
+                to: 0.7
                 duration: 600
-                easing.type: Easing.OutCubic
+                easing.type: Easing.InBack
             }
-        }
-    }
-    
-    displaced: Transition {
-        NumberAnimation {
-            properties: "x,y"
-            duration: 600
-            easing.type: Easing.OutCubic
-        }
-    }
-    
-    remove: Transition {
-        NumberAnimation {
-            properties: "opacity"
-            from: 1
-            to: 0
-            duration: 600
-            easing.type: Easing.OutCubic
-        }
-        NumberAnimation {
-            properties: "y"
-            duration: 600
-            easing.type: Easing.InCubic
+            NumberAnimation {
+                properties: "y"
+                from: 0
+                to: -340
+                duration: 600
+                easing.type: Easing.InCubic
+            }
         }
     }
 }
