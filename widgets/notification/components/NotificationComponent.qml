@@ -23,10 +23,10 @@ Rectangle {
         RowLayout {
             CustomText {
                 Layout.fillWidth: true
-                // Layout.maximumWidth: 200
+                Layout.maximumWidth: window.width/3
                 text: modelData.summary
                 // wrapMode: Text.Wrap
-                // elide: Text.ElideRight
+                elide: Text.ElideRight
                 // maximumLineCount: 2
             }
             MaterialButton {

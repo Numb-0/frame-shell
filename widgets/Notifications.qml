@@ -20,12 +20,12 @@ Scope {
         exclusiveZone: 0
         color: "transparent"
         margins.top: 20
-        implicitWidth: 600
 
         anchors {
             top: true
             left: true
             bottom: true
+            right: true
         }
         
         mask: Region {
