@@ -29,7 +29,15 @@ Scope {
         }
         
         mask: Region {
-            item: notifList.contentItem
+            item: maskRect
+        }
+
+        Item {
+            id: maskRect
+            x: 0
+            y: 0
+            width: notifList.contentItem.childrenRect.width
+            height: notifList.contentHeight
         }
 
         ListView {
@@ -37,6 +45,7 @@ Scope {
             model: ScriptModel {
                 values: NotificationManager.list
             }
+            width: contentItem.childrenRect.width
             anchors.fill: parent
             highlightFollowsCurrentItem: false
             delegate: NotificationComponent {}
