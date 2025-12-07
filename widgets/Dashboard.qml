@@ -23,114 +23,115 @@ Scope {
         }
 	}
 
-    PanelWindow {
-        id: window
-        color: "transparent"
-        // Wayland/Hyprland
-        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
-        mask: Region { item: shp }
-        focusable: true
-        implicitWidth: shp.implicitWidth
-        anchors {
-            top: true
-            bottom: true
-        }
-        exclusiveZone: -1
-        // Distance from the bar since we using exclusiveZone = -1
-        margins.top: 40
+    Variants {
+        model: Quickshell.screens
 
-        onScreenChanged: {
-            root.visible = false
-        }
+        PanelWindow {
+            property var modelData
+            id: window
+            color: "transparent"
+            screen: modelData
+            mask: Region { item: shp }
+            focusable: true
+            implicitWidth: shp.implicitWidth
+            anchors {
+                top: true
+                bottom: true
+            }
+            exclusiveZone: -1
+            margins.top: 40
 
-        Shape {
-            id: shp
-            property real padding: Config.rounding * 2
-            property real rounding: 0
-            anchors.top: window.top
-            width: col.implicitWidth + Config.rounding * 4
-            states: [
-                State {
-                    name: "hidden"
-                    when: !root.visible
-                    PropertyChanges { target: shp; rounding: 0; height: 0 }
-                },
-                State {
-                    name: "visible"
-                    when: root.visible
-                    PropertyChanges { target: shp; rounding: Config.rounding * 2; height: col.implicitHeight  }
-                }
-            ]
-
-            transitions: [
-                Transition {
-                    from: "hidden"; to: "visible"
-                    ParallelAnimation {
-                        NumberAnimation {
-                            properties: "height"
-                            duration: 500
-                            easing.type: Easing.OutBack
-                        }
-                        NumberAnimation {
-                            properties: "rounding"
-                            duration: 500
-                            easing.type: Easing.OutCirc
-                        }
+            property bool isVisible: root.visible && Hyprland.focusedMonitor?.name === modelData.name
+           
+            Shape {
+                id: shp
+                property real padding: Config.rounding * 2
+                property real rounding: 0
+                anchors.top: window.top
+                width: col.implicitWidth + Config.rounding * 4
+                states: [
+                    State {
+                        name: "hidden"
+                        when: !window.isVisible
+                        PropertyChanges { target: shp; rounding: 0; height: 0 }
+                    },
+                    State {
+                        name: "visible"
+                        when: window.isVisible
+                        PropertyChanges { target: shp; rounding: Config.rounding * 2; height: col.implicitHeight  }
                     }
-                },
+                ]
 
-                Transition {
-                    from: "visible"; to: "hidden"
-                    ParallelAnimation {
+                transitions: [
+                    Transition {
+                        from: "hidden"; to: "visible"
                         ParallelAnimation {
                             NumberAnimation {
                                 properties: "height"
                                 duration: 500
-                                easing.type: Easing.InBack
+                                easing.type: Easing.OutBack
                             }
                             NumberAnimation {
                                 properties: "rounding"
                                 duration: 500
-                                easing.type: Easing.InCirc
+                                easing.type: Easing.OutCirc
+                            }
+                        }
+                    },
+
+                    Transition {
+                        from: "visible"; to: "hidden"
+                        ParallelAnimation {
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    properties: "height"
+                                    duration: 500
+                                    easing.type: Easing.InBack
+                                }
+                                NumberAnimation {
+                                    properties: "rounding"
+                                    duration: 500
+                                    easing.type: Easing.InCirc
+                                }
                             }
                         }
                     }
+                ]
+                
+                ShapePath {
+                    fillColor: Theme.colors.backgroundAlt
+                    strokeWidth: 0
+                    startX: 0; startY: 0
+                    PathLine { x: shp.width; y: 0}
+                    // Top-right corner
+                    PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width - shp.rounding; controlY: 0 }
+                    PathLine { x: shp.width - shp.rounding; y: shp.height - shp.rounding }
+                    // Bottom-right corner
+                    PathQuad { x: shp.width - shp.rounding * 2; y: shp.height; controlX: shp.width - shp.rounding; controlY: shp.height }
+                    PathLine { x: shp.rounding * 2; y: shp.height }
+                    // Bottom-left corner
+                    PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: shp.rounding; controlY: shp.height }
+                    PathLine { x: shp.rounding; y: shp.rounding }
+                    // Top-left corner
+                    PathQuad { x: 0; y: 0; controlX: shp.rounding; controlY: 0 }
                 }
-            ]
-            
-            ShapePath {
-                fillColor: Theme.colors.backgroundAlt
-                strokeWidth: 0
-                startX: 0; startY: 0
-                PathLine { x: shp.width; y: 0}
-                // Top-right corner
-                PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width - shp.rounding; controlY: 0 }
-                PathLine { x: shp.width - shp.rounding; y: shp.height - shp.rounding }
-                // Bottom-right corner
-                PathQuad { x: shp.width - shp.rounding * 2; y: shp.height; controlX: shp.width - shp.rounding; controlY: shp.height }
-                PathLine { x: shp.rounding * 2; y: shp.height }
-                // Bottom-left corner
-                PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: shp.rounding; controlY: shp.height }
-                PathLine { x: shp.rounding; y: shp.rounding }
-                // Top-left corner
-                PathQuad { x: 0; y: 0; controlX: shp.rounding; controlY: 0 }
             }
-        }
 
-        ColumnLayout {
-            id: col
-            property int preferredWidth: 500
-            anchors.bottom: shp.bottom
-            anchors.left: shp.left
-            anchors.right: shp.right
-            anchors.leftMargin: shp.padding
-            anchors.rightMargin: shp.padding
-            spacing: 0
-            Bluetooth { Layout.preferredWidth: col.preferredWidth }
-            PowerProfiles { Layout.preferredWidth: col.preferredWidth }
-            Brightness { Layout.preferredWidth: col.preferredWidth }
-            Volume { Layout.preferredWidth: col.preferredWidth }
-            Players { Layout.preferredWidth: col.preferredWidth }
+            ColumnLayout {
+                id: col
+                property int preferredWidth: 500
+                anchors.bottom: shp.bottom
+                anchors.left: shp.left
+                anchors.right: shp.right
+                anchors.leftMargin: shp.padding
+                anchors.rightMargin: shp.padding
+                spacing: 0
+                Bluetooth { Layout.preferredWidth: col.preferredWidth }
+                PowerProfiles { Layout.preferredWidth: col.preferredWidth }
+                Brightness { Layout.preferredWidth: col.preferredWidth }
+                Volume { Layout.preferredWidth: col.preferredWidth }
+                Players { Layout.preferredWidth: col.preferredWidth }
+            }
         }
     }
 }

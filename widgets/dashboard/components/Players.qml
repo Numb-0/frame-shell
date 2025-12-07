@@ -42,13 +42,6 @@ ListView {
                 duration: 600
                 easing.type: Easing.InBack
             }
-            NumberAnimation {
-                properties: "y"
-                from: 0
-                to: -340
-                duration: 600
-                easing.type: Easing.InCubic
-            }
         }
     }
 }

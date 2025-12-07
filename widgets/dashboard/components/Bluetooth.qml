@@ -178,8 +178,14 @@ ColumnLayout {
                     }
                 }
                 MaterialButton {
+                    property var connectionIcons: {
+                        "Connected": "link_off",
+                        "Disconnected": "link",
+                        "Connecting": "sync_alt",
+                        "Disconnecting": "sync_alt"
+                    }
                     visible: modelData.paired
-                    iconName: modelData.connected ? "link_off" : "link"
+                    iconName: connectionIcons[BluetoothDeviceState.toString(modelData.state)]
                     iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
                     iconSize: 30
                     iconPadding: 0

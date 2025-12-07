@@ -13,11 +13,12 @@ Item {
     required property var modelData
     width: ListView.view ? ListView.view.width : parent.width
     height: contentLayout.implicitHeight + 10
+    // anchors.bottomMargin: Config.rounding * 2
 
     ParallelAnimation {
         id: appearedAnimation
-        NumberAnimation { target: root; property: "scale"; from: 0.8; to: 1; duration: 400; easing.type: Easing.OutBack }
-        NumberAnimation { target: root; property: "opacity"; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic }
+        NumberAnimation { target: root; property: "scale"; from: 0.8; to: 1; duration: 600; easing.type: Easing.OutBack }
+        NumberAnimation { target: root; property: "opacity"; from: 0; to: 1; duration: 600; easing.type: Easing.OutCubic }
     }
     Component.onCompleted: appearedAnimation.start()
 

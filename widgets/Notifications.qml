@@ -45,25 +45,60 @@ Scope {
             model: ScriptModel {
                 values: NotificationManager.list
             }
-            width: contentItem.childrenRect.width
             anchors.fill: parent
             highlightFollowsCurrentItem: false
             delegate: NotificationComponent {}
             spacing: 5
 
-            remove: Transition {
+            add: Transition {
                 ParallelAnimation {
-                    NumberAnimation { properties: "x"; duration: 500; to: -300; easing.type: Easing.InOutQuad }
-                    NumberAnimation { properties: "opacity"; duration: 400; to: 0; easing.type: Easing.InOutQuad }
+                    NumberAnimation { 
+                        properties: "x"
+                        duration: 400
+                        from: -300
+                        to: 0
+                        easing.type: Easing.OutCubic
+                    }
+                    NumberAnimation { 
+                        properties: "opacity"
+                        duration: 350
+                        from: 0
+                        to: 1
+                        easing.type: Easing.OutCubic
+                    }
                 }
             }
-            add: Transition {
-                NumberAnimation { properties: "x"; duration: 500; from: -300; to: 0; easing.type: Easing.OutExpo }
-                // NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
+
+            remove: Transition {
+                ParallelAnimation {
+                    NumberAnimation { 
+                        properties: "x"
+                        duration: 350
+                        to: -300
+                        easing.type: Easing.InCubic
+                    }
+                    NumberAnimation { 
+                        properties: "opacity"
+                        duration: 300
+                        to: 0
+                        easing.type: Easing.InCubic
+                    }
+                }
             }
+
             displaced: Transition {
-                SequentialAnimation {
-                    NumberAnimation { properties: "y"; duration: 500; easing.type: Easing.OutExpo }
+                NumberAnimation { 
+                    properties: "y"
+                    duration: 400
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            moveDisplaced: Transition {
+                NumberAnimation {
+                    properties: "y"
+                    duration: 400
+                    easing.type: Easing.OutCubic
                 }
             }
         }   
