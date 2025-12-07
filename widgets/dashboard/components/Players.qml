@@ -20,6 +20,7 @@ ListView {
     delegate: PlayerComponent {}
     
     Behavior on implicitHeight {
+        enabled: root.visible
         NumberAnimation {
             duration: 600
             easing.type: Easing.OutCubic
@@ -27,6 +28,7 @@ ListView {
     }
     
     remove: Transition {
+        enabled: root.visible
         ParallelAnimation {
             NumberAnimation {
                 properties: "opacity"

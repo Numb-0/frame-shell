@@ -20,7 +20,7 @@ Item {
         NumberAnimation { target: root; property: "scale"; from: 0.8; to: 1; duration: 600; easing.type: Easing.OutBack }
         NumberAnimation { target: root; property: "opacity"; from: 0; to: 1; duration: 600; easing.type: Easing.OutCubic }
     }
-    Component.onCompleted: appearedAnimation.start()
+    Component.onCompleted: root.visible ? appearedAnimation.start() : null
 
     FrameAnimation {
         // only emit the signal when the position is actually changing.
