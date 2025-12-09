@@ -41,6 +41,12 @@ Scope {
             exclusiveZone: -1
             margins.top: 40
 
+            HyprlandFocusGrab {
+                id: grab
+                windows: [ window ]
+                active: root.visible
+            }
+
             property bool isVisible: root.visible && Hyprland.focusedMonitor?.name === modelData.name
            
             Shape {
@@ -119,6 +125,7 @@ Scope {
 
             ColumnLayout {
                 id: col
+                focus: true
                 property int preferredWidth: 500
                 anchors.bottom: shp.bottom
                 anchors.left: shp.left
@@ -126,6 +133,7 @@ Scope {
                 anchors.leftMargin: shp.padding
                 anchors.rightMargin: shp.padding
                 spacing: 0
+                Keys.onEscapePressed: root.visible = false
                 Bluetooth { Layout.preferredWidth: col.preferredWidth }
                 PowerProfiles { Layout.preferredWidth: col.preferredWidth }
                 Brightness { Layout.preferredWidth: col.preferredWidth }
