@@ -54,7 +54,7 @@ Scope {
 				State {
 					name: "visible"
 					when: root.visible
-					PropertyChanges { target: shp; height: col.implicitHeight + Config.rounding * 2; rounding: Config.rounding * 2 }
+					PropertyChanges { target: shp; height: col.implicitHeight + Config.rounding * 3; rounding: Config.rounding * 2 }
 				}
 			]
 
@@ -147,7 +147,7 @@ Scope {
 					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
-				implicitHeight: contentHeight * 5 / count
+				implicitHeight: 200 // 40 * 5
 				Layout.fillWidth: true
 				clip: true
 				highlightMoveDuration: 500
@@ -158,7 +158,7 @@ Scope {
 					radius: Config.rounding
 				}
 				currentIndex: -1
-
+				
 				delegate: RowLayout {
 					implicitHeight: 40
 					implicitWidth: appsList.width
