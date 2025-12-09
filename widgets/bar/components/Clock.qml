@@ -1,6 +1,13 @@
 import QtQuick
-import "root:/utils"
+import qs.utils
+import Quickshell
+
+
 
 CustomText {
-  text: Time.time
+  SystemClock {
+    id: clock
+    precision: SystemClock.Seconds
+  }
+  text: Qt.formatDateTime(clock.date, "hh:mm")
 }

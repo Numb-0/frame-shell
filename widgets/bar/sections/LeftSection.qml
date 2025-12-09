@@ -8,5 +8,6 @@ RowLayout {
     Layout.leftMargin: 10
     spacing: 10
     
-    Workspaces {}
+    Logo {}
+    Workspaces {}   
 } 
