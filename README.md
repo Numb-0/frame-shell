@@ -1,4 +1,3 @@
 # Frame-Shell
 
-<div align="center"><img src="./assets/qs_1.png"></div>
-
+![quickshell screenshot](https://raw.githubusercontent.com/Numb-0/frame-shell/main/assets/qs_1.png)
