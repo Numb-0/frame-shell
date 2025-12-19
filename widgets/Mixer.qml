@@ -34,13 +34,14 @@ Scope {
             screen: modelData
             mask: Region { item: shp }
             focusable: true
-            implicitWidth: shp.implicitWidth
+            // implicitWidth: shp.implicitWidth
+            implicitHeight: shp.implicitHeight
             anchors {
-                top: true
-                bottom: true
+                left: true
+                right: true
             }
             exclusiveZone: -1
-            margins.top: 40
+            // margins.top: 40
 
             HyprlandFocusGrab {
                 id: grab
@@ -54,18 +55,18 @@ Scope {
                 id: shp
                 property real padding: Config.rounding * 2
                 property real rounding: 0
-                anchors.top: window.top
-                width: col.implicitWidth + Config.rounding * 4
+                anchors.right: parent.right
+                height: col.implicitHeight + Config.rounding * 4
                 states: [
                     State {
                         name: "hidden"
                         when: !window.isVisible
-                        PropertyChanges { target: shp; rounding: 0; height: 0 }
+                        PropertyChanges { target: shp; rounding: 0; width: 0 }
                     },
                     State {
                         name: "visible"
                         when: window.isVisible
-                        PropertyChanges { target: shp; rounding: Config.rounding * 2; height: col.implicitHeight  }
+                        PropertyChanges { target: shp; rounding: Config.rounding * 2; width: col.implicitWidth }
                     }
                 ]
 
@@ -74,7 +75,7 @@ Scope {
                         from: "hidden"; to: "visible"
                         ParallelAnimation {
                             NumberAnimation {
-                                properties: "height"
+                                properties: "width"
                                 duration: 500
                                 easing.type: Easing.OutBack
                             }
@@ -91,7 +92,7 @@ Scope {
                         ParallelAnimation {
                             ParallelAnimation {
                                 NumberAnimation {
-                                    properties: "height"
+                                    properties: "width"
                                     duration: 500
                                     easing.type: Easing.InBack
                                 }
@@ -108,19 +109,15 @@ Scope {
                 ShapePath {
                     fillColor: Theme.colors.backgroundAlt
                     strokeWidth: 0
-                    startX: 0; startY: 0
-                    PathLine { x: shp.width; y: 0}
-                    // Top-right corner
-                    PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width - shp.rounding; controlY: 0 }
-                    PathLine { x: shp.width - shp.rounding; y: shp.height - shp.rounding }
-                    // Bottom-right corner
-                    PathQuad { x: shp.width - shp.rounding * 2; y: shp.height; controlX: shp.width - shp.rounding; controlY: shp.height }
-                    PathLine { x: shp.rounding * 2; y: shp.height }
-                    // Bottom-left corner
-                    PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: shp.rounding; controlY: shp.height }
+                    startX: shp.width; startY: 0
+                    PathQuad { x: shp.width - shp.rounding; y: shp.rounding; controlX: shp.width; controlY: shp.rounding }
                     PathLine { x: shp.rounding; y: shp.rounding }
-                    // Top-left corner
-                    PathQuad { x: 0; y: 0; controlX: shp.rounding; controlY: 0 }
+                    PathQuad { x: 0; y: shp.rounding * 2; controlX: 0; controlY: shp.rounding }
+                    PathLine { x: 0; y: shp.height - shp.rounding * 2 }
+                    PathQuad { x: shp.rounding; y: shp.height - shp.rounding; controlX: 0; controlY: shp.height - shp.rounding }
+                    PathLine { x: shp.width - shp.rounding ; y: shp.height - shp.rounding }
+                    PathQuad { x: shp.width; y: shp.height; controlX: shp.width; controlY: shp.height - shp.rounding }
+                    PathLine { x: shp.width; y: 0 }
                 }
             }
 
@@ -129,10 +126,12 @@ Scope {
                 focus: true
                 property int preferredWidth: 500
                 anchors.bottom: shp.bottom
-                anchors.left: shp.left
+                anchors.top: shp.top
                 anchors.right: shp.right
-                anchors.leftMargin: shp.padding
-                anchors.rightMargin: shp.padding
+                anchors.left: shp.left
+
+                anchors.topMargin: shp.padding
+                anchors.bottomMargin: shp.padding
                 spacing: 0
                 Keys.onEscapePressed: root.visible = false
                 Repeater {

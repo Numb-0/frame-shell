@@ -11,7 +11,7 @@ import qs.config
 
 ColumnLayout {
     id: root
-    Layout.fillWidth: true
+    // Layout.fillWidth: true
     spacing: 0
 
     // Bind the PwNode for proper property updates
@@ -44,7 +44,7 @@ ColumnLayout {
 
     Rectangle {
         Layout.fillWidth: true
-        Layout.preferredHeight: 70
+        Layout.preferredHeight: 90
         Layout.topMargin: 8
         Layout.leftMargin: 8
         Layout.rightMargin: 8
@@ -52,14 +52,14 @@ ColumnLayout {
         color: Theme.colors.backgroundHighlight
         radius: Config.rounding
 
-        RowLayout {
+        ColumnLayout {
             anchors.fill: parent
             anchors.margins: 12
-            spacing: 12
+            spacing: 8
 
             // Icon and Name Section
             RowLayout {
-                Layout.preferredWidth: 150
+                Layout.fillWidth: true
                 spacing: 10
 
                 MaterialSymbol {
@@ -91,17 +91,14 @@ ColumnLayout {
                 }
             }
 
-            // Spacer
-            Item { Layout.fillWidth: true }
-
             // Volume Controls
             RowLayout {
                 Layout.fillWidth: true
-                Layout.maximumWidth: 300
                 spacing: 10
 
                 // Mute Button
                 MaterialButton {
+                    iconPadding: 2
                     iconSize: 24
                     iconName: getVolumeIcon()
                     iconColor: modelData.audio?.muted ? Theme.colors.foreground : Theme.colors.green

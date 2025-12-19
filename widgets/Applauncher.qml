@@ -49,7 +49,7 @@ Scope {
 				State {
 					name: "hidden"
 					when: !root.visible
-					PropertyChanges { target: shp; height: 0; rounding: 0}
+					PropertyChanges { target: shp; height: 0; rounding: 0 }
 				},
 				State {
 					name: "visible"
