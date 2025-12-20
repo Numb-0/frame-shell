@@ -89,6 +89,19 @@ ColumnLayout {
                         opacity: 0.6
                     }
                 }
+
+                MaterialButton {
+                    iconPadding: 2
+                    iconSize: 24
+                    iconName: Pipewire.defaultAudioSink.id == modelData.id ? "check_box" : "check_box_outline_blank"
+                    iconColor: Theme.colors.foreground
+                    visible: modelData.isSink && !modelData.isStream
+                    onClicked: {
+                        if (modelData.isSink && !modelData.isStream) {
+                            Pipewire.preferredDefaultAudioSink = modelData
+                        }
+                    } 
+                }
             }
 
             // Volume Controls
@@ -102,7 +115,7 @@ ColumnLayout {
                     iconSize: 24
                     iconName: getVolumeIcon()
                     iconColor: modelData.audio?.muted ? Theme.colors.foreground : Theme.colors.green
-                    backgroundColor: modelData.audio?.muted ? Theme.colors.backgroundAlt : "transparent"
+                    // backgroundColor: modelData.audio?.muted ? Theme.colors.backgroundAlt : "transparent"
                     onClicked: {
                         if (modelData.audio) {
                             modelData.audio.muted = !modelData.audio.muted
