@@ -93,7 +93,7 @@ ColumnLayout {
                 MaterialButton {
                     iconPadding: 2
                     iconSize: 24
-                    iconName: Pipewire.defaultAudioSink.id == modelData.id ? "check_box" : "check_box_outline_blank"
+                    iconName: Pipewire.defaultAudioSink?.id == modelData?.id ? "check_box" : "check_box_outline_blank"
                     iconColor: Theme.colors.foreground
                     visible: modelData.isSink && !modelData.isStream
                     onClicked: {

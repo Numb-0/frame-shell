@@ -116,9 +116,10 @@ Scope {
 						iconName: Config.theme === "gruvbox" ? "light_mode" : "dark_mode"
 						iconColor: Theme.colors.yellow
 						iconSize: 40
-						backgroundColor: Theme.colors.backgroundHighlight
+						iconPadding: 5
+						iconBackground.color: Theme.colors.backgroundHighlight
 						onClicked: activate()
-						onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
+						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
 							if (event.key === Qt.Key_Right) {
 								powerbutton.focus = true
@@ -128,10 +129,10 @@ Scope {
 
 						function activate() { Theme.nextTheme(); rotate.start() }
 
-						RotationAnimation on materialIcon.rotation {
+						RotationAnimation on iconSymbol.rotation {
 							id: rotate
-							from: themebutton.materialIcon.rotation
-							to: themebutton.materialIcon.rotation - 360
+							from: themebutton.iconSymbol.rotation
+							to: themebutton.iconSymbol.rotation - 360
 							duration: 1600
 							easing { type: Easing.OutBack; overshoot: 1 }
 						}
@@ -142,9 +143,10 @@ Scope {
 						iconName: "mode_off_on"
 						iconColor: Theme.colors.red
 						iconSize: 40
-						backgroundColor: Theme.colors.backgroundHighlight
+						iconPadding: 5
+						iconBackground.color: Theme.colors.backgroundHighlight
 						onClicked: activate()
-						onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
+						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
 							if (event.key === Qt.Key_Right) {
 								rebootbutton.focus = true
@@ -157,7 +159,7 @@ Scope {
 						function activate() { poweroff.running = true }
 
 						Component.onCompleted: {
-							buttonBackground.opacity = 0.0
+							iconBackground.opacity = 0.0
 						}
 					}
 
@@ -166,9 +168,10 @@ Scope {
 						iconName: "refresh"
 						iconColor: Theme.colors.green
 						iconSize: 40
-						backgroundColor: Theme.colors.backgroundHighlight
+						iconPadding: 5
+						iconBackground.color: Theme.colors.backgroundHighlight
 						onClicked: activate()
-						onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
+						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
 							if (event.key === Qt.Key_Left) {
 								powerbutton.focus = true
@@ -181,7 +184,7 @@ Scope {
 
 						function activate() { reboot.running = true }
 						Component.onCompleted: {
-							buttonBackground.opacity = 0.0
+							iconBackground.opacity = 0.0
 						}
 					}
 
@@ -190,9 +193,10 @@ Scope {
 						iconName: "lock"
 						iconColor: Theme.colors.purple
 						iconSize: 40
-						backgroundColor: Theme.colors.backgroundHighlight
+						iconPadding: 5
+						iconBackground.color: Theme.colors.backgroundHighlight
 						onClicked: activate()
-						onFocusChanged: (focus) => buttonBackground.opacity = focus ? 1 : 0.0
+						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
 							if (event.key === Qt.Key_Left) {
 								rebootbutton.focus = true
@@ -202,7 +206,7 @@ Scope {
 
 						function activate() { lock.running = true }
 						Component.onCompleted: {
-							buttonBackground.opacity = 0.0
+							iconBackground.opacity = 0.0
 						}
 					}
 				}

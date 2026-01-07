@@ -13,26 +13,27 @@ Button {
     id: btn
     required property var iconName
     required property var iconColor
-    property var backgroundColor: "transparent" 
-    // expose the internal symbol so parent code can reference/animate it
-    property alias materialIcon: symbol
-    property alias buttonBackground: bgrect
     property var iconSize: 25
-    property var iconPadding: 5
+    property var iconPadding: 0
+     
+    // expose the internal components so parent code can reference/animate it
+    property alias iconSymbol: iconSymbol
+    property alias iconBackground: iconBackground
 
     background: Item {
-        implicitHeight: symbol.implicitHeight + iconPadding * 2
-        implicitWidth: symbol.implicitWidth + iconPadding * 4
+        implicitHeight: iconSymbol.implicitHeight + iconPadding * 2
+        implicitWidth: iconSymbol.implicitWidth + iconPadding * 4
+
         Rectangle {
-            id: bgrect
+            id: iconBackground
             anchors.fill: parent
-            color: backgroundColor
+            color: "transparent"
             radius: Config.rounding
             Behavior on opacity { NumberAnimation { duration: 200 } }
         }
 
         MaterialSymbol {
-            id: symbol
+            id: iconSymbol
             anchors.centerIn: parent
             size: iconSize
             icon: iconName

@@ -74,10 +74,24 @@ RowLayout {
         }
     }
 
-    MaterialSymbol {
-        size: 25
-        icon: getBatteryIcon()
-        color: progress.value < 0.3 ? Theme.colors.red : Theme.colors.yellow
-        fill: 1
+    CustomText {
+        id: percentageText
+        property bool show: false
+        text: Math.round(battery.percentage * 100) + '%'
+        color: Theme.colors.yellow
+        opacity: show ? 1 : 0
+        Layout.preferredWidth: show ? implicitWidth : 0
+        Behavior on Layout.preferredWidth { 
+            NumberAnimation { duration: 300; easing.type: Easing.OutCubic } 
+        }
+        Behavior on opacity { 
+            NumberAnimation { duration: 300; easing.type: Easing.OutCubic } 
+        }
+    }
+
+    MaterialButton {
+        onHoveredChanged: percentageText.show = hovered
+        iconName: getBatteryIcon()
+        iconColor: progress.value < 0.3 ? Theme.colors.red : Theme.colors.yellow
     }
 }
