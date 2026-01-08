@@ -20,6 +20,7 @@ RowLayout {
         iconName: profile === "performance" ? "bolt" : profile === "balanced" ? "power" : "energy_savings_leaf"
         iconColor: Theme.colors.yellow
         iconSize: 30
+        iconPadding: 5
         onClicked: {
             PowerProfileService.cycleProfile()
             wiggleAnimation.start()

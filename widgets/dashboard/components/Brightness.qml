@@ -31,6 +31,7 @@ RowLayout {
         iconName: getBrightnessIcon()
         iconColor: Theme.colors.orange
         iconSize: 30
+        iconPadding: 5
     }
 
     Slider {

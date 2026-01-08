@@ -21,14 +21,15 @@ ColumnLayout {
         spacing: 0
         MaterialButton {
             id: btToggleButton
+            iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
+            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
+            iconSize: 30
+            iconPadding: 5
             onClicked: { 
                 bt.enabled = !bt.enabled
                 listVisible = bt.enabled ? listVisible : false
                 wiggleAnimation.start()
             }
-            iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
-            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
-            iconSize: 30
 
             Animations.WiggleAnimation {
                 id: wiggleAnimation
@@ -43,15 +44,17 @@ ColumnLayout {
         MaterialButton {
             id: toggleListButton
             property bool rotated: false
+            iconName: "keyboard_arrow_right"
+            iconColor: Theme.colors.foreground
+            iconSize: 30
+            iconPadding: 5
+
             onClicked: {
                 if (!bt.enabled) {
                     bt.enabled = true
                 }
                 listVisible = !listVisible
             }
-            iconName: "keyboard_arrow_right"
-            iconColor: Theme.colors.foreground
-            iconSize: 30
 
             Connections {
                 target: root
@@ -72,15 +75,16 @@ ColumnLayout {
         MaterialButton {
             id: refreshButton
             enabled: (bt?.enabled && !bt?.discovering) ?? false
+            iconName: "refresh"
+            iconColor: bt?.enabled ? Theme.colors.green : Theme.colors.red
+            iconSize: 30
+            iconPadding: 5
             onClicked: {
                 bt.discovering = true;
                 rotationAnimation.loops = RotationAnimation.Infinite
                 rotationAnimation.start()
                 discoveryTimer.start()
             }
-            iconName: "refresh"
-            iconColor: bt?.enabled ? Theme.colors.green : Theme.colors.red
-            iconSize: 30
             
             RotationAnimation {
                 id: rotationAnimation
@@ -161,6 +165,8 @@ ColumnLayout {
                 MaterialButton {
                     iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
                     iconColor: Theme.colors.blue
+                    iconPadding: 5
+                    iconSize: 30
                 }
                 CustomText {
                     text: modelData.deviceName
@@ -173,6 +179,7 @@ ColumnLayout {
                     iconName: "add_link"
                     iconColor: Theme.colors.yellow
                     iconSize: 30
+                    iconPadding: 5
                     onClicked: {
                         modelData.pair()
                     }
@@ -188,7 +195,7 @@ ColumnLayout {
                     iconName: connectionIcons[BluetoothDeviceState.toString(modelData.state)]
                     iconColor: modelData.connected ? Theme.colors.red : Theme.colors.green
                     iconSize: 30
-                    iconPadding: 0
+                    iconPadding: 5
                     onClicked: {
                         if (modelData.connected) {
                             modelData.disconnect()
@@ -202,6 +209,7 @@ ColumnLayout {
                     iconName: "delete"
                     iconColor: Theme.colors.red
                     iconSize: 30
+                    iconPadding: 5
                     onClicked: {
                         modelData.forget()
                     }

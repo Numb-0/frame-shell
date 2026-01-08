@@ -35,6 +35,7 @@ RowLayout {
         iconSize: 30
         iconName: getVolumeIcon()
         iconColor: Theme.colors.green
+        iconPadding: 5
     }
 
     Slider {
