@@ -78,7 +78,7 @@ RowLayout {
         id: percentageText
         property bool show: false
         text: Math.round(battery.percentage * 100) + '%'
-        color: Theme.colors.yellow
+        color: progress.value < 0.3 ? Theme.colors.red : Theme.colors.yellow
         opacity: show ? 1 : 0
         Layout.preferredWidth: show ? implicitWidth : 0
         Behavior on Layout.preferredWidth { 

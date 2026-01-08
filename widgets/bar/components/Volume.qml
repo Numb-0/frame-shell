@@ -62,10 +62,24 @@ RowLayout {
         }
     }
 
-    MaterialSymbol {
-        size: 25
-        icon: getVolumeIcon()
+    CustomText {
+        id: percentageText
+        property bool show: false
+        text: Math.round(audioSink?.audio?.volume * 100) + '%'
         color: Theme.colors.green
-        fill: 1
+        opacity: show ? 1 : 0
+        Layout.preferredWidth: show ? implicitWidth : 0
+        Behavior on Layout.preferredWidth { 
+            NumberAnimation { duration: 300; easing.type: Easing.OutCubic } 
+        }
+        Behavior on opacity { 
+            NumberAnimation { duration: 300; easing.type: Easing.OutCubic } 
+        }
+    }
+
+    MaterialButton {
+        iconName: getVolumeIcon()
+        iconColor: Theme.colors.green
+        onHoveredChanged: percentageText.show = hovered
     }
 }
