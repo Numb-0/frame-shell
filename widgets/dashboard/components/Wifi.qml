@@ -4,40 +4,39 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
-import Quickshell.Bluetooth
+import Quickshell.Io
 
 import qs.config
 import qs.utils
+import qs.services
 
 
 ColumnLayout {
     id: root
-    property var bt: Bluetooth?.defaultAdapter
-    property var connectedDevices: bt?.devices.values.filter((dev) => dev.connected)
+    property var network: NetworkService
     property bool listVisible: false
     spacing: 0
     
     RowLayout {
         spacing: 0
         MaterialButton {
-            id: btToggleButton
-            iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
-            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
+            id: wifiToggleButton
+            iconName: network.wifiState ? "wifi" : "wifi_off"
+            iconColor: network.wifiState ? Theme.colors.purple : Theme.colors.red
             iconSize: 30
             iconPadding: 5
             onClicked: { 
-                bt.enabled = !bt.enabled
-                listVisible = bt.enabled ? listVisible : false
+                network.toggleWifi()
                 wiggleAnimation.start()
             }
 
             Animations.WiggleAnimation {
                 id: wiggleAnimation
-                target: btToggleButton
+                target: wifiToggleButton
             }
         }
         CustomText {
-            text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.name).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
+            text: network.wifiState ? network.connectedNetwork ? network.connectedNetwork.ssid : "Not Connected" : "WiFi Disabled"
             elide: Text.ElideRight
         }
         Item { Layout.fillWidth: true }
@@ -50,10 +49,9 @@ ColumnLayout {
             iconPadding: 5
 
             onClicked: {
-                if (!bt.enabled) {
-                    bt.enabled = true
+                if (network.wifiState && network.connections.length > 0) {
+                    listVisible = !listVisible
                 }
-                listVisible = !listVisible
             }
 
             Connections {
@@ -74,15 +72,15 @@ ColumnLayout {
         }
         MaterialButton {
             id: refreshButton
-            enabled: (bt?.enabled && !bt?.discovering) ?? false
+            enabled: network.wifiState
             iconName: "refresh"
-            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
+            iconColor: network.wifiState ? Theme.colors.purple : Theme.colors.red
             iconSize: 30
             iconPadding: 5
             onClicked: {
-                bt.discovering = true;
+                // network.updateNetworkStatus()
                 startRotation()
-                discoveryTimer.start()
+                refreshTimer.start()
             }
 
             function startRotation() {
@@ -102,11 +100,10 @@ ColumnLayout {
             }
             
             Timer {
-                id: discoveryTimer
-                interval: 15000
+                id: refreshTimer
+                interval: 3000
                 repeat: false
                 onTriggered: {
-                    bt.discovering = false;
                     rotationAnimation.loops = 1
                     rotationAnimation.stop()
                     refreshButton.rotation = 0
@@ -117,27 +114,27 @@ ColumnLayout {
     
     Item {
         Layout.fillWidth: true
-        implicitHeight: deviceListView.implicitHeight
+        implicitHeight: networkListView.implicitHeight
         
         ListView {
-            id: deviceListView
+            id: networkListView
             anchors.fill: parent
             snapMode: ListView.SnapToItem
-            property int showCount: count < 3 ? count : 3
+            property int showCount: count < 5 ? count : 5
             clip: true
             model: ScriptModel {
-                values: Bluetooth?.devices.values.filter((dev) => dev.deviceName !== "")
+                values: network.connections
             }
             states: [
                 State {
                     name: "hidden"
                     when: !listVisible
-                    PropertyChanges { target: deviceListView; implicitHeight: 0 }
+                    PropertyChanges { target: networkListView; implicitHeight: 0 }
                 },
                 State {
                     name: "visible"
                     when: listVisible
-                    PropertyChanges { target: deviceListView; implicitHeight: contentHeight * showCount / count }
+                    PropertyChanges { target: networkListView; implicitHeight: contentHeight * showCount / count }
                 }
             ]
             transitions: [
@@ -158,64 +155,64 @@ ColumnLayout {
                     }
                 }
             ]
-            property var deviceTypes: {
-                "audio-headset": "headphones",
-                "input-keyboard": "keyboard",
-                "default": "bluetooth"
+            
+            function getWifiIcon(signal) {
+                if (signal >= 80) return "wifi"
+                if (signal >= 60) return "wifi_2_bar"
+                if (signal >= 40) return "wifi_1_bar"
+                return "wifi_1_bar"
             }
+            
+            function getSecurityIcon(security) {
+                if (security.includes("WPA") || security.includes("WEP")) return "lock"
+                return "lock_open"
+            }
+            
             delegate: RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
+                property bool isConnected: modelData.isActive
+                
                 MaterialButton {
-                    iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
-                    iconColor: Theme.colors.blue
+                    iconName: networkListView.getWifiIcon(modelData.signal)
+                    iconColor: isConnected ? Theme.colors.purple : Theme.colors.foreground
                     iconPadding: 5
                     iconSize: 30
                 }
                 CustomText {
-                    text: modelData.deviceName
+                    text: modelData.ssid
+                    color: isConnected ? Theme.colors.purple : Theme.colors.foreground
+                    font.weight: isConnected ? Font.Bold : Font.Normal
                     elide: Text.ElideRight
                     Layout.fillWidth: true
                 }
-                Item { Layout.fillWidth: true }
-                MaterialButton {
-                    visible: !modelData.paired
-                    iconName: "add_link"
-                    iconColor: Theme.colors.yellow
-                    iconSize: 30
-                    iconPadding: 5
-                    onClicked: {
-                        modelData.pair()
-                    }
+                CustomText {
+                    text: modelData.signal + "%"
+                    color: Theme.colors.foreground
                 }
                 MaterialButton {
-                    visible: modelData.paired
-                    iconName: "close"
+                    iconName: networkListView.getSecurityIcon(modelData.security)
+                    iconColor: modelData.saved ? Theme.colors.green : Theme.colors.yellow
+                    iconSize: 20
+                    iconPadding: 5
+                    visible: modelData.security !== ""
+                }
+                MaterialButton {
+                    visible: !isConnected
+                    iconName: "link"
+                    iconColor: Theme.colors.purple
+                    iconSize: 30
+                    iconPadding: 5
+                    onClicked: network.connect(modelData.ssid)
+                }
+                MaterialButton {
+                    visible: isConnected
+                    iconName: "link_off"
                     iconColor: Theme.colors.red
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {
-                        modelData.forget()
-                    }
-                }
-                MaterialButton {
-                    property var connectionIcons: {
-                        "Connected": "link_off",
-                        "Disconnected": "link",
-                        "Connecting": "sync_alt",
-                        "Disconnecting": "sync_alt"
-                    }
-                    visible: modelData.paired
-                    iconName: connectionIcons[BluetoothDeviceState.toString(modelData.state)]
-                    iconColor: modelData.connected ? Theme.colors.red : Theme.colors.blue
-                    iconSize: 30
-                    iconPadding: 5
-                    onClicked: {
-                        if (modelData.connected) {
-                            modelData.disconnect()
-                        } else {
-                            modelData.connect()
-                        }
+                        network.disconnect()
                     }
                 }
             }
@@ -235,9 +232,8 @@ ColumnLayout {
                 NumberAnimation { properties: "y"; duration: 300; easing.type: Easing.OutExpo }
             }
             Component.onDestruction: {
-                deviceListView.model = null
+                networkListView.model = null
             }
         }
     }
 }
-

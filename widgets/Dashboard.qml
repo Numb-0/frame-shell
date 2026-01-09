@@ -134,6 +134,7 @@ Scope {
                 anchors.rightMargin: shp.padding
                 spacing: 0
                 Keys.onEscapePressed: root.visible = false
+                Wifi { Layout.preferredWidth: col.preferredWidth }
                 Bluetooth { Layout.preferredWidth: col.preferredWidth }
                 PowerProfiles { Layout.preferredWidth: col.preferredWidth }
                 Brightness { Layout.preferredWidth: col.preferredWidth }
