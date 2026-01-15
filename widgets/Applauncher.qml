@@ -21,9 +21,10 @@ Scope {
 
 	PanelWindow {
 		id: window
+		property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
 		property bool animationRunning: showTransition.running || hideTransition.running
 		property bool screenChanging: screenChangeAnimationDelay.running || visibilityDelay.running
-		property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
+		
 		exclusiveZone: 0
 		anchors {
 			bottom: true
@@ -33,7 +34,6 @@ Scope {
 		focusable: true
 		mask: Region { item: shp }
 		color: "transparent"
-		// screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
 
 		onCurrentMonitorChanged: {
 			if (!root.visible && !animationRunning) {
@@ -43,6 +43,7 @@ Scope {
 				screenChangeAnimationDelay.restart()
 			}
 		}
+
 		Timer {
 			id: screenChangeAnimationDelay
 			interval: 550 // +50 ms so we are sure the animation finished
@@ -53,6 +54,7 @@ Scope {
 				visibilityDelay.restart()
 			}
 		}
+
 		Timer {
 			id: visibilityDelay
 			interval: 300
@@ -60,6 +62,7 @@ Scope {
 				root.visible = true
 			}
 		}
+
 		HyprlandFocusGrab {
 			id: grab
 			windows: [ window ]
@@ -88,20 +91,22 @@ Scope {
 
 			transitions: [
 				Transition {
+					id: showTransition
 					from: "hidden"; to: "visible"
 					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.OutBack }
 					NumberAnimation {
                             properties: "rounding"
-                            duration: 400
+                            duration: 500
                             easing.type: Easing.OutBack
                         }
 				},
 				Transition {
+					id: hideTransition
 					from: "visible"; to: "hidden"
-					NumberAnimation { properties: "height"; duration: 400; easing.type: Easing.InBack }
+					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.InBack }
 					NumberAnimation {
                             properties: "rounding"
-                            duration: 400
+                            duration: 500
                             easing.type: Easing.InBack
                         }
 				}
