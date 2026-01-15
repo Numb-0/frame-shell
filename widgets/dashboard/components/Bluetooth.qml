@@ -190,7 +190,7 @@ ColumnLayout {
                 }
                 MaterialButton {
                     visible: modelData.paired
-                    iconName: "close"
+                    iconName: "remove"
                     iconColor: Theme.colors.red
                     iconSize: 30
                     iconPadding: 5

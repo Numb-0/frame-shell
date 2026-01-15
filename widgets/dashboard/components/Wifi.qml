@@ -169,8 +169,8 @@ ColumnLayout {
             }
             
             delegate: RowLayout {
-                anchors.left: parent.left
-                anchors.right: parent.right
+                anchors.left: parent?.left
+                anchors.right: parent?.right
                 property bool isConnected: modelData.isActive
                 
                 MaterialButton {
