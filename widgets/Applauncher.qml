@@ -21,6 +21,9 @@ Scope {
 
 	PanelWindow {
 		id: window
+		property bool animationRunning: showTransition.running || hideTransition.running
+		property bool screenChanging: screenChangeAnimationDelay.running || visibilityDelay.running
+		property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
 		exclusiveZone: 0
 		anchors {
 			bottom: true
@@ -30,8 +33,33 @@ Scope {
 		focusable: true
 		mask: Region { item: shp }
 		color: "transparent"
-		screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
+		// screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
 
+		onCurrentMonitorChanged: {
+			if (!root.visible && !animationRunning) {
+				window.screen = window.currentMonitor
+			} else {
+				root.visible = false
+				screenChangeAnimationDelay.restart()
+			}
+		}
+		Timer {
+			id: screenChangeAnimationDelay
+			interval: 550 // +50 ms so we are sure the animation finished
+			onTriggered: {
+				window.screen = window.currentMonitor
+				// Show the launcher again after changing monitor
+				// Wait for the panelwindow to reposition itself
+				visibilityDelay.restart()
+			}
+		}
+		Timer {
+			id: visibilityDelay
+			interval: 300
+			onTriggered: {
+				root.visible = true
+			}
+		}
 		HyprlandFocusGrab {
 			id: grab
 			windows: [ window ]
