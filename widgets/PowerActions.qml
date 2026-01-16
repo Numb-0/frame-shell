@@ -61,7 +61,6 @@ Scope {
 			
 			onIsVisibleChanged: {
 				if (isVisible) {
-					console.log("PowerActions visible on " + modelData.name)
 					themebutton.focus = true
 				} else {
 					themebutton.focus = false

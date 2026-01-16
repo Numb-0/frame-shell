@@ -133,7 +133,7 @@ Singleton {
 
     function connect(ssid, password = "") {
         wifiConnectProcess.ssid = ssid
-        console.log(ssid)
+        // console.log(ssid)
         wifiConnectProcess.password = password
         wifiConnectProcess.running = true
     }

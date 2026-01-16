@@ -17,11 +17,9 @@ ColumnLayout {
     // Bind the PwNode for proper property updates
     PwObjectTracker { objects: [modelData] }
 
-    // Map common icon names to Material Symbols
     function getAppIcon() {
         const iconName = modelData.properties["application.icon-name"] || ""
         
-        // Map common icon names to Material Symbols
         const iconMap = {
             "audio-card": "speaker",
             "audio-headphones": "headphones",

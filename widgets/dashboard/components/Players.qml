@@ -27,9 +27,9 @@ ListView {
         }
     }
 
-    Component.onCompleted: {
-        console.log(Mpris.players.values)
-    }
+    // Component.onCompleted: {
+    //     console.log(Mpris.players.values)
+    // }
     
     remove: Transition {
         enabled: root.visible
