@@ -10,8 +10,8 @@ import Quickshell.Hyprland
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
 
-import "root:/config"
-import "root:/utils"
+import qs.config
+import qs.utils
 
 Singleton {
     id: root

@@ -13,7 +13,7 @@ import qs.config
 IconButton {
     id: iconButton
     required property var modelData
-    property var menu: SysTrayMenu { modelData: iconButton.modelData }
+    property var menu: SysTrayMenuManager.registerMenu(iconButton.modelData)
     iconSource: Quickshell.iconPath(iconDict[modelData?.title || modelData?.tooltipTitle] || modelData?.title.toLowerCase())
     iconSize: 30
     onClicked: menu.toggle()

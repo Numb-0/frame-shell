@@ -26,10 +26,6 @@ ListView {
             easing.type: Easing.OutCubic
         }
     }
-
-    // Component.onCompleted: {
-    //     console.log(Mpris.players.values)
-    // }
     
     remove: Transition {
         enabled: root.visible

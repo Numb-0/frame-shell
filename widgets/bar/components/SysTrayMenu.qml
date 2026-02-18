@@ -44,11 +44,9 @@ Scope {
         onTriggered: root.visible = true
     }
 
-
     PanelWindow {
         id: window
         property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
-        // screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
         exclusiveZone: -1
         margins.top: 40
         color: "transparent"
@@ -78,23 +76,15 @@ Scope {
         }
 
         Timer {
-			id: screenChangeAnimationDelay
-			interval: 550 // +50 ms so we are sure the animation finished
-			onTriggered: {
-				window.screen = window.currentMonitor
-				// Show the launcher again after changing monitor
-				// Wait for the panelwindow to reposition itself
-				// visibilityDelay.restart()
-			}
-		}
-
-		// Timer {
-		// 	id: visibilityDelay
-		// 	interval: 300
-		// 	onTriggered: {
-		// 		root.visible = true
-		// 	}
-		// }
+          id: screenChangeAnimationDelay
+          interval: 550 // +50 ms so we are sure the animation finished
+          onTriggered: {
+            window.screen = window.currentMonitor
+            // Show the launcher again after changing monitor
+            // Wait for the panelwindow to reposition itself
+            // visibilityDelay.restart()
+          }
+        }
 
         Shape {
             id: shp
