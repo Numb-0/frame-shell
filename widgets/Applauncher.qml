@@ -13,7 +13,14 @@ Scope {
 	id: root
 	property bool visible: false
 	property string searchText: ""
-	
+
+	onVisibleChanged: {
+		if (!visible) {
+			window.isClosingAnimating = true
+			window.closeAnimationTracker.restart()
+		}
+	}
+
 	GlobalShortcut {
 		name: "applauncher"
 		onPressed: root.visible = !root.visible
@@ -24,6 +31,8 @@ Scope {
 		property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
 		property bool animationRunning: showTransition.running || hideTransition.running
 		property bool screenChanging: screenChangeAnimationDelay.running || visibilityDelay.running
+		property bool isClosingAnimating: false
+		property bool reopenAfterScreenChange: false
 		
 		exclusiveZone: 0
 		anchors {
@@ -36,12 +45,19 @@ Scope {
 		color: "transparent"
 
 		onCurrentMonitorChanged: {
-			if (!root.visible && !animationRunning) {
+			if (!root.visible && !animationRunning && !isClosingAnimating) {
 				window.screen = window.currentMonitor
 			} else {
+				reopenAfterScreenChange = root.visible
 				root.visible = false
 				screenChangeAnimationDelay.restart()
 			}
+		}
+
+		Timer {
+			id: closeAnimationTracker
+			interval: 500 // matches the hide animation duration
+			onTriggered: window.isClosingAnimating = false
 		}
 
 		Timer {
@@ -49,9 +65,12 @@ Scope {
 			interval: 550 // +50 ms so we are sure the animation finished
 			onTriggered: {
 				window.screen = window.currentMonitor
-				// Show the launcher again after changing monitor
-				// Wait for the panelwindow to reposition itself
-				visibilityDelay.restart()
+				if (reopenAfterScreenChange) {
+					// Show the launcher again only if it was open when monitor changed
+					// Wait for the panelwindow to reposition itself
+					visibilityDelay.restart()
+				}
+				reopenAfterScreenChange = false
 			}
 		}
 

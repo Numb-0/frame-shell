@@ -44,9 +44,17 @@ Scope {
         onTriggered: root.visible = true
     }
 
+    onVisibleChanged: {
+        if (!visible) {
+            window.isClosingAnimating = true
+            closeAnimationTracker.restart()
+        }
+    }
+
     PanelWindow {
         id: window
         property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
+        property bool isClosingAnimating: false
         exclusiveZone: -1
         margins.top: 40
         color: "transparent"
@@ -66,23 +74,26 @@ Scope {
         }
 
         onCurrentMonitorChanged: {
-            if (!root.visible) {
+            if (!root.visible && !window.isClosingAnimating) {
                 window.screen = window.currentMonitor
             } else {
                 root.visible = false
-                // Wait for the panelwindow to reposition itself
+                // Wait for the closing animation to finish before moving the window
                 screenChangeAnimationDelay.restart()
             }
         }
 
         Timer {
+            id: closeAnimationTracker
+            interval: 600 // matches the longest close animation duration
+            onTriggered: window.isClosingAnimating = false
+        }
+
+        Timer {
           id: screenChangeAnimationDelay
-          interval: 550 // +50 ms so we are sure the animation finished
+          interval: 650 // enough time for the close animation (600ms) + margin
           onTriggered: {
             window.screen = window.currentMonitor
-            // Show the launcher again after changing monitor
-            // Wait for the panelwindow to reposition itself
-            // visibilityDelay.restart()
           }
         }
 
