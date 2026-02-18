@@ -5,26 +5,16 @@ Singleton {
     id: sysTrayMenuManager
     property var menus: []
     property var activeMenu: null
+    property var sysTrayMenuComponent: Qt.createComponent("SysTrayMenu.qml")
 
     function registerMenu(modelData) {
         if (menus.find(m => m.modelData.id === modelData.id)) {
             return menus.find(m => m.modelData.id === modelData.id)
         }
         
-        let component = Qt.createComponent("SysTrayMenu.qml")
-        if (component) {
-            let menu = component.createObject(sysTrayMenuManager, { modelData: modelData })
-            if (menu !== null) {
-                menus.push(menu)
-                return menu
-            } else {
-                console.error("Failed to create SysTrayMenu object")
-            }
-        } else if (component.status === Component.Error) {
-            console.error("Error loading SysTrayMenu:", component.errorString())
-        }
-        
-        return null
+        let menu = sysTrayMenuComponent.createObject(sysTrayMenuManager, { modelData: modelData })
+        menus.push(menu)
+        return menu
     }
 
     function setActiveMenu(modelData) {
