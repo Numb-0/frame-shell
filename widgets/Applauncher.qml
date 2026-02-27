@@ -40,7 +40,7 @@ Scope {
 			top: true
 		}
 		implicitWidth: shp.implicitWidth
-		focusable: true
+		focusable: root.visible
 		mask: Region { item: shp }
 		color: "transparent"
 

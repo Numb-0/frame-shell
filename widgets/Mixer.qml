@@ -33,7 +33,7 @@ Scope {
             color: "transparent"
             screen: modelData
             mask: Region { item: shp }
-            focusable: true
+            focusable: window.isVisible
             // implicitWidth: shp.implicitWidth
             implicitHeight: shp.implicitHeight
             anchors {
