@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
+import Quickshell.Networking
 
 import qs.utils
 import qs.config
@@ -22,24 +23,25 @@ RowLayout {
 
     function getNetworkIcon(signal) {
         if (signal == -1) return networkIcons.ethernet
-        if (signal == undefined) return networkIcons.none
-        if (signal <= 30) return networkIcons.weak
-        if (signal <= 50) return networkIcons.ok
-        if (signal <= 75) return networkIcons.good
+        if (signal == 0) return networkIcons.none
+        if (signal <= 0.2) return networkIcons.weak
+        if (signal <= 0.5) return networkIcons.ok
+        if (signal <= 0.75) return networkIcons.good
         return networkIcons.excellent
     }
 
-    property var adapter: NetworkService?.defaultAdapter
-    property var connectedNet: NetworkService?.connectedNetwork
-    
+    property var networking: Networking
+    property var adapter: networking.devices.values.find(d => d.state === DeviceConnectionState.Connected)
+    property var connectedNet: adapter ? adapter.networks.values.find(n => n.connected) : null
+
     CustomText {
-        text: adapter?.type === "ethernet" ? (adapter?.state === "connected" ? "Ethernet" : "No Connection") : (connectedNet ? connectedNet.ssid : "No Wi-Fi")
+        text: connectedNet.name
         color: Theme.colors.purple
     }
 
     MaterialSymbol {
         size: 25
-        icon: getNetworkIcon(adapter?.type === "ethernet" ? -1 : connectedNet?.signal)
+        icon: getNetworkIcon(connectedNet ? connectedNet.signalStrenght : -1)
         color: Theme.colors.purple
     }
 }
