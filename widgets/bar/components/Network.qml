@@ -35,7 +35,7 @@ RowLayout {
     property var connectedNet: adapter ? adapter.networks.values.find(n => n.connected) : null
 
     CustomText {
-        text: connectedNet.name
+        text: connectedNet?.name ?? "No network"
         color: Theme.colors.purple
     }
 
