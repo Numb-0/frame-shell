@@ -1,4 +1,5 @@
 {
+    "spacing": 8,
     "rounding": 8,
     "theme": "gruvbox"
 }

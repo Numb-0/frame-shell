@@ -31,7 +31,7 @@ RowLayout {
     }
 
     property var networking: Networking
-    property var adapter: networking.devices.values.find(d => d.state === DeviceConnectionState.Connected)
+    property var adapter: networking.devices.values.find(d => d.state === ConnectionState.Connected)
     property var connectedNet: adapter ? adapter.networks.values.find(n => n.connected) : null
 
     CustomText {
@@ -41,7 +41,7 @@ RowLayout {
 
     MaterialSymbol {
         size: 25
-        icon: getNetworkIcon(connectedNet ? connectedNet.signalStrenght : -1)
+        icon: getNetworkIcon(connectedNet?.signalStrength)
         color: Theme.colors.purple
     }
 }

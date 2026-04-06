@@ -9,6 +9,7 @@ Singleton {
     // Default config values
     property string theme: "gruvbox"
     property int rounding: 8
+    property int spacing: 20
     FileView {
         path: Qt.resolvedUrl("./config.json")
         watchChanges: true
@@ -18,6 +19,7 @@ Singleton {
         JsonAdapter {
             property alias theme: config.theme
             property alias rounding: config.rounding
+            property alias spacing: config.spacing
         }
     }
 }

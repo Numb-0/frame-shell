@@ -14,12 +14,9 @@ Scope {
 	property bool visible: false
 	property string searchText: ""
 
-	onVisibleChanged: {
-		if (!visible) {
-			window.isClosingAnimating = true
-			window.closeAnimationTracker.restart()
-		}
-	}
+	// onVisibleChanged: {
+	// 	window.toggle(visible)
+	// }
 
 	GlobalShortcut {
 		name: "applauncher"
@@ -29,10 +26,8 @@ Scope {
 	PanelWindow {
 		id: window
 		property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
-		property bool animationRunning: showTransition.running || hideTransition.running
-		property bool screenChanging: screenChangeAnimationDelay.running || visibilityDelay.running
-		property bool isClosingAnimating: false
-		property bool reopenAfterScreenChange: false
+		
+		property bool isAnimating: showTransition.running || hideTransition.running
 		
 		exclusiveZone: 0
 		anchors {
@@ -45,42 +40,30 @@ Scope {
 		color: "transparent"
 
 		onCurrentMonitorChanged: {
-			if (!root.visible && !animationRunning && !isClosingAnimating) {
-				window.screen = window.currentMonitor
-			} else {
-				reopenAfterScreenChange = root.visible
-				root.visible = false
-				screenChangeAnimationDelay.restart()
-			}
+			root.visible = false
+			window.screen = window.currentMonitor
+
 		}
 
-		Timer {
-			id: closeAnimationTracker
-			interval: 500 // matches the hide animation duration
-			onTriggered: window.isClosingAnimating = false
-		}
-
-		Timer {
-			id: screenChangeAnimationDelay
-			interval: 550 // +50 ms so we are sure the animation finished
-			onTriggered: {
-				window.screen = window.currentMonitor
-				if (reopenAfterScreenChange) {
-					// Show the launcher again only if it was open when monitor changed
-					// Wait for the panelwindow to reposition itself
-					visibilityDelay.restart()
+		onIsAnimatingChanged: {
+			if (!isAnimating) {
+				if (window.currentMonitor !== window.screen) {
+					window.screen = window.currentMonitor
+					// waittimer.start()
 				}
-				reopenAfterScreenChange = false
 			}
 		}
 
 		Timer {
-			id: visibilityDelay
-			interval: 300
+			id: waittimer
+			interval: 100
 			onTriggered: {
-				root.visible = true
+				if (window.currentMonitor !== window.screen) {
+					window.screen = window.currentMonitor
+				}
 			}
 		}
+
 
 		HyprlandFocusGrab {
 			id: grab
@@ -95,16 +78,28 @@ Scope {
 			anchors.bottom: parent.bottom
 			width: col.implicitWidth + Config.rounding * 6
 
+			// function logState() {
+			// 	console.log("State changed to: " + (root.visible ? "visible" : "hidden") + ", height: " + height + ", rounding: " + rounding)
+			// }
+
 			states: [
 				State {
 					name: "hidden"
 					when: !root.visible
 					PropertyChanges { target: shp; height: 0; rounding: 0 }
+					// StateChangeScript { 
+					// 	name: "hiddenScript"
+					// 	script: shp.logState()
+					// }
 				},
 				State {
 					name: "visible"
 					when: root.visible
 					PropertyChanges { target: shp; height: col.implicitHeight + Config.rounding * 3; rounding: Config.rounding * 2 }
+					// StateChangeScript { 
+					// 	name: "visibleScript"
+					// 	script: shp.logState()
+					// }
 				}
 			]
 
@@ -114,20 +109,20 @@ Scope {
 					from: "hidden"; to: "visible"
 					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.OutBack }
 					NumberAnimation {
-                            properties: "rounding"
-                            duration: 500
-                            easing.type: Easing.OutBack
-                        }
+						properties: "rounding"
+						duration: 500
+						easing.type: Easing.OutBack
+					}
 				},
 				Transition {
 					id: hideTransition
 					from: "visible"; to: "hidden"
 					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.InBack }
 					NumberAnimation {
-                            properties: "rounding"
-                            duration: 500
-                            easing.type: Easing.InBack
-                        }
+						properties: "rounding"
+						duration: 500
+						easing.type: Easing.InBack
+					}
 				}
 			]
 
