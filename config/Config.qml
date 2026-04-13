@@ -9,7 +9,7 @@ Singleton {
     // Default config values
     property string theme: "gruvbox"
     property int rounding: 8
-    property int spacing: 20
+    property int spacing: 8
     FileView {
         path: Qt.resolvedUrl("./config.json")
         watchChanges: true

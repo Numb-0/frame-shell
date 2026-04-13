@@ -74,9 +74,9 @@ Scope {
 		Shape {
 			id: shp
 			property real rounding: 0
-			property real padding: Config.rounding * 3
+			property real padding: Config.spacing * 3
 			anchors.bottom: parent.bottom
-			width: col.implicitWidth + Config.rounding * 6
+			width: col.implicitWidth + Config.spacing * 6
 
 			// function logState() {
 			// 	console.log("State changed to: " + (root.visible ? "visible" : "hidden") + ", height: " + height + ", rounding: " + rounding)
