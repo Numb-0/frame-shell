@@ -28,18 +28,17 @@ Scope {
         color: "transparent"
         mask: Region { item: background }
         implicitWidth: col.preferredWidth
+        implicitHeight: col.implicitHeight
         focusable: true
-        anchors {
-            top: true
-            bottom: true
-        }
+        exclusiveZone: 0
+        anchors.top: true
         margins.top: 10
         
         Rectangle {
             id: background
             anchors.right: parent.right
             anchors.left: parent.left
-            implicitHeight: col.implicitHeight + Config.spacing * 4
+            implicitHeight: col.implicitHeight
             color: Theme.colors.backgroundAlt
             radius: Config.rounding * 2
         }
@@ -48,10 +47,11 @@ Scope {
         ColumnLayout {
             id: col
             focus: true
+            spacing: 0
             property int preferredWidth: 500
             anchors.fill: background
-            spacing: 0
             Keys.onEscapePressed: root.visible = false
+
             Bluetooth { Layout.preferredWidth: col.preferredWidth }
             PowerProfiles { Layout.preferredWidth: col.preferredWidth }
             Brightness { Layout.preferredWidth: col.preferredWidth }

@@ -22,17 +22,23 @@ Scope {
 	PanelWindow {
 		id: window
 		screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor)
-		property bool isAnimating: showTransition.running || hideTransition.running
-		
+		visible: root.visible
 		exclusiveZone: 0
-		anchors {
-			bottom: true
-			top: true
-		}
-		implicitWidth: shp.implicitWidth
+		anchors.bottom: true
+		
+		implicitWidth: col.implicitWidth + Config.spacing * 2
+		implicitHeight: col.implicitHeight + Config.spacing * 2
 		focusable: root.visible
-		mask: Region { item: shp }
+		mask: Region { item: background }
 		color: "transparent"
+		margins.bottom: 10
+
+		Rectangle {
+			id: background
+			anchors.fill: parent
+			color: Theme.colors.backgroundAlt
+			radius: Config.rounding * 2
+		}
 
 		HyprlandFocusGrab {
 			id: grab
@@ -40,91 +46,17 @@ Scope {
 			active: root.visible
 		}
 
-		Shape {
-			id: shp
-			property real rounding: 0
-			property real padding: Config.spacing * 3
-			anchors.bottom: parent.bottom
-			width: col.implicitWidth + Config.spacing * 6
-
-			states: [
-				State {
-					name: "hidden"
-					when: !root.visible
-					PropertyChanges { target: shp; height: 0; rounding: 0 }
-					// StateChangeScript { 
-					// 	name: "hiddenScript"
-					// 	script: shp.logState()
-					// }
-				},
-				State {
-					name: "visible"
-					when: root.visible
-					PropertyChanges { target: shp; height: col.implicitHeight + Config.rounding * 3; rounding: Config.rounding * 2 }
-					// StateChangeScript { 
-					// 	name: "visibleScript"
-					// 	script: shp.logState()
-					// }
-				}
-			]
-
-			transitions: [
-				Transition {
-					id: showTransition
-					from: "hidden"; to: "visible"
-					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.OutBack }
-					NumberAnimation {
-						properties: "rounding"
-						duration: 500
-						easing.type: Easing.OutBack
-					}
-				},
-				Transition {
-					id: hideTransition
-					from: "visible"; to: "hidden"
-					NumberAnimation { properties: "height"; duration: 500; easing.type: Easing.InBack }
-					NumberAnimation {
-						properties: "rounding"
-						duration: 500
-						easing.type: Easing.InBack
-					}
-				}
-			]
-
-			ShapePath {
-				fillColor: Theme.colors.backgroundAlt
-				strokeWidth: 0
-				startX: 0; startY: shp.height
-				PathLine { x: shp.width; y: shp.height }
-				// Bottom-right corner
-				PathQuad { x: shp.width - shp.rounding; y: shp.height - shp.rounding; controlX: shp.width - shp.rounding; controlY: shp.height }
-				PathLine { x: shp.width - shp.rounding; y: shp.rounding }
-				// Top-right corner
-				PathQuad { x: shp.width - shp.rounding * 2; y: 0; controlX: shp.width - shp.rounding; controlY: 0 }
-				PathLine { x: shp.rounding * 2; y: 0 }
-				// Top-left corner
-				PathQuad { x: shp.rounding; y: shp.rounding; controlX: shp.rounding; controlY: 0 }
-				PathLine { x: shp.rounding; y: shp.height - shp.rounding }
-				// Bottom-left corner
-				PathQuad { x: 0; y: shp.height; controlX: shp.rounding; controlY: shp.height }
-			}
-		}
-
 		ColumnLayout {
 			id: col
-			property int minimumWidth: 350
-			anchors.top: shp.top
-            anchors.left: shp.left
-            anchors.right: shp.right
-            anchors.leftMargin: shp.padding
-            anchors.rightMargin: shp.padding
-			anchors.topMargin: shp.padding / 2
+			property int preferredWidth: 350
+			anchors.centerIn: background
+			spacing: Config.spacing
 			Keys.onEscapePressed: root.visible = false
 
 			TextField {
 				id: searchBox
-				implicitHeight: 40
-				implicitWidth: col.minimumWidth
+				implicitHeight: 30
+				implicitWidth: col.preferredWidth
 				font.bold: true
 				font.family: "JetBrains Mono"
 				focus: root.visible
