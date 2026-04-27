@@ -12,6 +12,6 @@ ShellRoot {
   PowerActions {}
   Notifications {}
   Dashboard {}
-  Corners {}
+  // Corners {}
   Mixer {}
 } 
