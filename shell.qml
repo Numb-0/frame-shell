@@ -1,4 +1,5 @@
 //@ pragma UseQApplication
+//@ pragma DropExpensiveFonts
 
 import Quickshell
 import qs.widgets

@@ -14,10 +14,6 @@ Scope {
 	property bool visible: false
 	property string searchText: ""
 
-	// onVisibleChanged: {
-	// 	window.toggle(visible)
-	// }
-
 	GlobalShortcut {
 		name: "applauncher"
 		onPressed: root.visible = !root.visible
@@ -25,8 +21,7 @@ Scope {
 
 	PanelWindow {
 		id: window
-		property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
-		
+		screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor)
 		property bool isAnimating: showTransition.running || hideTransition.running
 		
 		exclusiveZone: 0
@@ -38,32 +33,6 @@ Scope {
 		focusable: root.visible
 		mask: Region { item: shp }
 		color: "transparent"
-
-		onCurrentMonitorChanged: {
-			root.visible = false
-			window.screen = window.currentMonitor
-
-		}
-
-		onIsAnimatingChanged: {
-			if (!isAnimating) {
-				if (window.currentMonitor !== window.screen) {
-					window.screen = window.currentMonitor
-					// waittimer.start()
-				}
-			}
-		}
-
-		Timer {
-			id: waittimer
-			interval: 100
-			onTriggered: {
-				if (window.currentMonitor !== window.screen) {
-					window.screen = window.currentMonitor
-				}
-			}
-		}
-
 
 		HyprlandFocusGrab {
 			id: grab
@@ -77,10 +46,6 @@ Scope {
 			property real padding: Config.spacing * 3
 			anchors.bottom: parent.bottom
 			width: col.implicitWidth + Config.spacing * 6
-
-			// function logState() {
-			// 	console.log("State changed to: " + (root.visible ? "visible" : "hidden") + ", height: " + height + ", rounding: " + rounding)
-			// }
 
 			states: [
 				State {
