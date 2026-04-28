@@ -28,9 +28,9 @@ Scope {
         property var modelData
         id: window
         color: "transparent"
-        screen: modelData
+        screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         mask: Region { item: col }
-        focusable: window.isVisible
+        focusable: root.visible
         implicitWidth: col.implicitWidth
         visible: root.visible
         anchors.right: true

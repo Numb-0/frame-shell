@@ -23,7 +23,7 @@ Scope {
 
     PanelWindow {
         id: window
-        screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor)
+        screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         visible: root.visible
         color: "transparent"
         mask: Region { item: background }
@@ -31,7 +31,10 @@ Scope {
         implicitHeight: col.implicitHeight
         focusable: true
         exclusiveZone: 0
-        anchors.top: true
+        anchors {
+            top: true
+            bottom: true
+        }
         margins.top: 10
         
         Rectangle {

@@ -21,7 +21,7 @@ Scope {
 
 	PanelWindow {
 		id: window
-		screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor)
+		screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
 		visible: root.visible
 		exclusiveZone: 0
 		anchors.bottom: true
@@ -109,7 +109,7 @@ Scope {
 					spacing: 10
 					IconImage {
 						implicitSize: 40
-						source: Quickshell.iconPath(modelData.icon)
+						source: Quickshell.iconPath(modelData.icon == "" ? "application-x-executable" : modelData.icon)
 					}
 					CustomText { text: modelData.name }
 					Item { Layout.fillWidth: true }

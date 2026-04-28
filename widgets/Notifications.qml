@@ -16,8 +16,7 @@ Scope {
 	id: root
     PanelWindow {
         id: window
-        property var currentMonitor: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name)
-        screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? null
+        screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         exclusiveZone: 0
         color: "transparent"
         margins.top: 20
@@ -31,11 +30,6 @@ Scope {
         
         mask: Region {
             item: maskRect
-        }
-
-        onCurrentMonitorChanged: {
-            if (notifList.count > 0) return
-            window.screen = window.currentMonitor
         }
 
         Item {

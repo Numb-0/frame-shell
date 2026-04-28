@@ -4,7 +4,7 @@ import Quickshell
 Singleton {
     id: sysTrayMenuManager
     property var menus: []
-    property var activeMenu: null
+    property var activeMenuId: null
     property var sysTrayMenuComponent: Qt.createComponent("SysTrayMenu.qml")
 
     function registerMenu(modelData) {
@@ -18,7 +18,10 @@ Singleton {
     }
 
     function setActiveMenu(modelData) {
-        activeMenu = modelData
-        activeMenuChanged()
+        if (activeMenuId === modelData.id) {
+            activeMenuId = null
+        } else {
+            activeMenuId = modelData.id
+        }
     }
 }
