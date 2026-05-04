@@ -15,7 +15,7 @@ Scope {
     PanelWindow {
       id: bar
       property var modelData
-      property real padding: 5
+      property real padding: Config.spacing
       screen: modelData
       color: "transparent"
       implicitHeight: barrow.implicitHeight + padding * 2

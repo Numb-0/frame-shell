@@ -13,7 +13,6 @@ Item {
     required property var modelData
     width: ListView.view ? ListView.view.width : parent.width
     height: contentLayout.implicitHeight + 10
-    // anchors.bottomMargin: Config.rounding * 2
 
     ParallelAnimation {
         id: appearedAnimation
@@ -33,7 +32,7 @@ Item {
         color: Theme.colors.backgroundHighlight
         radius: Config.rounding
         anchors.fill: parent
-        anchors.margins: -5
+        anchors.margins: - Config.spacing / 2
     }
 
     RowLayout {

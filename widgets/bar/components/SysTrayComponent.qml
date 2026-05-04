@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
-import Quickshell.Services.Notifications
 
 import qs.utils
 import qs.config

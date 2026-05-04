@@ -35,7 +35,8 @@ Scope {
             top: true
             bottom: true
         }
-        margins.top: 10
+        
+        margins.top: Config.spacing
         
         Rectangle {
             id: background

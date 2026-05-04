@@ -26,7 +26,6 @@ Scope {
         exclusiveZone: 0
         color: "transparent"
         implicitHeight: col.implicitHeight + Config.spacing * 2
-        focusable: root.visible
         visible: root.visible
         mask: Region { item: background }
 

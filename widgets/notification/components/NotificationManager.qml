@@ -46,8 +46,9 @@ Singleton {
                 root.list = root.list.filter(n => n.id !== notificationId)
             })
 
-            root.list.push(notifObj)
-            root.listChanged();
+            root.list = [...root.list, notifObj];
+            // root.list.push(notifObj);
+            // root.listChanged();
         }
     }
 

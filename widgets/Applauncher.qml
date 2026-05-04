@@ -31,7 +31,8 @@ Scope {
 		focusable: root.visible
 		mask: Region { item: background }
 		color: "transparent"
-		margins.bottom: 10
+		
+		margins.bottom: Config.spacing
 
 		Rectangle {
 			id: background

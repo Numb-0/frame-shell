@@ -6,10 +6,6 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Notifications
 
-
-import "root:/config"
-import "root:/utils"
-
 QtObject {
     id: root
     required property var notification
@@ -27,10 +23,21 @@ QtObject {
     property double time: Date.now()
     property string urgency: notification?.urgency
     property int expireTimeout: urgency === NotificationUrgency.Critical ? 10000 : 5000
+    property real progress: 1.0
+    property bool dismissing: false
     
-    property Timer expireTimer: Timer {
-        interval: root.expireTimeout
-        onTriggered: expire()
+    property PropertyAnimation expireAnimation: PropertyAnimation {
+        target: root
+        property: "progress"
+        from: 1.0
+        to: 0.0
+        duration: root.expireTimeout
+        running: false
+        onStopped: {
+            if (root.progress <= 0) {
+                root.expire()
+            }
+        }
     }
 
     signal expireRequested(int notificationId)
@@ -39,24 +46,19 @@ QtObject {
 
     function expire() {
         if (popup) {
-            expireTimer.stop()
+            expireAnimation.stop()
             expireRequested(id)
             notification.expire()
         }
     }
 
     function dismiss() {
-        expireTimer.stop()
+        expireAnimation.stop()
         dismissRequested(id)
         notification.dismiss()
     }
 
     Component.onCompleted: {
-        // console.log(notification.actions)
-        // console.log(notification.summary)
-        // console.log(notification.image)
-        // console.log(notification.body)
-        // console.log(root.urgency)
-        expireTimer.start()
+        // expireAnimation.start()
     }
 }

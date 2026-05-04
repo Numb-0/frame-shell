@@ -23,6 +23,7 @@ Scope {
         }
 
         exclusiveZone: 0
+        // color: "blue"
         color: "transparent"
         screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         mask: Region {
@@ -30,22 +31,26 @@ Scope {
         }
 
         Item {
+            Rectangle {
+                anchors.fill: parent
+                color: "yellow"
+            }
             id: maskBounds
             anchors.horizontalCenter: notifList.horizontalCenter
             anchors.top: notifList.top
-            width: notifList.width
-            height: notifList.notifHeight 
+            implicitWidth: notifList.width
+            implicitHeight: notifList.contentHeight
         }
 
         ListView {
             id: notifList
             property int notifWidth: 600
-            property int notifHeight: 100
+            property int notifHeight: 80
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: Config.spacing
 
-            width: notifWidth
+            implicitWidth: notifWidth
             height: parent.height
             interactive: false
 
@@ -55,11 +60,12 @@ Scope {
             spacing: 0
 
             delegate: NotificationComponent { }
+            add: Transition { }
             displaced: Transition {
                 NumberAnimation {
                     properties: "y"
-                    duration: 400
-                    easing.type: Easing.OutQuad
+                    duration: 450
+                    easing.type: Easing.OutQuint
                 }
             }
         }
