@@ -49,7 +49,7 @@ Scope {
         Rectangle {
             id: background
             color: Theme.colors.backgroundAlt
-            radius: Config.rounding * 2
+            radius: Config.rounding
             implicitWidth: col.implicitWidth + Config.spacing * 2
             implicitHeight: col.implicitHeight + Config.spacing * 2
             anchors.right: parent.right
@@ -76,7 +76,7 @@ Scope {
                         text: modelData.text
                     }
                     background: Rectangle {
-                        radius: Config.rounding * 2
+                        radius: Config.rounding
                         color: parent.hovered ? Theme.colors.backgroundHighlight : Theme.colors.backgroundAlt
                         ColorBehavior on color { duration: 200 }
                     }

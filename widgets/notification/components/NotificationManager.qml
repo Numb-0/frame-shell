@@ -31,6 +31,7 @@ Singleton {
         persistenceSupported: true
 
         onNotification: (notification) => {
+            console.log("Received notification:", notification.summary, notification.body);
             notification.tracked = true
             if (!notification) return;
             let notifObj;

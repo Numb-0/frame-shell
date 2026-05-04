@@ -17,7 +17,7 @@ Rectangle {
     property real dragX: 0
     property real dragY: 0
     property real targetScale: index === 0 ? 1.0 : Math.pow(0.94, index)
-    property real targetY: index * Config.spacing * 2
+    property real targetY: index * Config.spacing
     property real targetOpacity: index === 0 ? 1.0 : Math.max(0, 0.8 * Math.pow(0.7, index - 1))
     z: -index
     y: targetY
@@ -49,7 +49,7 @@ Rectangle {
     opacity: targetOpacity
     scale: targetScale
     color: Theme.colors.backgroundAlt
-    radius: Config.rounding * 2
+    radius: Config.rounding
 
     implicitWidth: 600
     implicitHeight: 150
@@ -265,10 +265,6 @@ Rectangle {
             TimeoutPie {
                 progress: root.progress
                 fillColor: Theme.colors.foregroundDim
-            }
-            Text {
-                text: root.index
-                color: Theme.colors.red
             }
             MaterialButton {
                 iconPadding: 2

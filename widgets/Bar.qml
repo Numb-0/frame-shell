@@ -18,7 +18,7 @@ Scope {
       property real padding: Config.spacing
       screen: modelData
       color: "transparent"
-      implicitHeight: barrow.implicitHeight + padding * 2
+      implicitHeight: barrow.implicitHeight + padding
       margins {
         left: padding
         right: padding
@@ -28,7 +28,7 @@ Scope {
       Rectangle {
         anchors.fill: parent
         color: Theme.colors.backgroundAlt
-        radius: Config.rounding * 2
+        radius: Config.rounding
       }
 
       ColorBehavior on color {}

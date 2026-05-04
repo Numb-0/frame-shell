@@ -38,12 +38,6 @@ Scope {
             }
             width: 600
             height: 150
-            // Rectangle {
-            //     anchors.fill: parent
-            //     color: "transparent"
-            //     border.color: "red"
-            //     border.width: 1
-            // }
         }
 
         Repeater {

@@ -19,9 +19,7 @@ Scope {
 
     GlobalShortcut {
 		name: "mixer"
-		onPressed: {
-            root.visible = !root.visible
-        }
+		onPressed: root.visible = !root.visible
 	}
 
     PanelWindow {
@@ -33,29 +31,26 @@ Scope {
         focusable: root.visible
         implicitWidth: col.implicitWidth
         visible: root.visible
-        anchors.right: true
-        exclusiveZone: 0
-
-        HyprlandFocusGrab {
-            id: grab
-            windows: [ window ]
-            active: root.visible
-        }           
+        anchors {
+            top: true
+            right: true
+            bottom: true
+        }
+        margins.top: Config.spacing
+        margins.right: Config.spacing
+        exclusiveZone: 0       
 
         ColumnLayout {
             id: col
-            focus: true
             property int preferredWidth: 500
-
+            focus: root.visible
             spacing: 0
             Keys.onEscapePressed: root.visible = false
             Repeater {
                 model: ScriptModel {
                     values: Pipewire.nodes.values.filter(n => n.audio)
                 }
-                MixerComponent { 
-                    Layout.preferredWidth: col.preferredWidth 
-                }
+                MixerComponent { Layout.preferredWidth: col.preferredWidth }
             }
         }
     }

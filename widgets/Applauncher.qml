@@ -24,7 +24,7 @@ Scope {
 		screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
 		visible: root.visible
 		exclusiveZone: 0
-		anchors.bottom: true
+		anchors.top: true
 		
 		implicitWidth: col.implicitWidth + Config.spacing * 2
 		implicitHeight: col.implicitHeight + Config.spacing * 2
@@ -32,13 +32,13 @@ Scope {
 		mask: Region { item: background }
 		color: "transparent"
 		
-		margins.bottom: Config.spacing
+		margins.top: Config.spacing
 
 		Rectangle {
 			id: background
 			anchors.fill: parent
 			color: Theme.colors.backgroundAlt
-			radius: Config.rounding * 2
+			radius: Config.rounding
 		}
 
 		HyprlandFocusGrab {
