@@ -26,42 +26,32 @@ Scope {
         color: "transparent"
         screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         mask: Region {
-            item: notifList.count > 0 ? maskBounds : null
+            item: notifications.length > 0 ? notifmask : null
         }
+        margins.top: Config.spacing
 
         Item {
-            id: maskBounds
-            anchors.horizontalCenter: notifList.horizontalCenter
-            anchors.top: notifList.top
-            width: notifList.width
-            height: notifList.notifHeight 
+            id: notifmask
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: parent.top
+            }
+            width: 600
+            height: 150
+            // Rectangle {
+            //     anchors.fill: parent
+            //     color: "transparent"
+            //     border.color: "red"
+            //     border.width: 1
+            // }
         }
 
-        ListView {
-            id: notifList
-            property int notifWidth: 600
-            property int notifHeight: 100
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: Config.spacing
-
-            width: notifWidth
-            height: parent.height
-            interactive: false
-
+        Repeater {
+            id: notifRepeater
             model: ScriptModel {
                 values: root.notifications
             }
-            spacing: 0
-
-            delegate: NotificationComponent { }
-            displaced: Transition {
-                NumberAnimation {
-                    properties: "y"
-                    duration: 400
-                    easing.type: Easing.OutQuad
-                }
-            }
+            delegate: NotificationComponent {}
         }
     }
 }

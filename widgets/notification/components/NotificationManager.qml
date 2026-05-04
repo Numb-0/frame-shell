@@ -47,8 +47,6 @@ Singleton {
             })
 
             root.list = [...root.list, notifObj];
-            // root.list.push(notifObj);
-            // root.listChanged();
         }
     }
 

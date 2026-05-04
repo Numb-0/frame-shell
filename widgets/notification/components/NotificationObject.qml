@@ -23,22 +23,6 @@ QtObject {
     property double time: Date.now()
     property string urgency: notification?.urgency
     property int expireTimeout: urgency === NotificationUrgency.Critical ? 10000 : 5000
-    property real progress: 1.0
-    property bool dismissing: false
-    
-    property PropertyAnimation expireAnimation: PropertyAnimation {
-        target: root
-        property: "progress"
-        from: 1.0
-        to: 0.0
-        duration: root.expireTimeout
-        running: false
-        onStopped: {
-            if (root.progress <= 0) {
-                root.expire()
-            }
-        }
-    }
 
     signal expireRequested(int notificationId)
 
@@ -46,19 +30,13 @@ QtObject {
 
     function expire() {
         if (popup) {
-            expireAnimation.stop()
             expireRequested(id)
             notification.expire()
         }
     }
 
     function dismiss() {
-        expireAnimation.stop()
         dismissRequested(id)
         notification.dismiss()
-    }
-
-    Component.onCompleted: {
-        // expireAnimation.start()
     }
 }

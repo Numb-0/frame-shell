@@ -9,7 +9,7 @@ import Quickshell.Services.Notifications
 import qs.utils
 import qs.config
 
-Item {
+Rectangle {
     id: root
     required property var modelData
     required property int index
@@ -19,14 +19,13 @@ Item {
     property real targetScale: index === 0 ? 1.0 : Math.pow(0.94, index)
     property real targetY: index * Config.spacing * 2
     property real targetOpacity: index === 0 ? 1.0 : Math.max(0, 0.8 * Math.pow(0.7, index - 1))
-    property bool removing: false
     z: -index
+    y: targetY
 
-    opacity: removing ? 0 : targetOpacity
-    scale: targetScale
-    height: 0
-
-    implicitWidth: notifList.notifWidth
+    transform: Translate {
+        x: root.dragX
+        y: -root.y + root.dragY + root.targetY 
+    }
 
     Behavior on scale {
         NumberAnimation {
@@ -47,56 +46,92 @@ Item {
         }
     }
 
-    transform: Translate {
-        x: root.dragX
-        y: -root.y + root.dragY + root.targetY 
-    }
+    opacity: targetOpacity
+    scale: targetScale
+    color: Theme.colors.backgroundAlt
+    radius: Config.rounding * 2
+
+    implicitWidth: 600
+    implicitHeight: 150
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
 
     onIndexChanged: {
         if (root.index === 0) {
-            modelData.expireAnimation.start();
+            timeoutPieAnimation.start();
         }
     }
 
-    ListView.onRemove: {
-        console.log("Removing notification at index", index, "with id", modelData.id)
-        removeAnimation.start()
-    }
+    readonly property bool discardThreshold: Math.sqrt(dragX ** 2 + dragY ** 2) > 130
 
+    onDiscardThresholdChanged: {
+        if (discardThreshold) {
+            wiggleAnimation.restart();
+        } else {
+            wiggleAnimation.stop();
+        }
+    }
 
     SequentialAnimation {
-        id: removeAnimation
-        PropertyAction {
+        id: wiggleAnimation
+        loops: Animation.Infinite
+        RotationAnimation {
             target: root
-            property: "ListView.delayRemove"
-            value: true
+            from: 0
+            to: 5
+            duration: 100
         }
-        PropertyAction {
+        RotationAnimation {
             target: root
-            property: "removing"
-            value: true
+            from: 5
+            to: 0
+            duration: 100
         }
-        ParallelAnimation {
-            NumberAnimation {
-                target: root
-                property: "scale"
-                to: 0.6
-                duration: 400
-                easing.type: Easing.OutQuad
+        RotationAnimation {
+            target: root
+            from: 0
+            to: -5
+            duration: 100
+        }
+        RotationAnimation {
+            target: root
+            from: -5
+            to: 0
+            duration: 100
+        }
+        onStopped: afterWiggle.start()
+    }
+
+    PropertyAnimation {
+        id: afterWiggle
+        target: root
+        property: "rotation"
+        to: 0
+        duration: 100
+        easing.type: Easing.OutBack
+        alwaysRunToEnd: true
+    }
+
+    Component.onCompleted: {
+        if (index === 0) {
+            timeoutPieAnimation.start();
+        }
+        addAnimation.start();
+    }
+
+    property real progress: 1.0
+    
+    property PropertyAnimation timeoutPieAnimation: PropertyAnimation {
+        target: root
+        property: "progress"
+        from: 1.0
+        to: 0.0
+        duration: modelData.expireTimeout
+        running: false
+        onStopped: {
+            if (root.progress <= 0) {
+                removeAnimation.start()
             }
-            NumberAnimation {
-                target: root
-                property: "targetY"
-                from: 0
-                to: -200
-                duration: 400
-                easing.type: Easing.OutQuad
-            }
-        }
-        PropertyAction {
-            target: root
-            property: "ListView.delayRemove"
-            value: false
         }
     }
 
@@ -120,10 +155,44 @@ Item {
         }
     }
 
+    ParallelAnimation {
+        id: removeAnimation
+        NumberAnimation {
+            target: root
+            property: "scale"
+            to: 0.6
+            duration: 400
+            easing.type: Easing.OutQuad
+        }
+        NumberAnimation {
+            target: root
+            property: "targetY"
+            from: 0
+            to: -200
+            duration: 400
+            easing.type: Easing.OutQuad
+        }
+        NumberAnimation {
+            target: root
+            property: "opacity"
+            to: 0
+            duration: 400
+            easing.type: Easing.OutQuad
+        }
+        onStopped: {
+            if (root.progress <= 0) {
+                root.modelData.expire()
+            } else {
+                root.modelData.dismiss()
+            }
+        }
+    }
+
+
     MouseArea {
         id: mouseArea
         enabled: root.index === 0
-        anchors.fill: background
+        anchors.fill: root
         property real startX
         property real startY
 
@@ -133,7 +202,7 @@ Item {
             xSnap.enabled = false;
             ySnap.enabled = false;
 
-            modelData.expireAnimation.pause();
+            timeoutPieAnimation.pause();
         }
         onPositionChanged: mouse => {
             if (pressed) {
@@ -147,14 +216,14 @@ Item {
             }
         }
         onReleased: {
-            if (background.discardThreshold) {
-                root.modelData.dismiss();
+            if (root.discardThreshold) {
+                removeAnimation.start();
             } else {
                 xSnap.enabled = true;
                 ySnap.enabled = true;
                 root.dragX = 0;
                 root.dragY = 0;
-                modelData.expireAnimation.resume();
+                timeoutPieAnimation.resume();
             }
         }
     }
@@ -177,66 +246,9 @@ Item {
         }
     }
 
-    Rectangle {
-        id: background
-        implicitWidth: parent.width
-        implicitHeight: notifbtn.implicitHeight + Config.spacing * 2
-        color: Theme.colors.backgroundAlt
-        radius: Config.rounding * 2
-        readonly property bool discardThreshold: Math.sqrt(dragX ** 2 + dragY ** 2) > 130
-
-        onDiscardThresholdChanged: {
-            if (discardThreshold) {
-                wiggleAnimation.restart();
-            } else {
-                wiggleAnimation.stop();
-            }
-        }
-
-        SequentialAnimation {
-            id: wiggleAnimation
-            loops: Animation.Infinite
-            RotationAnimation {
-                target: root
-                from: 0
-                to: 5
-                duration: 100
-            }
-            RotationAnimation {
-                target: root
-                from: 5
-                to: 0
-                duration: 100
-            }
-            RotationAnimation {
-                target: root
-                from: 0
-                to: -5
-                duration: 100
-            }
-            RotationAnimation {
-                target: root
-                from: -5
-                to: 0
-                duration: 100
-            }
-            onStopped: afterWiggle.start()
-        }
-
-        PropertyAnimation {
-            id: afterWiggle
-            target: root
-            property: "rotation"
-            to: 0
-            duration: 100
-            easing.type: Easing.OutBack
-            alwaysRunToEnd: true
-        }
-    }
-
     ColumnLayout {
         id: notifbtn
-        anchors.fill: background
+        anchors.fill: parent
         anchors.margins: Config.spacing
         spacing: Config.spacing / 2
 
@@ -251,7 +263,7 @@ Item {
                 elide: Text.ElideRight
             }
             TimeoutPie {
-                progress: modelData.progress
+                progress: root.progress
                 fillColor: Theme.colors.foregroundDim
             }
             Text {
@@ -277,22 +289,9 @@ Item {
         Image {
             visible: source.toString().length > 0
             source: modelData.image
-            // sourceSize.width: 40
-            // sourceSize.height: 40
             Layout.preferredWidth: 60
             Layout.preferredHeight: 60
         }
-    }
-
-    Component.onCompleted: {
-        if (index === 0) {
-            modelData.expireAnimation.start();
-        }
-        addAnimation.start();
-    }
-
-    Component.onDestruction: {
-        console.log("Destroying notification with id", root.opacity)
     }
 }
 
