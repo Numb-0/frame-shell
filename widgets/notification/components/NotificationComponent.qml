@@ -14,6 +14,9 @@ Rectangle {
     required property var modelData
     required property int index
 
+    required property int notificationWidth
+    required property int notificationHeight
+
     property real dragX: 0
     property real dragY: 0
     property real targetScale: index === 0 ? 1.0 : Math.pow(0.94, index)
@@ -51,8 +54,8 @@ Rectangle {
     color: Theme.colors.backgroundAlt
     radius: Config.rounding
 
-    implicitWidth: 600
-    implicitHeight: 150
+    implicitWidth: notificationWidth
+    implicitHeight: notificationHeight
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
 

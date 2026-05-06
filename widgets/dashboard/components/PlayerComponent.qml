@@ -12,7 +12,7 @@ Item {
     id: root
     required property var modelData
     width: ListView.view ? ListView.view.width : parent.width
-    height: contentLayout.implicitHeight + 10
+    height: contentLayout.implicitHeight
 
     ParallelAnimation {
         id: appearedAnimation
@@ -32,12 +32,18 @@ Item {
         color: Theme.colors.backgroundHighlight
         radius: Config.rounding
         anchors.fill: parent
-        anchors.margins: - Config.spacing / 2
+    }
+
+    onModelDataChanged: {
+        if (modelData) {
+            console.log("Model data changed for player component:", modelData)
+        }
     }
 
     RowLayout {
         id: contentLayout
         anchors.fill: parent
+        anchors.margins: Config.spacing
         spacing: 0
         
         ColumnLayout {
@@ -249,7 +255,8 @@ Item {
                 Layout.leftMargin: 5
             }
             
-            RowLayout { 
+            RowLayout {
+                Layout.bottomMargin: Config.spacing
                 spacing: 0
                 Layout.alignment: Qt.AlignHCenter
                 MaterialButton {

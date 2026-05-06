@@ -13,9 +13,9 @@ ListView {
     implicitHeight: contentHeight
     interactive: false
     Layout.margins: Config.rounding
-    spacing: 20
+    spacing: Config.spacing
     model: ScriptModel {
-        values: Mpris.players.values.filter(p => p.canPlay)
+        values: Mpris.players.values.filter(p => p.canPlay && p.canControl && p.canTogglePlaying)
     }
     delegate: PlayerComponent {}
     

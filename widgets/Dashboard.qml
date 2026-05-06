@@ -30,7 +30,8 @@ Scope {
         implicitWidth: col.preferredWidth
         implicitHeight: col.implicitHeight
         focusable: true
-        exclusiveZone: 0
+        // exclusiveZone: 0
+        exclusionMode: ExclusionMode.Normal
         anchors {
             top: true
             bottom: true

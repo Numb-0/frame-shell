@@ -16,6 +16,7 @@ import qs.widgets.mixer.components
 Scope {
 	id: root
 	property bool visible: false
+    property var mixerWidth: 500
 
     GlobalShortcut {
 		name: "mixer"
@@ -23,34 +24,34 @@ Scope {
 	}
 
     PanelWindow {
-        property var modelData
         id: window
         color: "transparent"
         screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         mask: Region { item: col }
         focusable: root.visible
-        implicitWidth: col.implicitWidth
         visible: root.visible
+        implicitWidth: root.mixerWidth
+
         anchors {
             top: true
             right: true
             bottom: true
         }
+
         margins.top: Config.spacing
-        margins.right: Config.spacing
-        exclusiveZone: 0       
+        margins.right: Config.spacing       
+        exclusionMode: ExclusionMode.Normal
 
         ColumnLayout {
             id: col
-            property int preferredWidth: 500
             focus: root.visible
-            spacing: 0
+            spacing: Config.spacing
             Keys.onEscapePressed: root.visible = false
             Repeater {
                 model: ScriptModel {
-                    values: Pipewire.nodes.values.filter(n => n.audio)
+                    values: Pipewire.nodes.values.filter(n => n.audio).sort((a, b) => a.name.localeCompare(b.name))
                 }
-                MixerComponent { Layout.preferredWidth: col.preferredWidth }
+                delegate: MixerComponent { Layout.preferredWidth: root.mixerWidth }
             }
         }
     }

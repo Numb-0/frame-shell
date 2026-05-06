@@ -21,5 +21,10 @@ Singleton {
             property alias rounding: config.rounding
             property alias spacing: config.spacing
         }
+        onLoadFailed: (error) => {
+            if (error === FileViewError.FileNotFound) {
+                writeAdapter()
+            }
+        }
     }
 }

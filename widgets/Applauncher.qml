@@ -23,7 +23,8 @@ Scope {
 		id: window
 		screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
 		visible: root.visible
-		exclusiveZone: 0
+		// exclusiveZone: 0
+		exclusionMode: ExclusionMode.Normal
 		anchors.top: true
 		
 		implicitWidth: col.implicitWidth + Config.spacing * 2
@@ -86,23 +87,26 @@ Scope {
 
 			ListView {
 				id: appsList
+				property int itemCount: 7
 				model: ScriptModel {
 					values: DesktopEntries.applications.values
 					.filter(entry => entry.name.toLowerCase()
 					.includes(root.searchText.toLowerCase()))
 				}
 				snapMode: ListView.SnapToItem
-				implicitHeight: 200 // 40 * 5
+				implicitHeight: 40 * itemCount
 				Layout.fillWidth: true
 				clip: true
-				highlightMoveDuration: 500
+				highlightMoveDuration: 180
+				highlightMoveVelocity: -1
 				highlight: Rectangle {
 					width: appsList.width
 					color: Theme.colors.backgroundHighlight
 					ColorBehavior on color {}
 					radius: Config.rounding
 				}
-				currentIndex: -1
+        currentIndex: -1
+        spacing: Config.spacing
 				
 				delegate: RowLayout {
 					implicitHeight: 40
@@ -126,18 +130,24 @@ Scope {
 				}
 				remove: Transition {
 					ParallelAnimation {
-						NumberAnimation { properties: "x"; duration: 600; from: 0; to: 300; easing.type: Easing.InOutQuad }
-						NumberAnimation { properties: "opacity"; duration: 400; from: 1; to: 0; easing.type: Easing.OutExpo }
+						NumberAnimation { properties: "x"; duration: 320; from: 0; to: 40; easing.type: Easing.OutCubic }
+						NumberAnimation { properties: "opacity"; duration: 320; from: 1; to: 0; easing.type: Easing.OutCubic }
 					}
+				}
+				removeDisplaced: Transition {
+					NumberAnimation { properties: "y"; duration: 320; easing.type: Easing.OutCubic }
 				}
 				add: Transition {
 					ParallelAnimation {
-						NumberAnimation { properties: "x"; duration: 600; from: 260; to: 0; easing.type: Easing.OutExpo }
-						NumberAnimation { properties: "opacity"; duration: 400; from: 0; to: 1; easing.type: Easing.OutExpo }
+						NumberAnimation { properties: "x"; duration: 320; from: 40; to: 0; easing.type: Easing.OutCubic }
+						NumberAnimation { properties: "opacity"; duration: 320; from: 0; to: 1; easing.type: Easing.OutCubic }
 					}
 				}
-				displaced: Transition {
-					NumberAnimation { properties: "y"; duration: 300; easing.type: Easing.OutExpo }
+				addDisplaced: Transition {
+					ParallelAnimation {
+						NumberAnimation { properties: "y"; duration: 320; easing.type: Easing.OutCubic }
+						NumberAnimation { properties: "opacity"; duration: 320; from: 0; to: 1; easing.type: Easing.OutCubic }
+					}
 				}
 				Keys.onPressed: (event) => {
 					if (event.key === Qt.Key_Up && currentIndex === 0) {

@@ -36,9 +36,9 @@ Scope {
         }
         
         margins {
-            top: 10
-            left: 10
-            right: 10
+            top: Config.spacing
+            left: Config.spacing
+            right: Config.spacing
         }
 
         QsMenuOpener {

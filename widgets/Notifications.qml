@@ -12,6 +12,9 @@ import qs.widgets.notification.components
 Scope {
     id: root
     property var notifications: NotificationManager.list
+    property int notificationWidth: 600
+    property int notificationHeight: 150
+
     PanelWindow {
         id: window
 
@@ -36,8 +39,8 @@ Scope {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
             }
-            width: 600
-            height: 150
+            width: root.notificationWidth
+            height: root.notificationHeight
         }
 
         Repeater {
@@ -45,7 +48,10 @@ Scope {
             model: ScriptModel {
                 values: root.notifications
             }
-            delegate: NotificationComponent {}
+            delegate: NotificationComponent {
+                notificationWidth: root.notificationWidth
+                notificationHeight: root.notificationHeight
+            }
         }
     }
 }
