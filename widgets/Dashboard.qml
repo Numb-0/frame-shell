@@ -47,7 +47,13 @@ Scope {
             color: Theme.colors.backgroundAlt
             radius: Config.rounding
         }
-        
+
+        HyprlandFocusGrab {
+            windows: [ window ]
+            active: root.visible
+            onCleared: root.visible = false
+        }
+
 
         ColumnLayout {
             id: col

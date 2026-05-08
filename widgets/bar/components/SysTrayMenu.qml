@@ -55,6 +55,13 @@ Scope {
             anchors.right: parent.right
         }
 
+        HyprlandFocusGrab {
+			id: grab
+			windows: [ window ]
+			active: root.visible
+			onCleared: SysTrayMenuManager.activeMenuId = null
+		}
+
         ColumnLayout {
             id: col
             anchors.centerIn: background

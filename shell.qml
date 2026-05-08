@@ -13,4 +13,4 @@ ShellRoot {
   Notifications {}
   Dashboard {}
   Mixer {}
-} 
+}

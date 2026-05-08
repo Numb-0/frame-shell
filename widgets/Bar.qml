@@ -41,25 +41,6 @@ Scope {
         left: true
         right: true
       }
-      
-      MouseArea {
-        anchors.fill: row
-        hoverEnabled: true
-        // onClicked: root.dashboardToggleRequested()
-        propagateComposedEvents: true
-        onClicked: console.log("Bar clicked")
-      }
-
-      MouseArea {
-        anchors.fill: row
-        hoverEnabled: true
-        // preventStealing: true
-        propagateComposedEvents: true
-        onClicked: (mouse)=> {
-                console.log("clicked blue")
-                mouse.accepted = false
-            }
-      }
 
       RowLayout {
         id: row

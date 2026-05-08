@@ -55,6 +55,7 @@ Scope {
 				id: grab
 				windows: [ window ]
 				active: window.isVisible
+				onCleared: root.visible = false
 			}
 
 			property bool isVisible: root.visible && Hyprland.focusedMonitor?.name === modelData.name

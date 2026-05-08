@@ -39,8 +39,14 @@ Scope {
         }
 
         margins.top: Config.spacing
-        margins.right: Config.spacing       
+        margins.right: Config.spacing
         exclusionMode: ExclusionMode.Normal
+
+        HyprlandFocusGrab {
+            windows: [ window ]
+            active: root.visible
+            onCleared: root.visible = false
+        }
 
         ColumnLayout {
             id: col

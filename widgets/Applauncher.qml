@@ -46,6 +46,7 @@ Scope {
 			id: grab
 			windows: [ window ]
 			active: root.visible
+			onCleared: root.visible = false
 		}
 
 		ColumnLayout {
