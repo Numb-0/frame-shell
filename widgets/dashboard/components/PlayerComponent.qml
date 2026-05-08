@@ -34,12 +34,6 @@ Item {
         anchors.fill: parent
     }
 
-    onModelDataChanged: {
-        if (modelData) {
-            console.log("Model data changed for player component:", modelData)
-        }
-    }
-
     RowLayout {
         id: contentLayout
         anchors.fill: parent

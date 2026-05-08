@@ -56,8 +56,6 @@ Rectangle {
 
     implicitWidth: notificationWidth
     implicitHeight: notificationHeight
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.top: parent.top
 
     onIndexChanged: {
         if (root.index === 0) {
@@ -169,9 +167,8 @@ Rectangle {
         }
         NumberAnimation {
             target: root
-            property: "targetY"
-            from: 0
-            to: -200
+            property: "x"
+            to: notificationWidth / 2
             duration: 400
             easing.type: Easing.OutQuad
         }
@@ -189,6 +186,25 @@ Rectangle {
                 root.modelData.dismiss()
             }
         }
+    }
+
+    ParallelAnimation {
+        id: discardAnimation
+        NumberAnimation {
+            target: root
+            property: "scale"
+            to: 0.4
+            duration: 400
+            easing.type: Easing.OutQuad
+        }
+        NumberAnimation {
+            target: root
+            property: "opacity"
+            to: 0
+            duration: 400
+            easing.type: Easing.OutQuad
+        }
+        onStopped: root.modelData.dismiss()
     }
 
 
@@ -220,7 +236,7 @@ Rectangle {
         }
         onReleased: {
             if (root.discardThreshold) {
-                removeAnimation.start();
+                discardAnimation.start();
             } else {
                 xSnap.enabled = true;
                 ySnap.enabled = true;
@@ -273,7 +289,7 @@ Rectangle {
                 iconPadding: 2
                 iconName: "close"
                 iconColor: Theme.colors.red
-                onClicked: modelData.dismiss()
+                onClicked: removeAnimation.start()
             }
         }
         CustomText {

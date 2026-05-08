@@ -25,18 +25,21 @@ Scope {
             bottom: true
         }
 
-        exclusiveZone: 0
+        // exclusiveZone: 0
         color: "transparent"
         screen: Quickshell.screens.find(screen => Hyprland.monitorFor(screen) === Hyprland.focusedMonitor) ?? null
         mask: Region {
             item: notifications.length > 0 ? notifmask : null
         }
         margins.top: Config.spacing
+        margins.left: Config.spacing
 
         Item {
             id: notifmask
             anchors {
-                horizontalCenter: parent.horizontalCenter
+                // horizontalCenter: parent.horizontalCenter
+                // right: parent.right
+                left: parent.left
                 top: parent.top
             }
             width: root.notificationWidth

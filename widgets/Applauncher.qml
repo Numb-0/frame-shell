@@ -105,8 +105,8 @@ Scope {
 					ColorBehavior on color {}
 					radius: Config.rounding
 				}
-        currentIndex: -1
-        spacing: Config.spacing
+        		currentIndex: -1
+        		spacing: Config.spacing
 				
 				delegate: RowLayout {
 					implicitHeight: 40

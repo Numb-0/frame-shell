@@ -114,7 +114,32 @@ ColumnLayout {
             }
         }
     }
-    
+    Dialog {
+        id: deleteDeviceDialog
+        anchors.centerIn: parent
+        modal: true
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        background: Rectangle {
+            color: Theme.colors.background
+            radius: Config.rounding
+        }
+        footer: Rectangle {
+            color: Theme.colors.background
+            radius: Config.rounding
+            Text {
+                text: "This action cannot be undone."
+                color: Theme.colors.red
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.fill: parent
+            }
+        }
+
+        header: Rectangle {
+            color: Theme.colors.background
+            radius: Config.rounding
+        }
+    }
     Item {
         Layout.fillWidth: true
         implicitHeight: deviceListView.implicitHeight
@@ -195,7 +220,9 @@ ColumnLayout {
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {
-                        modelData.forget()
+                        deleteDeviceDialog.title = "Are you sure you want to remove " + modelData.deviceName + "?"
+                        deleteDeviceDialog.open()
+                        // modelData.forget()
                     }
                 }
                 MaterialButton {

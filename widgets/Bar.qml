@@ -7,18 +7,21 @@ import Quickshell.Wayland
 import qs.widgets.bar.sections
 import qs.utils
 import qs.config
+import qs.widgets
 
 Scope {
+  id: root
+  signal dashboardToggleRequested()
   Variants {
     model: Quickshell.screens
 
     PanelWindow {
-      id: bar
+      id: window
       property var modelData
       property real padding: Config.spacing
       screen: modelData
       color: "transparent"
-      implicitHeight: barrow.implicitHeight + padding
+      implicitHeight: row.implicitHeight + padding
       margins {
         left: padding
         right: padding
@@ -39,10 +42,30 @@ Scope {
         right: true
       }
       
+      MouseArea {
+        anchors.fill: row
+        hoverEnabled: true
+        // onClicked: root.dashboardToggleRequested()
+        propagateComposedEvents: true
+        onClicked: console.log("Bar clicked")
+      }
+
+      MouseArea {
+        anchors.fill: row
+        hoverEnabled: true
+        // preventStealing: true
+        propagateComposedEvents: true
+        onClicked: (mouse)=> {
+                console.log("clicked blue")
+                mouse.accepted = false
+            }
+      }
+
       RowLayout {
-        id: barrow
+        id: row
         anchors.fill: parent
         uniformCellSizes: true
+
         
         LeftSection {}
         CenterSection {}
