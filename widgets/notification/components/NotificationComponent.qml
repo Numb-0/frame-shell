@@ -21,7 +21,7 @@ Rectangle {
     property real dragY: 0
     property real targetScale: index === 0 ? 1.0 : Math.pow(0.94, index)
     property real targetY: index * Config.spacing
-    property real targetOpacity: index === 0 ? 1.0 : Math.max(0, 0.8 * Math.pow(0.7, index - 1))
+    property real targetOpacity: index === 0 ? 1.0 : Math.max(0, 0.9 * Math.pow(0.7, index - 1))
     z: -index
     y: targetY
 
