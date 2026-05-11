@@ -60,7 +60,7 @@ Rectangle {
 
     // Layout.fillWidth: true
     Layout.preferredHeight: 90
-    color: Theme.colors.backgroundHighlight
+    color: Theme.colors.base02
     radius: Config.rounding
 
     ColumnLayout {
@@ -76,7 +76,7 @@ Rectangle {
                 id: appIcon
                 icon: getAppIcon()
                 size: 32
-                color: Theme.colors.foreground
+                color: Theme.colors.base05
             }
 
             ColumnLayout {
@@ -104,7 +104,7 @@ Rectangle {
                 iconPadding: 2
                 iconSize: 24
                 iconName: Pipewire.defaultAudioSink?.id == modelData?.id ? "check_box" : "check_box_outline_blank"
-                iconColor: Theme.colors.foreground
+                iconColor: Theme.colors.base05
                 visible: modelData.isSink && !modelData.isStream
                 onClicked: {
                     if (modelData.isSink && !modelData.isStream) {
@@ -124,7 +124,7 @@ Rectangle {
                 iconPadding: 2
                 iconSize: 24
                 iconName: getVolumeIcon()
-                iconColor: modelData.audio?.muted ? Theme.colors.foreground : Theme.colors.green
+                iconColor: modelData.audio?.muted ? Theme.colors.base05 : Theme.colors.base0B
                 onClicked: {
                     if (modelData.audio) {
                         modelData.audio.muted = !modelData.audio.muted
@@ -149,14 +149,14 @@ Rectangle {
                 }
 
                 background: Rectangle {
-                    color: Theme.colors.backgroundAlt
+                    color: Theme.colors.base01
                     ColorBehavior on color {}
                     radius: Config.rounding
 
                     Rectangle {
                         width: volumeSlider.visualPosition * parent.width
                         height: parent.height
-                        color: volumeSlider.enabled ? Theme.colors.green : Theme.colors.foreground
+                        color: volumeSlider.enabled ? Theme.colors.base0B : Theme.colors.base05
                         ColorBehavior on color {}
                         radius: Config.rounding
                         opacity: volumeSlider.enabled ? 1.0 : 0.3
@@ -166,7 +166,7 @@ Rectangle {
                 handle: Rectangle {
                     x: volumeSlider.visualPosition * (volumeSlider.implicitWidth - width)
                     y: volumeSlider.implicitHeight / 2 - height / 2
-                    color: volumeSlider.enabled ? Theme.colors.green : Theme.colors.foreground
+                    color: volumeSlider.enabled ? Theme.colors.base0B : Theme.colors.base05
                     ColorBehavior on color {}
                     radius: Config.rounding
                     opacity: volumeSlider.enabled ? 1.0 : 0.5
@@ -178,7 +178,7 @@ Rectangle {
                 text: Math.round((modelData.audio?.volume ?? 0) * 100) + "%"
                 Layout.preferredWidth: 45
                 Layout.leftMargin: 10
-                color: modelData.audio?.muted ? Theme.colors.foreground : Theme.colors.green
+                color: modelData.audio?.muted ? Theme.colors.base05 : Theme.colors.base0B
                 opacity: modelData.audio?.muted ? 0.5 : 1.0
                 horizontalAlignment: Text.AlignRight
             }

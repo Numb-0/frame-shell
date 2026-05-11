@@ -23,10 +23,10 @@ RowLayout {
             property var hasToplevel: workspace?.toplevels.values.length > 0
             color: {
                 if (workspace) {
-                    if (workspace.focused) return Theme.colors.yellow;                
-                    if (hasToplevel) return Theme.colors.purple;
+                    if (workspace.focused) return Theme.colors.base0A;                
+                    if (hasToplevel) return Theme.colors.base0E;
                 }
-                return Theme.colors.blue
+                return Theme.colors.base0D
             }
             
             implicitHeight: 15

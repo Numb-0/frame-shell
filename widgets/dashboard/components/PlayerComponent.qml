@@ -29,7 +29,7 @@ Item {
     }
 
     Rectangle { 
-        color: Theme.colors.backgroundHighlight
+        color: Theme.colors.base02
         radius: Config.rounding
         anchors.fill: parent
     }
@@ -66,7 +66,7 @@ Item {
                         id: artistAlbumText
                         text: modelData.trackArtist
                         font.pixelSize: 13
-                        color: Theme.colors.foreground
+                        color: Theme.colors.base05
                         elide: Text.ElideRight
                         Layout.preferredWidth: 300
                         transform: Translate { id: slideTransform }
@@ -100,7 +100,7 @@ Item {
                     id: menuButton
                     visible: modelData.desktopEntry == null || modelData.desktopEntry == ""
                     iconName: "music_note"
-                    iconColor: Theme.colors.foreground
+                    iconColor: Theme.colors.base05
                     iconSize: 30
                     iconPadding: 0
                 }
@@ -164,7 +164,7 @@ Item {
                             var y = centerY + Math.sin((x - padding) * frequency) * amplitude
                             ctx.lineTo(x, y)
                         }
-                        ctx.strokeStyle = Theme.colors.foreground
+                        ctx.strokeStyle = Theme.colors.base05
                         ctx.lineWidth = 2
                         ctx.globalAlpha = 0.3
                         ctx.stroke()
@@ -176,7 +176,7 @@ Item {
                             var y = centerY + Math.sin((x - padding) * frequency) * amplitude
                             ctx.lineTo(x, y)
                         }
-                        ctx.strokeStyle = Theme.colors.green
+                        ctx.strokeStyle = Theme.colors.base0B
                         ctx.lineWidth = 3
                         ctx.globalAlpha = 1.0
                         ctx.stroke()
@@ -185,7 +185,7 @@ Item {
                         ctx.beginPath()
                         var handleY = centerY + Math.sin((progressX - padding) * frequency) * amplitude
                         ctx.arc(progressX, handleY, handleRadius, 0, 2 * Math.PI)
-                        ctx.fillStyle = Theme.colors.green
+                        ctx.fillStyle = Theme.colors.base0B
                         ctx.fill()
                     }
                 }
@@ -245,7 +245,7 @@ Item {
                     }
                 }
                 font.pixelSize: 12
-                color: Theme.colors.foreground
+                color: Theme.colors.base05
                 Layout.leftMargin: 5
             }
             
@@ -256,7 +256,7 @@ Item {
                 MaterialButton {
                     id: previousButton
                     iconName: "skip_previous"
-                    iconColor: Theme.colors.green
+                    iconColor: Theme.colors.base0B
                     iconSize: 30
                     iconPadding: 0
                     enabled: modelData.canGoPrevious
@@ -272,7 +272,7 @@ Item {
                 MaterialButton {
                     id: playPauseButton
                     iconName: modelData.isPlaying ? "pause" : "play_arrow"
-                    iconColor: Theme.colors.green
+                    iconColor: Theme.colors.base0B
                     iconSize: 30
                     iconPadding: 0
                     onClicked: {
@@ -287,7 +287,7 @@ Item {
                 MaterialButton {
                     id: nextButton
                     iconName: "skip_next"
-                    iconColor: Theme.colors.green
+                    iconColor: Theme.colors.base0B
                     iconSize: 30
                     iconPadding: 0
                     enabled: modelData.canGoNext

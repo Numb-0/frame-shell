@@ -51,7 +51,7 @@ Rectangle {
 
     opacity: targetOpacity
     scale: targetScale
-    color: Theme.colors.backgroundAlt
+    color: Theme.colors.base01
     radius: Config.rounding
 
     implicitWidth: notificationWidth
@@ -283,12 +283,12 @@ Rectangle {
             }
             TimeoutPie {
                 progress: root.progress
-                fillColor: Theme.colors.foregroundDim
+                fillColor: Theme.colors.base04
             }
             MaterialButton {
                 iconPadding: 2
                 iconName: "close"
-                iconColor: Theme.colors.red
+                iconColor: Theme.colors.base08
                 onClicked: removeAnimation.start()
             }
         }

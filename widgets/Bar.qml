@@ -30,7 +30,7 @@ Scope {
 
       Rectangle {
         anchors.fill: parent
-        color: Theme.colors.backgroundAlt
+        color: Theme.colors.base01
         radius: Config.rounding
       }
 

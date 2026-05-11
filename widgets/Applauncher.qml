@@ -38,7 +38,7 @@ Scope {
 		Rectangle {
 			id: background
 			anchors.fill: parent
-			color: Theme.colors.backgroundAlt
+			color: Theme.colors.base01
 			radius: Config.rounding
 		}
 
@@ -63,10 +63,10 @@ Scope {
 				font.bold: true
 				font.family: "JetBrains Mono"
 				focus: root.visible
-				color: Theme.colors.foreground
+				color: Theme.colors.base05
 				background: Rectangle {
 					radius: Config.rounding
-					color: Theme.colors.backgroundHighlight
+					color: Theme.colors.base02
 					ColorBehavior on color {}
 				}
 				onTextChanged: {
@@ -102,7 +102,7 @@ Scope {
 				highlightMoveVelocity: -1
 				highlight: Rectangle {
 					width: appsList.width
-					color: Theme.colors.backgroundHighlight
+					color: Theme.colors.base02
 					ColorBehavior on color {}
 					radius: Config.rounding
 				}

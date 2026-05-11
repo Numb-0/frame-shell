@@ -62,15 +62,15 @@ Scope {
 			
 			onIsVisibleChanged: {
 				if (isVisible) {
-					themebutton.focus = true
+					lockbutton.focus = true
 				} else {
-					themebutton.focus = false
+					lockbutton.focus = false
 				}
 			}
 
 			Rectangle {
 				id: rect
-				color: Theme.colors.backgroundAlt
+				color: Theme.colors.base01
 				radius: Config.rounding
 				anchors.centerIn: parent
 				ColorBehavior on color {}
@@ -112,46 +112,43 @@ Scope {
 					anchors.centerIn: parent
 
 					MaterialButton {
-						id: themebutton
-						iconName: Config.theme === "gruvbox" ? "light_mode" : "dark_mode"
-						iconColor: Theme.colors.yellow
+						id: lockbutton
+						iconName: "lock"
+						iconColor: Theme.colors.base0E
 						iconSize: 40
 						iconPadding: 5
-						iconBackground.color: Theme.colors.backgroundHighlight
+						iconBackground.color: Theme.colors.base02
 						onClicked: activate()
 						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
-							if (event.key === Qt.Key_Right) {
+							if (event.key === Qt.Key_Left) {
+								rebootbutton.focus = true
+						 	} else if (event.key === Qt.Key_Right) {
 								powerbutton.focus = true
 							}
 						}
 						Keys.onReturnPressed: activate()
 
-						function activate() { Theme.nextTheme(); rotate.start() }
-
-						RotationAnimation on iconSymbol.rotation {
-							id: rotate
-							from: themebutton.iconSymbol.rotation
-							to: themebutton.iconSymbol.rotation - 360
-							duration: 1600
-							easing { type: Easing.OutBack; overshoot: 1 }
+						function activate() { lock.running = true }
+						Component.onCompleted: {
+							iconBackground.opacity = 0.0
 						}
 					}
 
 					MaterialButton {
 						id: powerbutton
 						iconName: "mode_off_on"
-						iconColor: Theme.colors.red
+						iconColor: Theme.colors.base08
 						iconSize: 40
 						iconPadding: 5
-						iconBackground.color: Theme.colors.backgroundHighlight
+						iconBackground.color: Theme.colors.base02
 						onClicked: activate()
 						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
 							if (event.key === Qt.Key_Right) {
 								rebootbutton.focus = true
 							} else if (event.key === Qt.Key_Left) {
-								themebutton.focus = true
+								lockbutton.focus = true
 							}
 						}
 						Keys.onReturnPressed: activate()
@@ -166,10 +163,10 @@ Scope {
 					MaterialButton {
 						id: rebootbutton
 						iconName: "refresh"
-						iconColor: Theme.colors.green
+						iconColor: Theme.colors.base0B
 						iconSize: 40
 						iconPadding: 5
-						iconBackground.color: Theme.colors.backgroundHighlight
+						iconBackground.color: Theme.colors.base02
 						onClicked: activate()
 						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
 						Keys.onPressed: (event) => {
@@ -183,28 +180,6 @@ Scope {
 						Keys.onReturnPressed: activate()
 
 						function activate() { reboot.running = true }
-						Component.onCompleted: {
-							iconBackground.opacity = 0.0
-						}
-					}
-
-					MaterialButton {
-						id: lockbutton
-						iconName: "lock"
-						iconColor: Theme.colors.purple
-						iconSize: 40
-						iconPadding: 5
-						iconBackground.color: Theme.colors.backgroundHighlight
-						onClicked: activate()
-						onFocusChanged: (focus) => iconBackground.opacity = focus ? 1 : 0.0
-						Keys.onPressed: (event) => {
-							if (event.key === Qt.Key_Left) {
-								rebootbutton.focus = true
-							}
-						}
-						Keys.onReturnPressed: activate()
-
-						function activate() { lock.running = true }
 						Component.onCompleted: {
 							iconBackground.opacity = 0.0
 						}

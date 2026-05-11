@@ -2,7 +2,7 @@ import QtQuick
 import qs.config
 
 Text {
-    color: Theme.colors.foregroundBright
+    color: Theme.colors.base06
     font.family: "JetBrains Mono"
     font.weight: Font.DemiBold
     font.hintingPreference: Font.PreferFullHinting

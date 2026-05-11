@@ -36,12 +36,12 @@ RowLayout {
 
     CustomText {
         text: connectedNet?.name ?? "No network"
-        color: Theme.colors.purple
+        color: Theme.colors.base0E
     }
 
     MaterialSymbol {
         size: 25
         icon: getNetworkIcon(connectedNet?.signalStrength)
-        color: Theme.colors.purple
+        color: Theme.colors.base0E
     }
 }

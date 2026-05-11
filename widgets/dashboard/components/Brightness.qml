@@ -29,7 +29,7 @@ RowLayout {
 
     MaterialButton {
         iconName: getBrightnessIcon()
-        iconColor: Theme.colors.orange
+        iconColor: Theme.colors.base09
         iconSize: 30
         iconPadding: 5
     }
@@ -48,14 +48,14 @@ RowLayout {
         }
 
         background: Rectangle {
-            color: Theme.colors.backgroundHighlight
+            color: Theme.colors.base02
             ColorBehavior on color {}
             radius: Config.rounding
 
             Rectangle {
                 width: brightnessSlider.visualPosition * parent.width
                 height: parent.height
-                color: Theme.colors.orange
+                color: Theme.colors.base09
                 ColorBehavior on color {}
                 radius: Config.rounding
             }
@@ -64,7 +64,7 @@ RowLayout {
         handle: Rectangle {
             x: brightnessSlider.visualPosition * (brightnessSlider.implicitWidth - width)
             y: brightnessSlider.implicitHeight / 2 - height / 2
-            color: Theme.colors.orange
+            color: Theme.colors.base09
             ColorBehavior on color {}
             radius: Config.rounding
         }
@@ -73,6 +73,6 @@ RowLayout {
         text: BrightnessService.brightnessPercent + "%"
         Layout.rightMargin: 15
         Layout.leftMargin: 10
-        color: Theme.colors.orange
+        color: Theme.colors.base09
     }
 }

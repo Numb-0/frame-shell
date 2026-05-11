@@ -34,7 +34,7 @@ RowLayout {
     MaterialButton {
         iconSize: 30
         iconName: getVolumeIcon()
-        iconColor: Theme.colors.green
+        iconColor: Theme.colors.base0B
         iconPadding: 5
     }
 
@@ -48,14 +48,14 @@ RowLayout {
         onValueChanged: audioSink.audio.volume = value
 
         background: Rectangle {
-            color: Theme.colors.backgroundHighlight
+            color: Theme.colors.base02
             ColorBehavior on color {}
             radius: Config.rounding
 
             Rectangle {
                 width: volumeSlider.visualPosition * parent.width
                 height: parent.height
-                color: Theme.colors.green
+                color: Theme.colors.base0B
                 ColorBehavior on color {}
                 radius: Config.rounding
             }
@@ -64,7 +64,7 @@ RowLayout {
         handle: Rectangle {
             x: volumeSlider.visualPosition * (volumeSlider.implicitWidth - width)
             y: volumeSlider.implicitHeight / 2 - height / 2
-            color: Theme.colors.green
+            color: Theme.colors.base0B
             ColorBehavior on color {}
             radius: Config.rounding
         }
@@ -74,6 +74,6 @@ RowLayout {
         text: Math.round(audioSink?.audio?.volume * 100) + "%"
         Layout.rightMargin: 15
         Layout.leftMargin: 10
-        color: Theme.colors.green
+        color: Theme.colors.base0B
     }
 }

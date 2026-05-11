@@ -4,7 +4,7 @@ import qs.config
 Canvas {
     id: pie
     required property real progress
-    property color fillColor: Theme.colors.foregroundDim
+    property color fillColor: Theme.colors.base04
 
     implicitWidth: 16
     implicitHeight: 16

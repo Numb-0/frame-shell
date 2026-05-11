@@ -57,7 +57,7 @@ RowLayout {
         to: 1
 
         background: Rectangle {
-            color: Theme.colors.backgroundHighlight
+            color: Theme.colors.base02
             ColorBehavior on color {}
             border.width: 0
             radius: Config.rounding
@@ -67,7 +67,7 @@ RowLayout {
             Rectangle {
                 width: parent.width * parent.parent.visualPosition
                 height: parent.height
-                color: progress.value < 0.2 ? Theme.colors.red : Theme.colors.yellow
+                color: progress.value < 0.2 ? Theme.colors.base08 : Theme.colors.base0A
                 ColorBehavior on color {}
                 radius: Config.rounding
             }
@@ -78,7 +78,7 @@ RowLayout {
         id: percentageText
         property bool show: false
         text: Math.round(battery.percentage * 100) + '%'
-        color: progress.value < 0.2 ? Theme.colors.red : Theme.colors.yellow
+        color: progress.value < 0.2 ? Theme.colors.base08 : Theme.colors.base0A
         opacity: show ? 1 : 0
         Layout.preferredWidth: show ? implicitWidth : 0
         Behavior on Layout.preferredWidth { 
@@ -92,6 +92,6 @@ RowLayout {
     MaterialButton {
         onHoveredChanged: percentageText.show = hovered
         iconName: getBatteryIcon()
-        iconColor: progress.value < 0.2 ? Theme.colors.red : Theme.colors.yellow
+        iconColor: progress.value < 0.2 ? Theme.colors.base08 : Theme.colors.base0A
     }
 }

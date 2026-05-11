@@ -48,7 +48,7 @@ Scope {
 
         Rectangle {
             id: background
-            color: Theme.colors.backgroundAlt
+            color: Theme.colors.base01
             radius: Config.rounding
             implicitWidth: col.implicitWidth + Config.spacing * 2
             implicitHeight: col.implicitHeight + Config.spacing * 2
@@ -84,7 +84,7 @@ Scope {
                     }
                     background: Rectangle {
                         radius: Config.rounding
-                        color: parent.hovered ? Theme.colors.backgroundHighlight : Theme.colors.backgroundAlt
+                        color: parent.hovered ? Theme.colors.base02 : Theme.colors.base01
                         ColorBehavior on color { duration: 200 }
                     }
                 }

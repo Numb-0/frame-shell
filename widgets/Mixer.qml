@@ -54,7 +54,7 @@ Scope {
             anchors.right: parent.right
             anchors.top: parent.top
             implicitHeight: col.implicitHeight + Config.spacing * 2
-            color: Theme.colors.backgroundAlt
+            color: Theme.colors.base01
             radius: Config.rounding
 
             ColumnLayout {

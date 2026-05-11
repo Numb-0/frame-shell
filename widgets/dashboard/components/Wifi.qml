@@ -22,7 +22,7 @@ ColumnLayout {
         MaterialButton {
             id: wifiToggleButton
             iconName: network.wifiState ? "wifi" : "wifi_off"
-            iconColor: network.wifiState ? Theme.colors.purple : Theme.colors.red
+            iconColor: network.wifiState ? Theme.colors.base0E : Theme.colors.base08
             iconSize: 30
             iconPadding: 5
             onClicked: { 
@@ -44,7 +44,7 @@ ColumnLayout {
             id: toggleListButton
             property bool rotated: false
             iconName: "keyboard_arrow_right"
-            iconColor: Theme.colors.foreground
+            iconColor: Theme.colors.base05
             iconSize: 30
             iconPadding: 5
 
@@ -74,7 +74,7 @@ ColumnLayout {
             id: refreshButton
             enabled: network.wifiState
             iconName: "refresh"
-            iconColor: network.wifiState ? Theme.colors.purple : Theme.colors.red
+            iconColor: network.wifiState ? Theme.colors.base0E : Theme.colors.base08
             iconSize: 30
             iconPadding: 5
             onClicked: {
@@ -175,24 +175,24 @@ ColumnLayout {
                 
                 MaterialButton {
                     iconName: networkListView.getWifiIcon(modelData.signal)
-                    iconColor: isConnected ? Theme.colors.purple : Theme.colors.foreground
+                    iconColor: isConnected ? Theme.colors.base0E : Theme.colors.base05
                     iconPadding: 5
                     iconSize: 30
                 }
                 CustomText {
                     text: modelData.ssid
-                    color: isConnected ? Theme.colors.purple : Theme.colors.foreground
+                    color: isConnected ? Theme.colors.base0E : Theme.colors.base05
                     font.weight: isConnected ? Font.Bold : Font.Normal
                     elide: Text.ElideRight
                     Layout.fillWidth: true
                 }
                 CustomText {
                     text: modelData.signal + "%"
-                    color: Theme.colors.foreground
+                    color: Theme.colors.base05
                 }
                 MaterialButton {
                     iconName: networkListView.getSecurityIcon(modelData.security)
-                    iconColor: modelData.saved ? Theme.colors.green : Theme.colors.yellow
+                    iconColor: modelData.saved ? Theme.colors.base0B : Theme.colors.base0A
                     iconSize: 20
                     iconPadding: 5
                     visible: modelData.security !== ""
@@ -200,7 +200,7 @@ ColumnLayout {
                 MaterialButton {
                     visible: !isConnected
                     iconName: "link"
-                    iconColor: Theme.colors.purple
+                    iconColor: Theme.colors.base0E
                     iconSize: 30
                     iconPadding: 5
                     onClicked: network.connect(modelData.ssid)
@@ -208,7 +208,7 @@ ColumnLayout {
                 MaterialButton {
                     visible: isConnected
                     iconName: "link_off"
-                    iconColor: Theme.colors.red
+                    iconColor: Theme.colors.base08
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {

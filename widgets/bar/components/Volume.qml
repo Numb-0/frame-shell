@@ -40,14 +40,14 @@ RowLayout {
         onValueChanged: audioSink.audio.volume = value
 
         background: Rectangle {
-            color: Theme.colors.backgroundHighlight
+            color: Theme.colors.base02
             ColorBehavior on color {}
             radius: Config.rounding
 
             Rectangle {
                 width: volumeSlider.visualPosition * parent.width
                 height: parent.height
-                color: Theme.colors.green
+                color: Theme.colors.base0B
                 ColorBehavior on color {}
                 radius: Config.rounding
             }
@@ -56,7 +56,7 @@ RowLayout {
         handle: Rectangle {
             x: volumeSlider.visualPosition * (volumeSlider.implicitWidth - width)
             y: volumeSlider.implicitHeight / 2 - height / 2
-            color: Theme.colors.green
+            color: Theme.colors.base0B
             ColorBehavior on color {}
             radius: Config.rounding
         }
@@ -66,7 +66,7 @@ RowLayout {
         id: percentageText
         property bool show: false
         text: Math.round(audioSink?.audio?.volume * 100) + '%'
-        color: Theme.colors.green
+        color: Theme.colors.base0B
         opacity: show ? 1 : 0
         Layout.preferredWidth: show ? implicitWidth : 0
         Behavior on Layout.preferredWidth { 
@@ -79,7 +79,7 @@ RowLayout {
 
     MaterialButton {
         iconName: getVolumeIcon()
-        iconColor: Theme.colors.green
+        iconColor: Theme.colors.base0B
         onHoveredChanged: percentageText.show = hovered
     }
 }

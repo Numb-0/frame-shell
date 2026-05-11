@@ -22,7 +22,7 @@ ColumnLayout {
         MaterialButton {
             id: btToggleButton
             iconName: bt?.enabled ? "bluetooth" : "bluetooth_disabled"
-            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
+            iconColor: bt?.enabled ? Theme.colors.base0D : Theme.colors.base08
             iconSize: 30
             iconPadding: 5
             onClicked: { 
@@ -45,7 +45,7 @@ ColumnLayout {
             id: toggleListButton
             property bool rotated: false
             iconName: "keyboard_arrow_right"
-            iconColor: Theme.colors.foreground
+            iconColor: Theme.colors.base05
             iconSize: 30
             iconPadding: 5
 
@@ -76,7 +76,7 @@ ColumnLayout {
             id: refreshButton
             enabled: (bt?.enabled && !bt?.discovering) ?? false
             iconName: "refresh"
-            iconColor: bt?.enabled ? Theme.colors.blue : Theme.colors.red
+            iconColor: bt?.enabled ? Theme.colors.base0D : Theme.colors.base08
             iconSize: 30
             iconPadding: 5
             onClicked: {
@@ -120,15 +120,15 @@ ColumnLayout {
         modal: true
         standardButtons: Dialog.Ok | Dialog.Cancel
         background: Rectangle {
-            color: Theme.colors.background
+            color: Theme.colors.base00
             radius: Config.rounding
         }
         footer: Rectangle {
-            color: Theme.colors.background
+            color: Theme.colors.base00
             radius: Config.rounding
             Text {
                 text: "This action cannot be undone."
-                color: Theme.colors.red
+                color: Theme.colors.base08
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.fill: parent
@@ -136,7 +136,7 @@ ColumnLayout {
         }
 
         header: Rectangle {
-            color: Theme.colors.background
+            color: Theme.colors.base00
             radius: Config.rounding
         }
     }
@@ -193,7 +193,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 MaterialButton {
                     iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
-                    iconColor: Theme.colors.blue
+                    iconColor: Theme.colors.base0D
                     iconPadding: 5
                     iconSize: 30
                 }
@@ -206,7 +206,7 @@ ColumnLayout {
                 MaterialButton {
                     visible: !modelData.paired
                     iconName: "add_link"
-                    iconColor: Theme.colors.yellow
+                    iconColor: Theme.colors.base0A
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {
@@ -216,7 +216,7 @@ ColumnLayout {
                 MaterialButton {
                     visible: modelData.paired
                     iconName: "remove"
-                    iconColor: Theme.colors.red
+                    iconColor: Theme.colors.base08
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {
@@ -234,7 +234,7 @@ ColumnLayout {
                     }
                     visible: modelData.paired
                     iconName: connectionIcons[BluetoothDeviceState.toString(modelData.state)]
-                    iconColor: modelData.connected ? Theme.colors.red : Theme.colors.blue
+                    iconColor: modelData.connected ? Theme.colors.base08 : Theme.colors.base0D
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {

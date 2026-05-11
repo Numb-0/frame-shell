@@ -5,46 +5,56 @@ import Quickshell.Io
 import QtQuick
 
 Singleton {
-    property QtObject colors: themeColors[Config.theme]
-    property var availableThemes: ["gruvbox", "catppuccin"]
-
-    property QtObject themeColors: QtObject {
-        property QtObject gruvbox: QtObject {
-            property string background: "#282828"
-            property string backgroundAlt: "#3c3836"
-            property string backgroundHighlight: "#504945"
-            property string foreground: "#d5c4a1"
-            property string foregroundBright: "#fbf1c7"
-            property string foregroundDim: "#bdae93"
-            property string red: "#fb4934"
-            property string orange: "#fe8019"
-            property string yellow: "#fabd2f"
-            property string green: "#b8bb26"
-            property string cyan: "#8ec07c"
-            property string blue: "#83a598"
-            property string purple: "#d3869b"
-            property string brown: "#d65d0e"
-        }
-        
-        property QtObject catppuccin: QtObject {
-            property string background: "#24273a"
-            property string backgroundAlt: "#1e2030"
-            property string backgroundHighlight: "#363a4f"
-            property string foreground: "#cad3f5"
-            property string foregroundBright: "#b7bdf8"
-            property string foregroundDim: "#5b6078"
-            property string red: "#ed8796"
-            property string orange: "#f5a97f"
-            property string yellow: "#eed49f"
-            property string green: "#a6da95"
-            property string cyan: "#8bd5ca"
-            property string blue: "#8aadf4"
-            property string purple: "#c6a0f6"
-            property string pink: "#f0c6c6"
-        }
+    id: theme
+    readonly property QtObject colors: QtObject {
+        property string base00: theme.normalizeColor(paletteAdapter.base00) // Background
+        property string base01: theme.normalizeColor(paletteAdapter.base01) // Surface / panels
+        property string base02: theme.normalizeColor(paletteAdapter.base02) // Elevated surface / highlights
+        property string base03: theme.normalizeColor(paletteAdapter.base03) // Borders / separators
+        property string base04: theme.normalizeColor(paletteAdapter.base04) // Muted text / secondary accents
+        property string base05: theme.normalizeColor(paletteAdapter.base05) // Foreground / primary text
+        property string base06: theme.normalizeColor(paletteAdapter.base06) // Strong foreground / bright text
+        property string base07: theme.normalizeColor(paletteAdapter.base07) // Background variant / bright surface
+        property string base08: theme.normalizeColor(paletteAdapter.base08) // Error / destructive
+        property string base09: theme.normalizeColor(paletteAdapter.base09) // Warning / orange accent
+        property string base0A: theme.normalizeColor(paletteAdapter.base0A) // Attention / yellow accent
+        property string base0B: theme.normalizeColor(paletteAdapter.base0B) // Success / green accent
+        property string base0C: theme.normalizeColor(paletteAdapter.base0C) // Info / cyan accent
+        property string base0D: theme.normalizeColor(paletteAdapter.base0D) // Primary / blue accent
+        property string base0E: theme.normalizeColor(paletteAdapter.base0E) // Secondary / purple accent
+        property string base0F: theme.normalizeColor(paletteAdapter.base0F) // Extra accent / brown tone
     }
 
-    function nextTheme() {
-        Config.theme = availableThemes[(availableThemes.indexOf(Config.theme) + 1) % availableThemes.length]
+    function normalizeColor(color) {
+        if (typeof color !== "string" || color.length === 0) {
+            return "#FF0000" // Return a bright red color for invalid inputs to make it obvious
+        }
+        return color.startsWith("#") ? color : "#" + color
+    }
+
+    FileView {
+        id: file
+        path: ".config/stylix/palette.json"
+        watchChanges: true
+        printErrors: true
+        JsonAdapter {
+            id: paletteAdapter
+            property string base00
+            property string base01
+            property string base02
+            property string base03
+            property string base04
+            property string base05
+            property string base06
+            property string base07
+            property string base08
+            property string base09
+            property string base0A
+            property string base0B
+            property string base0C
+            property string base0D
+            property string base0E
+            property string base0F
+        }
     }
 }

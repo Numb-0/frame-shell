@@ -37,7 +37,7 @@ Scope {
         property int rounding: Config.rounding
         ShapePath {
             strokeWidth: 0
-            fillColor: Theme.colors.backgroundAlt
+            fillColor: Theme.colors.base01
             startX: 0
             startY: 0
             PathLine { x: corners.rounding; y: 0 }
@@ -47,7 +47,7 @@ Scope {
 
         ShapePath {
             strokeWidth: 0
-            fillColor: Theme.colors.backgroundAlt
+            fillColor: Theme.colors.base01
             startX: 0
             startY: 0
             PathLine { x: window.width - corners.rounding; y: 0 }

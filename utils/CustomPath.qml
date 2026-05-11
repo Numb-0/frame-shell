@@ -19,9 +19,9 @@ Shape {
     readonly property real roundingY: flatten ? wrapper.height / 2 : rounding
     ShapePath {
         id: shapePath
-        fillColor: Theme.colors.yellow
+        fillColor: Theme.colors.base0A
         capStyle: ShapePath.RoundCap
-        strokeColor: Theme.colors.red
+        strokeColor: Theme.colors.base08
         strokeWidth: 2
         property int size: 100
         property int joinStyleIndex: 1

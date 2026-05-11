@@ -52,7 +52,7 @@ Scope {
 			Rectangle {
 				id: background
 				anchors.fill: parent
-				color: Theme.colors.backgroundAlt
+				color: Theme.colors.base01
 				radius: Config.rounding
 				ColorBehavior on color {}
 			}
@@ -65,7 +65,7 @@ Scope {
 
 				MaterialSymbol {
 					fill: 1
-					color: Theme.colors.green
+					color: Theme.colors.base0B
 					icon: {
 						const volume = audioSink?.audio?.volume
 						if (audioSink?.audio?.muted) return "volume_off"
@@ -80,10 +80,10 @@ Scope {
 					Layout.fillWidth: true
 
 					implicitHeight: 10
-					color: Theme.colors.backgroundHighlight
+					color: Theme.colors.base02
 					radius: Config.rounding
 					Rectangle {
-						color: Theme.colors.green
+						color: Theme.colors.base0B
 						anchors {
 							left: parent.left
 							top: parent.top
