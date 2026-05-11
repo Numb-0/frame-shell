@@ -58,9 +58,9 @@ Rectangle {
         }
     }
 
-    Layout.fillWidth: true
+    // Layout.fillWidth: true
     Layout.preferredHeight: 90
-    color: Theme.colors.backgroundAlt
+    color: Theme.colors.backgroundHighlight
     radius: Config.rounding
 
     ColumnLayout {
