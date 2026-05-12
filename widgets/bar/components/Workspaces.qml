@@ -32,9 +32,9 @@ RowLayout {
             implicitHeight: 15
             implicitWidth: workspace?.focused ? 35 : 15
             
-            ColorBehavior on color {}
+            ColorBehavior on color { duration: 300 }
             Behavior on implicitWidth {
-                NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+                NumberAnimation { duration: 300; easing.type: Easing.OutQuad }
             }
             MouseArea {
                 anchors.fill: parent

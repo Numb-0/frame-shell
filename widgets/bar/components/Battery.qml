@@ -59,7 +59,6 @@ RowLayout {
 
         background: Rectangle {
             color: Theme.colors.base02
-            ColorBehavior on color {}
             border.width: 0
             radius: Config.rounding
         }

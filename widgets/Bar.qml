@@ -34,8 +34,6 @@ Scope {
         radius: Config.rounding
       }
 
-      ColorBehavior on color {}
-
       anchors {
         top: true
         left: true

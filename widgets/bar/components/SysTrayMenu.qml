@@ -86,7 +86,7 @@ Scope {
                     background: Rectangle {
                         radius: Config.rounding
                         color: parent.hovered ? Theme.colors.base02 : Theme.colors.base01
-                        ColorBehavior on color { duration: 200 }
+                        ColorBehavior on color { duration: 500 }
                     }
                 }
             }

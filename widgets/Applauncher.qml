@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Wayland
 import Quickshell.Hyprland
+
 import qs.config
 import qs.utils.behaviors
 import qs.utils.components
@@ -67,12 +68,12 @@ Scope {
 				color: Theme.colors.base05
 				background: Rectangle {
 					radius: Config.rounding
-					color: Theme.colors.base02
-					ColorBehavior on color {}
+					color: searchBox.activeFocus ? Theme.colors.base03 : Theme.colors.base02
+					ColorBehavior on color { duration: 300 }
 				}
 				onTextChanged: {
 					root.searchText = text
-					appsList.currentIndex = -1
+					appsList.currentIndex = 0
 				}
 				Keys.onPressed: (event) => {
 					if (event.key === Qt.Key_Down) {
@@ -100,14 +101,11 @@ Scope {
 				Layout.fillWidth: true
 				clip: true
 				highlightMoveDuration: 180
-				highlightMoveVelocity: -1
+				// highlightMoveVelocity: -1
 				highlight: Rectangle {
-					width: appsList.width
 					color: Theme.colors.base02
-					ColorBehavior on color {}
 					radius: Config.rounding
 				}
-        		currentIndex: -1
         		spacing: Config.spacing
 				
 				delegate: RowLayout {
@@ -123,7 +121,7 @@ Scope {
 					function activate() {
 						modelData.execute()
 						root.visible = false
-						appsList.currentIndex = -1
+						appsList.currentIndex = 0
 						appsList.positionViewAtBeginning()
 						searchBox.focus = true
 						searchBox.clear()
@@ -154,7 +152,6 @@ Scope {
 				Keys.onPressed: (event) => {
 					if (event.key === Qt.Key_Up && currentIndex === 0) {
 						searchBox.forceActiveFocus()
-						appsList.currentIndex = -1
 					}
 				}
 				Component.onDestruction: {

@@ -24,7 +24,6 @@ Scope {
       implicitHeight: corners.rounding
       exclusiveZone: 0
       mask: Region {}
-      ColorBehavior on color {}
 
       anchors {
         top: true

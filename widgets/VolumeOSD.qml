@@ -55,8 +55,8 @@ Scope {
 				anchors.fill: parent
 				color: Theme.colors.base01
 				radius: Config.rounding
-				ColorBehavior on color {}
 			}
+			
 			RowLayout {
 				anchors {
 					fill: parent

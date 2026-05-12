@@ -50,14 +50,12 @@ RowLayout {
 
         background: Rectangle {
             color: Theme.colors.base02
-            ColorBehavior on color {}
             radius: Config.rounding
 
             Rectangle {
                 width: brightnessSlider.visualPosition * parent.width
                 height: parent.height
                 color: Theme.colors.base09
-                ColorBehavior on color {}
                 radius: Config.rounding
             }
         }
@@ -66,7 +64,6 @@ RowLayout {
             x: brightnessSlider.visualPosition * (brightnessSlider.implicitWidth - width)
             y: brightnessSlider.implicitHeight / 2 - height / 2
             color: Theme.colors.base09
-            ColorBehavior on color {}
             radius: Config.rounding
         }
     }
