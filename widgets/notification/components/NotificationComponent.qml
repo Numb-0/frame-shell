@@ -8,6 +8,7 @@ import Quickshell.Services.Notifications
 
 import qs.config
 import qs.utils.components
+import qs.utils.animations
 
 Rectangle {
     id: root
@@ -73,33 +74,12 @@ Rectangle {
         }
     }
 
-    SequentialAnimation {
+    Animations.Wiggle {
         id: wiggleAnimation
+        target: root
         loops: Animation.Infinite
-        RotationAnimation {
-            target: root
-            from: 0
-            to: 5
-            duration: 100
-        }
-        RotationAnimation {
-            target: root
-            from: 5
-            to: 0
-            duration: 100
-        }
-        RotationAnimation {
-            target: root
-            from: 0
-            to: -5
-            duration: 100
-        }
-        RotationAnimation {
-            target: root
-            from: -5
-            to: 0
-            duration: 100
-        }
+        duration: 200
+        inclination: 3
         onStopped: afterWiggle.start()
     }
 
@@ -268,44 +248,68 @@ Rectangle {
     ColumnLayout {
         id: notifbtn
         anchors.fill: parent
-        anchors.margins: Config.spacing
-        spacing: Config.spacing / 2
+        anchors.leftMargin: Config.spacing
+        anchors.rightMargin: Config.spacing
+        spacing: Config.spacing
 
         RowLayout {
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
             spacing: Config.spacing
 
-            CustomText {
+            RowLayout {
                 Layout.fillWidth: true
-                Layout.preferredWidth: 0
-                text: modelData.summary
-                elide: Text.ElideRight
-            }
-            TimeoutPie {
-                progress: root.progress
-                fillColor: Theme.colors.base04
-            }
-            MaterialButton {
-                iconPadding: 2
-                iconName: "close"
-                iconColor: Theme.colors.base08
-                onClicked: removeAnimation.start()
+                spacing: Config.spacing
+
+                CustomText {
+                    Layout.fillWidth: true
+                    text: modelData.summary
+                    elide: Text.ElideRight
+                }
+                TimeoutPie {
+                    progress: root.progress
+                    fillColor: Theme.colors.base04
+                }
+                MaterialButton {
+                    iconName: "close"
+                    iconColor: Theme.colors.base08
+                    onClicked: removeAnimation.start()
+                }
             }
         }
-        CustomText {
+
+        RowLayout {
             Layout.fillWidth: true
-            Layout.preferredWidth: 0
-            visible: text.length > 0
-            text: modelData.body
-            wrapMode: Text.Wrap
-            elide: Text.ElideRight
-            maximumLineCount: 2
-        }
-        Image {
-            visible: source.toString().length > 0
-            source: modelData.image
-            Layout.preferredWidth: 60
-            Layout.preferredHeight: 60
+            Layout.alignment: Qt.AlignVCenter
+            spacing: Config.spacing
+
+            ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 0
+
+                CustomText {
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: 0
+                    visible: text.length > 0
+                    text: modelData.body
+                    wrapMode: Text.Wrap
+                    elide: Text.ElideRight
+                    maximumLineCount: 2
+                }
+            }
+
+            Item {
+                Layout.preferredWidth: 60
+                Layout.preferredHeight: 60
+                Layout.alignment: Qt.AlignTop
+
+                Image {
+                    anchors.fill: parent
+                    visible: source.toString().length > 0
+                    source: modelData.image
+                    fillMode: Image.PreserveAspectFit
+                }
+            }
         }
     }
 }
