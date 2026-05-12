@@ -6,7 +6,8 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 import qs.config
-import qs.utils
+import qs.utils.animations
+import qs.utils.components
 
 Item {
     id: root
@@ -264,7 +265,7 @@ Item {
                         modelData.previous()
                         wiggleAnimationPrevious.start()
                     }
-                    Animations.WiggleAnimation {
+                    Animations.Wiggle {
                         id: wiggleAnimationPrevious
                         target: previousButton
                     }
@@ -279,7 +280,7 @@ Item {
                         modelData.togglePlaying()
                         wiggleAnimationPlayPause.start()
                     }
-                    Animations.WiggleAnimation {
+                    Animations.Wiggle {
                         id: wiggleAnimationPlayPause
                         target: playPauseButton
                     }
@@ -296,7 +297,7 @@ Item {
                         wiggleAnimationNext.start()
                     }
 
-                    Animations.WiggleAnimation {
+                    Animations.Wiggle {
                         id: wiggleAnimationNext
                         target: nextButton
                     }

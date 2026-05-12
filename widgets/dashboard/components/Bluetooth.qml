@@ -7,7 +7,8 @@ import Quickshell.Widgets
 import Quickshell.Bluetooth
 
 import qs.config
-import qs.utils
+import qs.utils.animations
+import qs.utils.components
 
 
 ColumnLayout {
@@ -31,7 +32,7 @@ ColumnLayout {
                 wiggleAnimation.start()
             }
 
-            Animations.WiggleAnimation {
+            Animations.Wiggle {
                 id: wiggleAnimation
                 target: btToggleButton
             }
@@ -114,32 +115,81 @@ ColumnLayout {
             }
         }
     }
-    Dialog {
-        id: deleteDeviceDialog
-        anchors.centerIn: parent
-        modal: true
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        background: Rectangle {
-            color: Theme.colors.base00
-            radius: Config.rounding
-        }
-        footer: Rectangle {
-            color: Theme.colors.base00
-            radius: Config.rounding
-            Text {
-                text: "This action cannot be undone."
-                color: Theme.colors.base08
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                anchors.fill: parent
-            }
-        }
 
-        header: Rectangle {
-            color: Theme.colors.base00
-            radius: Config.rounding
-        }
-    }
+    // Dialog {
+    //     id: deleteDeviceDialog
+    //     anchors.centerIn: window
+    //     implicitHeight: 200
+    //     implicitWidth: 400
+    //     modal: true
+    //     background: Rectangle {
+    //         anchors.fill: parent
+    //         color: Theme.colors.base00
+    //         radius: Config.rounding
+    //     }
+    //     footer: Rectangle {
+    //         color: Theme.colors.base00
+    //         radius: Config.rounding
+    //         implicitHeight: 56
+    //         anchors.left: parent.left
+    //         anchors.right: parent.right
+    //         RowLayout {
+    //             anchors.fill: parent
+    //             anchors.margins: 12
+    //             spacing: 10
+    //             MaterialButton {
+    //                 iconName: "close"
+    //                 iconColor: Theme.colors.base05
+    //                 onClicked: deleteDeviceDialog.close()
+    //             }
+    //             Item { Layout.fillWidth: true }
+    //             MaterialButton {
+    //                 iconName: "check"
+    //                 iconColor: Theme.colors.base08
+    //                 onClicked: {
+    //                     deleteDeviceDialog.close()
+    //                     Bluetooth?.devices.values.find(dev => dev.name === deleteDeviceTitle.text.split(" ")[5])?.forget()
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     header: Rectangle {
+    //         color: Theme.colors.base00
+    //         radius: Config.rounding
+    //         implicitHeight: 56
+    //         anchors.left: parent.left
+    //         anchors.right: parent.right
+    //         RowLayout {
+    //             anchors.fill: parent
+    //             anchors.margins: 12
+    //             Text {
+    //                 id: deleteDeviceTitle
+    //                 text: deleteDeviceDialog.title
+    //                 color: Theme.colors.base05
+    //                 Layout.fillWidth: true
+    //                 horizontalAlignment: Text.AlignLeft
+    //                 verticalAlignment: Text.AlignVCenter
+    //                 elide: Text.ElideRight
+    //             }
+    //         }
+    //     }
+
+    //     contentItem: Item {
+    //         implicitWidth: 400
+    //         implicitHeight: 88
+    //         Text {
+    //             anchors.centerIn: parent
+    //             width: parent.width - 32
+    //             text: "Remove this paired device from the system?"
+    //             color: Theme.colors.base05
+    //             horizontalAlignment: Text.AlignHCenter
+    //             verticalAlignment: Text.AlignVCenter
+    //             wrapMode: Text.WordWrap
+    //         }
+    //     }
+    // }
+
     Item {
         Layout.fillWidth: true
         implicitHeight: deviceListView.implicitHeight
@@ -220,9 +270,7 @@ ColumnLayout {
                     iconSize: 30
                     iconPadding: 5
                     onClicked: {
-                        deleteDeviceDialog.title = "Are you sure you want to remove " + modelData.deviceName + "?"
-                        deleteDeviceDialog.open()
-                        // modelData.forget()
+                        modelData.forget()
                     }
                 }
                 MaterialButton {

@@ -10,7 +10,6 @@ import Quickshell.Wayland
 import Quickshell.Services.Pipewire
 
 import qs.config
-import qs.utils
 import qs.widgets.mixer.components
 
 Scope {

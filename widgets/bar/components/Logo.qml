@@ -1,4 +1,4 @@
-import qs.utils
+import qs.utils.components
 
 IconButton {
     iconSource: Qt.resolvedUrl("../../../assets/icons/flake.svg")

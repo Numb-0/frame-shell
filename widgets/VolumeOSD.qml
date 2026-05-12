@@ -7,7 +7,8 @@ import Quickshell.Widgets
 import Quickshell.Wayland
 
 import qs.config 
-import qs.utils
+import qs.utils.behaviors
+import qs.utils.components
 
 Scope {
 	id: root

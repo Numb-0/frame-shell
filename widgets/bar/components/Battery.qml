@@ -7,7 +7,8 @@ import Quickshell.Widgets
 import Quickshell.Services.UPower
 
 import qs.config
-import qs.utils
+import qs.utils.behaviors
+import qs.utils.components
 
 RowLayout {
     id: root

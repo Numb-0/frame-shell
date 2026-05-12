@@ -27,7 +27,7 @@ Singleton {
 
     function normalizeColor(color) {
         if (typeof color !== "string" || color.length === 0) {
-            return "#FF0000" // Return a bright red color for invalid inputs to make it obvious
+            return "#FF0000"
         }
         return color.startsWith("#") ? color : "#" + color
     }

@@ -4,7 +4,6 @@ import Quickshell.Wayland
 import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Controls
-import qs.utils
 import qs.config
 import qs.widgets.notification.components
 

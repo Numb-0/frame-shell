@@ -5,7 +5,7 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
 
-import qs.utils
+import qs.utils.components
 import qs.config
 
 

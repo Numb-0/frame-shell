@@ -6,8 +6,9 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Pipewire
 
-import qs.utils
+import qs.utils.behaviors
 import qs.config
+import qs.utils.components
 
 Rectangle {
     id: root

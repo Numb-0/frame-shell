@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Wayland
 
 import qs.widgets.bar.sections
-import qs.utils
+import qs.utils.behaviors
 import qs.config
 import qs.widgets
 

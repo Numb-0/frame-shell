@@ -9,7 +9,7 @@ import Quickshell.Hyprland
 import Quickshell.Wayland
 
 import qs.config
-import qs.utils
+import qs.utils.behaviors
 import qs.widgets.dashboard.components
 
 Scope {

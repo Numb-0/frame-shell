@@ -6,7 +6,8 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 import qs.config
-import qs.utils
+import qs.utils.behaviors
+import qs.utils.components
 import qs.services
 
 

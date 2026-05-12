@@ -11,7 +11,6 @@ import Quickshell.Wayland
 import Quickshell.Services.Notifications
 
 import qs.config
-import qs.utils
 
 Singleton {
     id: root

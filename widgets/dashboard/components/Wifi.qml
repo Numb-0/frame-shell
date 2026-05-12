@@ -7,7 +7,8 @@ import Quickshell.Widgets
 import Quickshell.Io
 
 import qs.config
-import qs.utils
+import qs.utils.animations
+import qs.utils.components
 import qs.services
 
 
@@ -30,7 +31,7 @@ ColumnLayout {
                 wiggleAnimation.start()
             }
 
-            Animations.WiggleAnimation {
+            Animations.Wiggle {
                 id: wiggleAnimation
                 target: wifiToggleButton
             }

@@ -6,9 +6,9 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Networking
 
-import qs.utils
 import qs.config
 import qs.services
+import qs.utils.components
 
 RowLayout {
     id: root

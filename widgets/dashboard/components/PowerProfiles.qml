@@ -8,7 +8,8 @@ import Quickshell.Bluetooth
 
 import qs.services
 import qs.config
-import qs.utils
+import qs.utils.animations
+import qs.utils.components
 
 RowLayout {
     spacing: 0
@@ -25,7 +26,7 @@ RowLayout {
             PowerProfileService.cycleProfile()
             wiggleAnimation.start()
         }
-        Animations.WiggleAnimation {
+        Animations.Wiggle {
             id: wiggleAnimation
             target: profileButton
         }

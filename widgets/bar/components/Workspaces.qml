@@ -7,7 +7,7 @@ import Quickshell.Widgets
 import Quickshell.Hyprland
 import Quickshell.Wayland
 
-import qs.utils
+import qs.utils.behaviors
 import qs.config
 import qs.services
 

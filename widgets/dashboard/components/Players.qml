@@ -6,7 +6,6 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 import qs.config
-import qs.utils
 
 ListView {
     Layout.fillWidth: true
