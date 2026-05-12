@@ -4,7 +4,6 @@ ParallelAnimation {
     id: root
     required property var target
     property int duration: 300
-    
     NumberAnimation {
         target: root.target
         property: "opacity"

@@ -116,24 +116,11 @@ Rectangle {
         }
     }
 
-    ParallelAnimation {
+    Animations.PopIn {
         id: addAnimation
-        NumberAnimation {
-            target: root
-            property: "scale"
-            from: 0.6
-            to: targetScale
-            duration: 400
-            easing.type: Easing.OutQuad
-        }
-        NumberAnimation {
-            target: root
-            property: "opacity"
-            from: 0
-            to: targetOpacity
-            duration: 400
-            easing.type: Easing.OutQuad
-        }
+        target: root
+        targetScale: root.targetScale
+        targetOpacity: root.targetOpacity
     }
 
     ParallelAnimation {
@@ -168,25 +155,15 @@ Rectangle {
         }
     }
 
-    ParallelAnimation {
+    Animations.PopOut {
         id: discardAnimation
-        NumberAnimation {
-            target: root
-            property: "scale"
-            to: 0.4
-            duration: 400
-            easing.type: Easing.OutQuad
+        target: root
+        targetScale: 0.6
+        targetOpacity: 0
+        onStopped: {
+            root.modelData.dismiss()
         }
-        NumberAnimation {
-            target: root
-            property: "opacity"
-            to: 0
-            duration: 400
-            easing.type: Easing.OutQuad
-        }
-        onStopped: root.modelData.dismiss()
     }
-
 
     MouseArea {
         id: mouseArea

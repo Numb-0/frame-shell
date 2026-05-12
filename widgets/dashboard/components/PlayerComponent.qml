@@ -55,10 +55,10 @@ Item {
                         elide: Text.ElideRight
                         Layout.preferredWidth: 300
                         onTextChanged: {
-                            fadeAnimationTrack.start()
+                            fadeInAnimationTrack.start()
                         }
-                        Animations.Fade {
-                            id: fadeAnimationTrack
+                        Animations.FadeIn {
+                            id: fadeInAnimationTrack
                             target: trackTitle
                             duration: 400
                         }
@@ -72,10 +72,10 @@ Item {
                         Layout.preferredWidth: 300
                         transform: Translate { id: slideTransform }
                         onTextChanged: {
-                            fadeAnimationTrackAlbum.start()
+                            fadeInAnimationTrackAlbum.start()
                         }
-                        Animations.Fade {
-                            id: fadeAnimationTrackAlbum
+                        Animations.FadeIn {
+                            id: fadeInAnimationTrackAlbum
                             target: artistAlbumText
                             duration: 400
                         }
