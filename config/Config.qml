@@ -6,8 +6,6 @@ import QtQuick
 
 Singleton {
     id: config
-    // Default config values
-    property string theme: "gruvbox"
     property int rounding: 8
     property int spacing: 8
     FileView {
@@ -17,7 +15,6 @@ Singleton {
         onAdapterUpdated: writeAdapter()
         printErrors: true
         JsonAdapter {
-            property alias theme: config.theme
             property alias rounding: config.rounding
             property alias spacing: config.spacing
         }
