@@ -21,8 +21,8 @@ RowLayout {
         ethernet: "lan"
     })
 
-    function getNetworkIcon(signal) {
-        if (signal == -1) return networkIcons.ethernet
+    function getNetworkIcon(signal, ethernet = false) {
+        if (ethernet) return networkIcons.ethernet
         if (signal == 0) return networkIcons.none
         if (signal <= 0.2) return networkIcons.weak
         if (signal <= 0.5) return networkIcons.ok
@@ -32,16 +32,17 @@ RowLayout {
 
     property var networking: Networking
     property var adapter: networking.devices.values.find(d => d.state === ConnectionState.Connected)
-    property var connectedNet: adapter ? adapter.networks.values.find(n => n.connected) : null
+    property var connectedNetwork: adapter?.networks?.values.find(n => n.connected)
+    property bool isEthernet: connectedNetwork?.device.type == DeviceType.Wired
 
     CustomText {
-        text: connectedNet?.name ?? "No network"
+        text: !isEthernet ? connectedNetwork?.name ?? "No network" : "Ethernet"
         color: Theme.colors.base0E
     }
 
     MaterialSymbol {
         size: 25
-        icon: getNetworkIcon(connectedNet?.signalStrength)
+        icon: getNetworkIcon(connectedNetwork?.signalStrength, isEthernet)
         color: Theme.colors.base0E
     }
 }
