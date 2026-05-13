@@ -20,31 +20,8 @@ Scope {
     property var adapter: Networking.devices.values[0] ?? null
 
     onVisibleChanged: {
-        if (visible && adapter?.type === DeviceType.Wifi) {
-            console.log("Enabling Wi-Fi scanner")
-            adapter.scannerEnabled = true
-            rotationAnimation.start()
-            disableScannerTimer.start()
-        }
-    }
-
-    Timer {
-        id: disableScannerTimer
-        interval: 5000
-        onTriggered: {
-            if (adapter?.type === DeviceType.Wifi) {
-                console.log("Disabling Wi-Fi scanner")
-                adapter.scannerEnabled = false
-                rotationAnimation.stop()
-            }
-        }
-    }
-
-    Connections {
-        target: adapter
-        function onScannerEnabledChanged() {
-            console.log("Scanner enabled changed: ")
-            console.log("Scanner enabled changed: " + adapter.scannerEnabled)
+        if (!visible && adapter?.type === DeviceType.Wifi) {
+            adapter.scannerEnabled = false
         }
     }
 
@@ -89,34 +66,42 @@ Scope {
                 anchors.margins: Config.spacing
                 spacing: Config.spacing
 
-                Item {
+                RowLayout {
+                    id: row
                     Layout.fillWidth: true
-                    implicitHeight: row.implicitHeight
-                    RowLayout {
-                        id: row
+                    spacing: Config.spacing
+
+                    CustomText {
                         Layout.fillWidth: true
-                        spacing: Config.spacing
+                        text: "Networks"
+                        font.pixelSize: 20
+                        color: Theme.colors.base0E
+                    }
 
-                        CustomText {
-                            text: "Network"
-                            font.pixelSize: 18
-                            color: Theme.colors.base0E
+                    MaterialButton {
+                        id: refreshButton
+                        Layout.alignment: Qt.AlignRight
+                        iconName: "refresh"
+                        iconColor: Theme.colors.base0E
+                        onClicked: {
+                            adapter.scannerEnabled = !adapter.scannerEnabled
+                            if (adapter.scannerEnabled) {
+                                rotationAnimation.start()
+                            }
                         }
-
-                        MaterialButton {
-                            id: refreshButton
-                            Layout.alignment: Qt.AlignRight
-                            iconName: "refresh"
-                            iconColor: Theme.colors.base0E
-                            RotationAnimation {
-                                id: rotationAnimation
-                                target: refreshButton
-                                from: 0
-                                to: 360
-                                duration: 1000
-                                easing.type: Easing.InOutBack
-                                easing.overshoot: 1.2
-                                loops: Animation.Infinite
+                        RotationAnimation {
+                            id: rotationAnimation
+                            target: refreshButton
+                            from: 0
+                            to: 360
+                            duration: 1000
+                            easing.type: Easing.InOutBack
+                            easing.overshoot: 1.2
+                            loops: 1
+                            onFinished: {
+                                if (adapter.scannerEnabled) {
+                                    rotationAnimation.start()
+                                }
                             }
                         }
                     }
