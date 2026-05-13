@@ -45,4 +45,8 @@ RowLayout {
         icon: getNetworkIcon(connectedNetwork?.signalStrength, isEthernet)
         color: Theme.colors.base0E
     }
+
+    TapHandler {
+        onTapped: networkDashboard.visible = !networkDashboard.visible
+    }
 }
