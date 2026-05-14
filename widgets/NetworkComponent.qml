@@ -10,6 +10,7 @@ import Quickshell.Networking
 import qs.utils.components
 import qs.config
 import qs.utils.behaviors
+import qs.utils.animations
 
 
 Item {
@@ -55,6 +56,13 @@ Item {
         ColorBehavior on color { duration: 300 }
         radius: Config.rounding
 
+        Behavior on implicitHeight {
+            NumberAnimation {
+                duration: 400
+                easing.type: Easing.OutQuad
+            }
+        }
+
         ColumnLayout {
             id: col
             anchors.fill: parent
@@ -69,14 +77,14 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
                     size: 25
                     icon: getNetworkIcon(modelData.signalStrength, modelData.device.type == DeviceType.Wired)
-                    color: Theme.colors.base0E
+                    color: modelData.connected ? Theme.colors.base0E : Theme.colors.base05
                 }
 
                 CustomText {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignVCenter
                     text: modelData.name
-                    color: Theme.colors.base0E
+                    color: modelData.connected ? Theme.colors.base0E : Theme.colors.base05
                 }
 
                 RowLayout {
@@ -84,21 +92,35 @@ Item {
                     spacing: Config.spacing / 2
 
                     MaterialButton {
+                        id: connectButton
                         Layout.alignment: Qt.AlignRight
-                        visible: modelData.state != ConnectionState.Connected && !root.passwordRequired
+                        visible: modelData.state == ConnectionState.Disconnected || modelData.state == ConnectionState.Connecting
                         iconName: modelData.known ? "link" : "add_link"
                         iconColor: Theme.colors.base0E
-                        onClicked: modelData.connect()
+                        onClicked: if (!modelData.Connecting) modelData.connect()
 
                         Connections {
                             target: modelData
                             function onConnectionFailed(reason) {
+                                console.log("Connection failed: " + reason)
                                 if (reason === ConnectionFailReason.NoSecrets) {
                                     console.log("Password required for " + modelData.name)
                                     root.passwordRequired = true
                                 }
                             }
                         }
+
+                        Animations.Wiggle {
+                            id: wiggleAnimation
+                            target: connectButton
+                            loops: 1
+                            onFinished: {
+                                if (modelData.state === ConnectionState.Connecting) {   
+                                    wiggleAnimation.start()
+                                }
+                            }
+                        }
+
                     }
 
                     MaterialButton {
@@ -131,21 +153,43 @@ Item {
                 Layout.fillWidth: true
                 spacing: Config.spacing
 
+                Connections {
+                    target: modelData
+                    function onStateChanged() {
+                        console.log("Connection state changed: " + modelData.state)
+                        if (modelData.state === ConnectionState.Connected) {
+                            root.passwordRequired = false
+                            root.password = ""
+                        } else if (modelData.state === ConnectionState.Connecting) {
+                            wiggleAnimation.start()
+                        }
+                    }
+                }
+
                 TextField {
+                    readOnly: modelData.state == ConnectionState.Connecting
                     Layout.fillWidth: true
                     implicitHeight: 30
                     placeholderText: "Password"
+                    placeholderTextColor: Theme.colors.base05
                     color: Theme.colors.base0E
                     font.pixelSize: 12
                     echoMode: TextInput.Password
                     onTextChanged: root.password = text
+                    background: Rectangle {
+                        color: Theme.colors.base02
+                        radius: Config.rounding / 2
+                    }
                 }
 
                 MaterialButton {
                     Layout.alignment: Qt.AlignRight
                     iconName: "send"
                     iconColor: Theme.colors.base0E
-                    onClicked: modelData.connectWithPsk(root.password)
+                    onClicked:{
+                        console.log("Connecting to " + modelData.name + " with password: " + root.password)
+                        modelData.connectWithPsk(root.password)
+                    } 
                 }
             }
         }

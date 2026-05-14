@@ -58,7 +58,7 @@ Scope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            implicitHeight: row.implicitHeight + networkList.contentHeight + Config.spacing * 2
+            implicitHeight: row.implicitHeight + networkList.contentHeight + Config.spacing * 3
 
             Behavior on implicitHeight {
                 NumberAnimation {
