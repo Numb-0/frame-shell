@@ -17,7 +17,7 @@ Scope {
 	id: root
 	property bool visible: false
     property var networkWidth: 450
-    property var adapter: Networking.devices.values[0] ?? null
+    property var adapter: Networking.devices.values.find(device => device.type === DeviceType.Wifi) ?? null
 
     onVisibleChanged: {
         if (!visible && adapter?.type === DeviceType.Wifi) {
@@ -58,7 +58,15 @@ Scope {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            implicitHeight: col.implicitHeight + Config.spacing * 2
+            implicitHeight: row.implicitHeight + networkList.contentHeight + Config.spacing * 2
+
+            Behavior on implicitHeight {
+                NumberAnimation {
+                    duration: 400
+                    // easing.overshoot: 1
+                    easing.type: Easing.OutQuad
+                }
+            }
 
             ColumnLayout {
                 id: col
@@ -107,10 +115,32 @@ Scope {
                     }
                 }
 
-                Repeater {
+                ListView {
+                    id: networkList
+                    Layout.fillWidth: true
+                    implicitHeight: window.height
+                    interactive: false
+                    spacing: Config.spacing
                     model: ScriptModel { values: adapter?.networks?.values ?? [] }
                     delegate: NetworkComponent {
-                        Layout.fillWidth: true
+                        width: ListView.view.width
+                    }
+                    add: Transition {
+                        id: addTransition
+                        ParallelAnimation {
+                            NumberAnimation { property: "scale";   from:  1 / ( 1 + addTransition.ViewTransition.index * 0.5 );  to: 1; duration: 400; easing.type: Easing.OutQuad }
+                            NumberAnimation { property: "opacity"; from: 0;   to: 1; duration: 400; easing.type: Easing.OutQuad }
+                        }
+                    }
+                    remove: Transition {
+                        id: removeTransition
+                        ParallelAnimation {
+                            NumberAnimation { property: "scale";   from: 1;   to: 1 / (1 + removeTransition.ViewTransition.index * 0.5); duration: 400; easing.type: Easing.InQuad }
+                            NumberAnimation { property: "opacity"; from: 1;   to: 0; duration: 400; easing.type: Easing.InQuad }
+                        }
+                    }
+                    displaced: Transition {
+                        NumberAnimation { properties: "x,y"; duration: 400; easing.type: Easing.InOutQuad }
                     }
                 }
             }

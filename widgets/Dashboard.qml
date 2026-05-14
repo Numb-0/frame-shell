@@ -56,7 +56,7 @@ Scope {
 
         ColumnLayout {
             id: col
-            focus: true
+            focus: root.visible
             spacing: 0
             property int preferredWidth: 500
             anchors.fill: background

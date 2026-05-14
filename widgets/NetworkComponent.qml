@@ -15,10 +15,12 @@ import qs.utils.behaviors
 Item {
     id: root
     required property var modelData
+    required property int index
     property bool passwordRequired: false
     property string password: ""
     implicitWidth: background.implicitWidth
     implicitHeight: background.implicitHeight
+
     property var networkIcons: ({
         none: "wifi_off",
         weak: "wifi_1_bar",
@@ -52,6 +54,7 @@ Item {
         color: Theme.colors.base01
         ColorBehavior on color { duration: 300 }
         radius: Config.rounding
+
         ColumnLayout {
             id: col
             anchors.fill: parent

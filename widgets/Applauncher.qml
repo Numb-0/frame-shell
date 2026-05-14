@@ -31,7 +31,7 @@ Scope {
 		
 		implicitWidth: col.implicitWidth + Config.spacing * 2
 		implicitHeight: col.implicitHeight + Config.spacing * 2
-		focusable: root.visible
+		focusable: true
 		mask: Region { item: background }
 		color: "transparent"
 		
