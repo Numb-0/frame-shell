@@ -133,41 +133,18 @@ Rectangle {
                 }
             }
 
-            // Volume Slider
-            Slider {
-                id: volumeSlider
+            ThemedSlider {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 15
+                trackColor: Theme.colors.base01
                 enabled: modelData.audio && !modelData.audio.muted
                 value: modelData.audio?.volume ?? 0
                 from: 0
                 to: 1
-                
+
                 onMoved: {
                     if (modelData.audio) {
                         modelData.audio.volume = value
                     }
-                }
-
-                background: Rectangle {
-                    color: Theme.colors.base01
-                    radius: Config.rounding
-
-                    Rectangle {
-                        width: volumeSlider.visualPosition * parent.width
-                        height: parent.height
-                        color: volumeSlider.enabled ? Theme.colors.base0B : Theme.colors.base05
-                        radius: Config.rounding
-                        opacity: volumeSlider.enabled ? 1.0 : 0.3
-                    }
-                }
-
-                handle: Rectangle {
-                    x: volumeSlider.visualPosition * (volumeSlider.implicitWidth - width)
-                    y: volumeSlider.implicitHeight / 2 - height / 2
-                    color: volumeSlider.enabled ? Theme.colors.base0B : Theme.colors.base05
-                    radius: Config.rounding
-                    opacity: volumeSlider.enabled ? 1.0 : 0.5
                 }
             }
 

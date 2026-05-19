@@ -27,7 +27,7 @@ ColumnLayout {
             iconSize: 30
             iconPadding: 5
             onClicked: { 
-                bt.enabled = !bt.enabled
+                bt.enabled = !bt?.enabled
                 listVisible = bt.enabled ? listVisible : false
                 wiggleAnimation.start()
             }
@@ -40,155 +40,26 @@ ColumnLayout {
         CustomText {
             text: bt?.enabled ? connectedDevices?.length > 0 ? connectedDevices.map(dev => dev.name).join(", ") : "Nothing Connected" : "Bluetooth Disabled"
             elide: Text.ElideRight
+
         }
         Item { Layout.fillWidth: true }
-        MaterialButton {
-            id: toggleListButton
-            property bool rotated: false
-            iconName: "keyboard_arrow_right"
-            iconColor: Theme.colors.base05
-            iconSize: 30
-            iconPadding: 5
-
+        ExpandArrowButton {
+            expanded: root.listVisible
             onClicked: {
-                if (!bt.enabled) {
+                if (!bt?.enabled) {
                     bt.enabled = true
                 }
-                listVisible = !listVisible
-            }
-
-            Connections {
-                target: root
-                function onListVisibleChanged() {
-                    rotateArrowDown.start()
-                }
-            }
-            
-            RotationAnimation {
-                id: rotateArrowDown
-                target: toggleListButton
-                from: listVisible ? 0 : 90
-                to: listVisible ? 90 : 0
-                duration: 300
-                easing.type: Easing.OutExpo
+                root.listVisible = !root.listVisible
             }
         }
-        MaterialButton {
-            id: refreshButton
+        RefreshButton {
             enabled: (bt?.enabled && !bt?.discovering) ?? false
-            iconName: "refresh"
             iconColor: bt?.enabled ? Theme.colors.base0D : Theme.colors.base08
-            iconSize: 30
-            iconPadding: 5
-            onClicked: {
-                bt.discovering = true;
-                startRotation()
-                discoveryTimer.start()
-            }
-
-            function startRotation() {
-                rotationAnimation.loops = RotationAnimation.Infinite
-                rotationAnimation.start()
-            }
-            
-            RotationAnimation {
-                id: rotationAnimation
-                target: refreshButton
-                from: 0
-                to: 360
-                duration: 1000
-                easing.type: Easing.InOutBack
-                easing.overshoot: 1.2
-                loops: 1
-            }
-            
-            Timer {
-                id: discoveryTimer
-                interval: 15000
-                repeat: false
-                onTriggered: {
-                    bt.discovering = false;
-                    rotationAnimation.loops = 1
-                    rotationAnimation.stop()
-                    refreshButton.rotation = 0
-                }
-            }
+            spinDuration: 15000
+            onClicked: bt.discovering = true
+            onFinished: bt.discovering = false
         }
     }
-
-    // Dialog {
-    //     id: deleteDeviceDialog
-    //     anchors.centerIn: window
-    //     implicitHeight: 200
-    //     implicitWidth: 400
-    //     modal: true
-    //     background: Rectangle {
-    //         anchors.fill: parent
-    //         color: Theme.colors.base00
-    //         radius: Config.rounding
-    //     }
-    //     footer: Rectangle {
-    //         color: Theme.colors.base00
-    //         radius: Config.rounding
-    //         implicitHeight: 56
-    //         anchors.left: parent.left
-    //         anchors.right: parent.right
-    //         RowLayout {
-    //             anchors.fill: parent
-    //             anchors.margins: 12
-    //             spacing: 10
-    //             MaterialButton {
-    //                 iconName: "close"
-    //                 iconColor: Theme.colors.base05
-    //                 onClicked: deleteDeviceDialog.close()
-    //             }
-    //             Item { Layout.fillWidth: true }
-    //             MaterialButton {
-    //                 iconName: "check"
-    //                 iconColor: Theme.colors.base08
-    //                 onClicked: {
-    //                     deleteDeviceDialog.close()
-    //                     Bluetooth?.devices.values.find(dev => dev.name === deleteDeviceTitle.text.split(" ")[5])?.forget()
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     header: Rectangle {
-    //         color: Theme.colors.base00
-    //         radius: Config.rounding
-    //         implicitHeight: 56
-    //         anchors.left: parent.left
-    //         anchors.right: parent.right
-    //         RowLayout {
-    //             anchors.fill: parent
-    //             anchors.margins: 12
-    //             Text {
-    //                 id: deleteDeviceTitle
-    //                 text: deleteDeviceDialog.title
-    //                 color: Theme.colors.base05
-    //                 Layout.fillWidth: true
-    //                 horizontalAlignment: Text.AlignLeft
-    //                 verticalAlignment: Text.AlignVCenter
-    //                 elide: Text.ElideRight
-    //             }
-    //         }
-    //     }
-
-    //     contentItem: Item {
-    //         implicitWidth: 400
-    //         implicitHeight: 88
-    //         Text {
-    //             anchors.centerIn: parent
-    //             width: parent.width - 32
-    //             text: "Remove this paired device from the system?"
-    //             color: Theme.colors.base05
-    //             horizontalAlignment: Text.AlignHCenter
-    //             verticalAlignment: Text.AlignVCenter
-    //             wrapMode: Text.WordWrap
-    //         }
-    //     }
-    // }
 
     Item {
         Layout.fillWidth: true
@@ -206,12 +77,12 @@ ColumnLayout {
             states: [
                 State {
                     name: "hidden"
-                    when: !listVisible
+                    when: !root.listVisible
                     PropertyChanges { target: deviceListView; implicitHeight: 0 }
                 },
                 State {
                     name: "visible"
-                    when: listVisible
+                    when: root.listVisible
                     PropertyChanges { target: deviceListView; implicitHeight: contentHeight * showCount / count }
                 }
             ]
@@ -241,6 +112,7 @@ ColumnLayout {
             delegate: RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right
+                spacing: 0
                 MaterialButton {
                     iconName: deviceListView.deviceTypes[modelData.icon] ?? "devices"
                     iconColor: Theme.colors.base0D
@@ -259,21 +131,24 @@ ColumnLayout {
                     iconColor: Theme.colors.base0A
                     iconSize: 30
                     iconPadding: 5
-                    onClicked: {
-                        modelData.pair()
+                    onClicked: pairWiggle.start()
+
+                    Animations.Wiggle {
+                        id: pairWiggle
+                        target: parent
+                        onFinished: modelData.pair()
                     }
                 }
-                MaterialButton {
+                HoldButton {
                     visible: modelData.paired
                     iconName: "remove"
                     iconColor: Theme.colors.base08
                     iconSize: 30
-                    iconPadding: 5
-                    onClicked: {
-                        modelData.forget()
-                    }
+                    iconPadding: 1
+                    onTriggered: modelData.forget()
                 }
                 MaterialButton {
+                    id: connectionButton
                     property var connectionIcons: {
                         "Connected": "link_off",
                         "Disconnected": "link",
@@ -285,11 +160,17 @@ ColumnLayout {
                     iconColor: modelData.connected ? Theme.colors.base08 : Theme.colors.base0D
                     iconSize: 30
                     iconPadding: 5
-                    onClicked: {
-                        if (modelData.connected) {
-                            modelData.disconnect()
-                        } else {
-                            modelData.connect()
+                    onClicked: connectionWiggle.start()
+
+                    Animations.Wiggle {
+                        id: connectionWiggle
+                        target: connectionButton
+                        onFinished: {
+                            if (modelData.connected) {
+                                modelData.disconnect()
+                            } else {
+                                modelData.connect()
+                            }
                         }
                     }
                 }

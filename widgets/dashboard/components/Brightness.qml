@@ -35,37 +35,15 @@ RowLayout {
         iconPadding: 5
     }
 
-    Slider {
-        id: brightnessSlider
+    ThemedSlider {
         Layout.fillWidth: true
-        Layout.preferredHeight: 15
         from: 1
         to: 100
         stepSize: 1
         value: BrightnessService.brightnessPercent
-        
-        onMoved: {
-            BrightnessService.setBrightness(Math.round(value))
-        }
+        accentColor: Theme.colors.base09
 
-        background: Rectangle {
-            color: Theme.colors.base02
-            radius: Config.rounding
-
-            Rectangle {
-                width: brightnessSlider.visualPosition * parent.width
-                height: parent.height
-                color: Theme.colors.base09
-                radius: Config.rounding
-            }
-        }
-
-        handle: Rectangle {
-            x: brightnessSlider.visualPosition * (brightnessSlider.implicitWidth - width)
-            y: brightnessSlider.implicitHeight / 2 - height / 2
-            color: Theme.colors.base09
-            radius: Config.rounding
-        }
+        onMoved: BrightnessService.setBrightness(Math.round(value))
     }
     CustomText {
         text: BrightnessService.brightnessPercent + "%"

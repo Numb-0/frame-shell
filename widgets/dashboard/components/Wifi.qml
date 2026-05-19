@@ -41,75 +41,18 @@ ColumnLayout {
             elide: Text.ElideRight
         }
         Item { Layout.fillWidth: true }
-        MaterialButton {
-            id: toggleListButton
-            property bool rotated: false
-            iconName: "keyboard_arrow_right"
-            iconColor: Theme.colors.base05
-            iconSize: 30
-            iconPadding: 5
-
+        ExpandArrowButton {
+            expanded: listVisible
             onClicked: {
                 if (network.wifiState && network.connections.length > 0) {
                     listVisible = !listVisible
                 }
             }
-
-            Connections {
-                target: root
-                function onListVisibleChanged() {
-                    rotateArrowDown.start()
-                }
-            }
-            
-            RotationAnimation {
-                id: rotateArrowDown
-                target: toggleListButton
-                from: listVisible ? 0 : 90
-                to: listVisible ? 90 : 0
-                duration: 300
-                easing.type: Easing.OutExpo
-            }
         }
-        MaterialButton {
-            id: refreshButton
+        RefreshButton {
             enabled: network.wifiState
-            iconName: "refresh"
             iconColor: network.wifiState ? Theme.colors.base0E : Theme.colors.base08
-            iconSize: 30
-            iconPadding: 5
-            onClicked: {
-                // network.updateNetworkStatus()
-                startRotation()
-                refreshTimer.start()
-            }
-
-            function startRotation() {
-                rotationAnimation.loops = RotationAnimation.Infinite
-                rotationAnimation.start()
-            }
-            
-            RotationAnimation {
-                id: rotationAnimation
-                target: refreshButton
-                from: 0
-                to: 360
-                duration: 1000
-                easing.type: Easing.InOutBack
-                easing.overshoot: 1.2
-                loops: 1
-            }
-            
-            Timer {
-                id: refreshTimer
-                interval: 3000
-                repeat: false
-                onTriggered: {
-                    rotationAnimation.loops = 1
-                    rotationAnimation.stop()
-                    refreshButton.rotation = 0
-                }
-            }
+            spinDuration: 3000
         }
     }
     

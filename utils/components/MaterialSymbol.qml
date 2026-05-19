@@ -9,7 +9,7 @@ Text {
   property int size: 25
 
   font.family: "Material Symbols Rounded"
-  font.hintingPreference: Font.PreferFullHinting
+  // font.hintingPreference: Font.PreferFullHinting
   font.pixelSize: size
   font.variableAxes: {
     "FILL": fill,

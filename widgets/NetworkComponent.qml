@@ -102,9 +102,7 @@ Item {
                         Connections {
                             target: modelData
                             function onConnectionFailed(reason) {
-                                console.log("Connection failed: " + reason)
                                 if (reason === ConnectionFailReason.NoSecrets) {
-                                    console.log("Password required for " + modelData.name)
                                     root.passwordRequired = true
                                 }
                             }
@@ -156,7 +154,6 @@ Item {
                 Connections {
                     target: modelData
                     function onStateChanged() {
-                        console.log("Connection state changed: " + modelData.state)
                         if (modelData.state === ConnectionState.Connected) {
                             root.passwordRequired = false
                             root.password = ""
@@ -186,10 +183,7 @@ Item {
                     Layout.alignment: Qt.AlignRight
                     iconName: "send"
                     iconColor: Theme.colors.base0E
-                    onClicked:{
-                        console.log("Connecting to " + modelData.name + " with password: " + root.password)
-                        modelData.connectWithPsk(root.password)
-                    } 
+                    onClicked: modelData.connectWithPsk(root.password)
                 }
             }
         }

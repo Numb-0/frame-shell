@@ -31,33 +31,12 @@ RowLayout {
         return volumeIcons.high
     }
 
-    Slider {
-        id: volumeSlider
+    ThemedSlider {
         Layout.preferredWidth: 80
-        Layout.preferredHeight: 15
         value: audioSink?.audio?.volume ?? 0
         from: 0
         to: 1
         onValueChanged: audioSink.audio.volume = value
-
-        background: Rectangle {
-            color: Theme.colors.base02
-            radius: Config.rounding
-
-            Rectangle {
-                width: volumeSlider.visualPosition * parent.width
-                height: parent.height
-                color: Theme.colors.base0B
-                radius: Config.rounding
-            }
-        }
-
-        handle: Rectangle {
-            x: volumeSlider.visualPosition * (volumeSlider.implicitWidth - width)
-            y: volumeSlider.implicitHeight / 2 - height / 2
-            color: Theme.colors.base0B
-            radius: Config.rounding
-        }
     }
 
     CustomText {
