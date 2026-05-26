@@ -22,6 +22,13 @@ Slider {
             color: root.enabled ? root.accentColor : root.disabledColor
             opacity: root.enabled ? 1.0 : 0.3
             radius: Config.rounding
+
+            Behavior on width {
+                NumberAnimation {
+                    duration: 100
+                    easing.type: Easing.InOutQuad
+                }
+            }
         }
     }
 
