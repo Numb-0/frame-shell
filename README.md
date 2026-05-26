@@ -2,7 +2,7 @@
 
 > A polished Wayland shell built with [Quickshell](https://quickshell.outfoxxed.me/) for Hyprland.
 
-<https://github.com/user-attachments/assets/showcase.mp4>
+<video src="https://github.com/Numb-0/frame-shell/raw/main/assets/showcase.mp4" autoplay loop muted controls></video>
 
 ![Screenshot](assets/home.png)
 
