@@ -10,6 +10,7 @@ import Quickshell.Hyprland
 import qs.config
 import qs.utils.behaviors
 import qs.utils.components
+import "../utils/js/fuzzy.js" as Fuzzy
 
 Scope {
 	id: root
@@ -92,9 +93,11 @@ Scope {
 				id: appsList
 				property int itemCount: 7
 				model: ScriptModel {
-					values: DesktopEntries.applications.values
-					.filter(entry => entry.name.toLowerCase()
-					.includes(root.searchText.toLowerCase()))
+					values: {
+						const apps = DesktopEntries.applications.values.filter(e => !e.runInTerminal)
+						if (root.searchText === "") return apps
+						return Fuzzy.rankByKey(root.searchText, apps, e => e.name)
+					}
 				}
 				snapMode: ListView.SnapToItem
 				implicitHeight: 40 * itemCount
@@ -109,7 +112,7 @@ Scope {
         		spacing: Config.spacing
 				
 				delegate: RowLayout {
-					implicitHeight: 40
+          implicitHeight: 40
 					implicitWidth: appsList.width
 					spacing: 10
 					IconImage {

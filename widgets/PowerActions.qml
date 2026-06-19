@@ -32,7 +32,7 @@ Scope {
 
 	Process {
 		id: lock
-		command: ["hyprlock"]
+		command: ["sh", "-c", "hyprctl dispatch 'hl.dsp.dpms({ action = \"off\" })'"]
 	}
 
 	Variants {
@@ -130,7 +130,10 @@ Scope {
 						}
 						Keys.onReturnPressed: activate()
 
-						function activate() { lock.running = true }
+						function activate() { 
+							root.visible = false
+							lock.running = true
+						}
 						Component.onCompleted: {
 							iconBackground.opacity = 0.0
 						}

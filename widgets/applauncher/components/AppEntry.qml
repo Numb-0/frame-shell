@@ -19,7 +19,8 @@ MouseArea {
 	cursorShape: Qt.PointingHandCursor
 
 	onClicked: root.activated()
-	Keys.onReturnPressed: root.activated()
+  Keys.onReturnPressed: root.activated()
+  Component.onCompleted: console.log(modelData.icon)
 
 	RowLayout {
 		anchors.fill: parent
@@ -35,5 +36,5 @@ MouseArea {
 			text: root.modelData.name
 			elide: Text.ElideRight
 		}
-	}
+  }
 }
