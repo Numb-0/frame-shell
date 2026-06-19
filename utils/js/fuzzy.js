@@ -70,32 +70,6 @@ function fuzzyMatch(s1, s2) {
     return jaroWinkler(s1, s2);
 }
 
-function bestFuzzyMatch(target, candidates) {
-    var bestMatch = null;
-    var bestScore = -1;
-
-    for (var i = 0; i < candidates.length; i++) {
-        var score = fuzzyMatch(target, candidates[i]);
-        if (score > bestScore) {
-            bestScore = score;
-            bestMatch = candidates[i];
-        }
-    }
-
-    return bestMatch;
-}
-
-function rankedFuzzyMatches(target, candidates) {
-    var matches = candidates.map(candidate => ({
-        candidate: candidate,
-        score: fuzzyMatch(target, candidate)
-    }));
-
-    matches.sort((a, b) => b.score - a.score);
-
-    return matches;
-}
-
 function scoreAgainst(query, text) {
     var full = jaroWinkler(query, text);
     var words = text.split(/[\s\-_]+/);
