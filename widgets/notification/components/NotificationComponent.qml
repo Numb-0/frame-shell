@@ -155,6 +155,13 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: NotificationManager
+        function onClearAllRequested() {
+            removeAnimation.start();
+        }
+    }
+
     Animations.PopOut {
         id: discardAnimation
         target: root

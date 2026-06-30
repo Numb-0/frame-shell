@@ -17,6 +17,8 @@ Singleton {
     property var list: []
     property Component notificationComponent: Qt.createComponent("NotificationObject.qml")
 
+    signal clearAllRequested()
+
     NotificationServer {
         id: notifServer
         actionIconsSupported: true
@@ -56,5 +58,9 @@ Singleton {
 
     function sendNotification(title, body) {
         sendNotification.exec(["notify-send", title, body]);
+    }
+
+    function clearAll() {
+        clearAllRequested();
     }
 }
