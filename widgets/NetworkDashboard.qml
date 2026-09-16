@@ -19,6 +19,11 @@ Scope {
     property var networkWidth: 450
     property var adapter: Networking.devices.values.find(device => device.type === DeviceType.Wifi) ?? null
 
+    GlobalShortcut {
+        name: "network"
+        onPressed: root.visible = !root.visible
+    }
+
     onVisibleChanged: {
         if (!visible && adapter?.type === DeviceType.Wifi) {
             adapter.scannerEnabled = false
